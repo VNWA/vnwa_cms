@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            CategoryBlogSeeder::class,
+        ]);
         User::create([
             'name' => 'DEV',
             'email' => 'nhatnguyen.dev.fullstack@gmail.com',

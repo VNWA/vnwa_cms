@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\CategoryBlogController;
+use App\Http\Controllers\MediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,18 @@ Route::prefix('vnwa')
         Route::get('/', function () {
             return Inertia::render('Dashboard');
         })->name('dashboard');
+        Route::prefix('media')->group(function () {
+            Route::get('/', function () {
+                return Inertia::render('Media');
+            })->name('Media');
+
+            Route::post('get-data-files', [MediaController::class, 'getDataFiles']);
+
+            Route::post('upload-files', [MediaController::class, 'uploadFiles']);
+            Route::post('create-directory', [MediaController::class, 'createDirectory']);
+            Route::post('rename', [MediaController::class, 'rename']);
+            Route::post('delete', [MediaController::class, 'delete']);
+        });
 
         Route::prefix('blog')
             ->group(function () {

@@ -17,11 +17,11 @@ return new class extends Migration {
             $table->integer('ord')->default(0);
             $table->tinyInteger('is_show')->default(1);
             $table->tinyInteger('is_highlight')->default(0);
-            $table->string('icon')->nullable();
+            $table->json('icon')->nullable();
             $table->string('image')->nullable();
             $table->string('name');
             $table->string('slug');
-            $table->longText('desc')->nullable();
+            $table->text('desc')->nullable();
             $table->text('meta_image')->nullable();
             $table->text('meta_title')->nullable();
             $table->text('meta_desc')->nullable();

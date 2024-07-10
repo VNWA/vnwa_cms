@@ -4,8 +4,12 @@ import { defineStore } from 'pinia';
 export const useAdminStore = defineStore('admin', {
   state: () => ({
     isSidebarShow: false,
+    isMediaDetailShow: true,
   }),
   actions: {
+    toggleMediaDetail() {
+        this.isMediaDetailShow = !this.isMediaDetailShow;
+      },
     toggleSidebar() {
       this.isSidebarShow = !this.isSidebarShow;
     },

@@ -18,13 +18,12 @@
                                     Create
                                 </button>
                             </div>
-                            <Draggable class="mtl-tree" v-model="list" treeLine>
+                            <Draggable class="mtl-tree" v-model="props.data" treeLine>
                                 <template #default="{ node, stat }">
-
                                     <div class=" mx-3 flex cursor-pointer items-center gap-4 "
                                         :class="{ 'font-bold': id_active === node.id }"
                                         @click="changeIdActive(node.id)">{{
-                                            node.text }} (1)
+                                            node.name }} (1)
                                         <button v-if="id_active === node.id"
                                             class="bg-red-500 hover:bg-red-600 px-2 py-1 text-white rounded-md">
                                             <icon :icon="['fas', 'trash']" />
@@ -32,16 +31,35 @@
                                     </div>
                                     <OpenIcon v-if="stat.children.length" :open="stat.open" class="float-end"
                                         @click.native="stat.open = !stat.open" />
-
                                 </template>
                             </Draggable>
                         </div>
                     </div>
                     <div class="col-span-8">
+
                         <div class="p-4 bg-white">
-                            <div>
+                            <div class="mb-4">
+                                <InputLabel for="name">Name <span class="text-red-500">*</span></InputLabel>
+                                <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
+                                    required />
+                                <InputError class="mt-2" :message="form.errors.name" />
+                            </div>
+                            <div class="mb-4">
+                                <InputLabel for="slug">Slug <span class="text-red-500">*</span></InputLabel>
+                                <TextInput id="slug" v-model="form.slug" type="text" class="mt-1 block w-full"
+                                    required />
+                                <InputError class="mt-2" :message="form.errors.slug" />
+                            </div>
+
+                            <div class="mb-4">
+                                <InputLabel for="desc" value="Description" />
+                                <InputDesc id="desc" v-model="form.desc" class="mt-1 block w-full" />
+                                <InputError class="mt-2" :message="form.errors.desc" />
+                            </div>
+                            <div class="mb-4">
                                 <InputLabel for="InputSelectedIcon" value="Icon" />
-                                <InputSelectedIcon id="InputSelectedIcon" class="mt-1 block w-full border border-solid border-black h-10"
+                                <InputSelectedIcon id="InputSelectedIcon"
+                                    class="mt-1 block w-full border border-solid border-black h-10"
                                     v-model="form.icon" />
                                 <InputError class="mt-2" :message="form.errors.icon" />
                             </div>
@@ -67,52 +85,14 @@ import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import InputSelectedIcon from '@/Components/Input/InputSelectedIcon.vue';
+import InputDesc from '@/Components/Input/InputDesc.vue'
+
+const props = defineProps({
+    data: Object
+})
 
 const isLoading = ref(false)
-const list = ref([
-    {
-        id: 1,
-        text: 'Projects',
-        children: [
-            {
-                id: 2,
-                text: 'Frontend',
-                children: [
-                    {
-                        id: 3,
-                        text: 'Vue',
-                        children: [
-                            {
-                                id: 4,
-                                text: 'Nuxt',
-                            },
-                        ],
-                    },
-                    {
-                        id: 5,
-                        text: 'React',
-                        children: [
-                            {
-                                id: 6,
-                                text: 'Next',
-                            },
-                        ],
-                    },
-                    {
-                        id: 7,
-                        text: 'Angular',
-                    },
-                ],
-            },
-            {
-                id: 8,
-                text: 'Backend',
-            },
-        ],
-    },
-    { id: 9, text: 'Photos' },
-    { id: 10, text: 'Videos' },
-]);
+
 const id_active = ref(null);
 
 const changeIdActive = (id) => {
