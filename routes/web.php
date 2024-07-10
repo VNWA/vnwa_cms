@@ -16,7 +16,7 @@ use App\Http\Controllers\CategoryBlogController;
 |
 */
 
-Route::get('/', function () {
+Route::get('vnwa/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -28,7 +28,8 @@ Route::get('/', function () {
 Route::prefix('vnwa')
     ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
     ->group(function () {
-        Route::get('/dashboard', function () {
+
+        Route::get('/', function () {
             return Inertia::render('Dashboard');
         })->name('dashboard');
 

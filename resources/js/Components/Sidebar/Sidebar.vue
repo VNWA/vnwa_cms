@@ -1,6 +1,6 @@
 <!-- resources/js/Components/Sidebar.vue -->
 <template>
-    <aside id="sidebar" :class="{'active':adminStore.isSidebarShow}" class="w-full p-1 dark:bg-gray-900 dark:text-gray-100 min-h-screen h-auto sticky">
+    <aside id="sidebar" :class="{'active':adminStore.isSidebarShow}" class="w-full p-1 bg-gray-900 text-gray-100 min-h-screen h-auto sticky">
         <div class="sidebar-header">
             <div class="logo">
                 <img src="/images/vnwaLogoFull.png" class="show" alt="Vinawebapp Logo">
@@ -21,7 +21,7 @@
                 <li class="mb-3 ">
                     <SideBarLink :href="route('dashboard')" :active="check('/dashboard')">
                         <icon icon="fa-home" class="mr-2" />
-                        <span class="show font-semibold text-slate-900 dark:text-slate-200">Dashboard</span>
+                        <span class="show font-semibold  text-slate-200">Dashboard</span>
                     </SideBarLink>
 
                 </li>
@@ -29,7 +29,7 @@
                     <div class=" cursor-pointer relative w-100 py-2 px-4 rounded sidebar-item-list " :class="{ 'active': isBlogsActive || check('/blog') }">
                         <div class="flex items-center justify-start sidebar-item-list-title" @click=" isBlogsActive = !isBlogsActive;">
                             <icon :icon="['fas', 'blog']" class="mr-2" />
-                            <span class="show  font-semibold text-slate-900 dark:text-slate-200">Blog</span>
+                            <span class="show  font-semibold  text-slate-200">Blog</span>
                             <icon :icon="['fas', 'chevron-down']" class="ml-2 show" />
                         </div>
 

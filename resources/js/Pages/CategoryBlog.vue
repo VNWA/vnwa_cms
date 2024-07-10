@@ -10,17 +10,41 @@
             <div class="p-5">
                 <div class="grid grid-cols-12 gap-4">
                     <div class="col-span-4">
-                        <div class="bg-white">
-                            <Draggable class="mtl-tree" v-model="list" treeLine >
-                                <template #default="{ node, stat }" >
+                        <div class="bg-black/80 p-5">
+                            <div class=" mb-5 flex items-center justify-between font-bold text-xl bg-white py-2 px-2">
+                                <h3 class="text-black ">List</h3>
+                                <button class="bg-sky-700 hover:bg-sky-900 py-1 px-5 rounded-sm text-white">
+                                    <icon icon="fa-plus" />
+                                    Create
+                                </button>
+                            </div>
+                            <Draggable class="mtl-tree" v-model="list" treeLine>
+                                <template #default="{ node, stat }">
 
-                                    <div class=" mx-3 flex cursor-pointer items-center gap-4 " :class="{'font-bold':id_active ===node.id }" @click="changeIdActive(node.id)">{{ node.text }} (1)
-                                         <button v-if="id_active ===node.id" class="bg-red-500 hover:bg-red-600 px-2 py-1 text-white rounded-md"><icon :icon="['fas', 'trash']" /> </button>
-                                        </div>
-                                    <OpenIcon v-if="stat.children.length" :open="stat.open" class="float-end" @click.native="stat.open = !stat.open" />
+                                    <div class=" mx-3 flex cursor-pointer items-center gap-4 "
+                                        :class="{ 'font-bold': id_active === node.id }"
+                                        @click="changeIdActive(node.id)">{{
+                                            node.text }} (1)
+                                        <button v-if="id_active === node.id"
+                                            class="bg-red-500 hover:bg-red-600 px-2 py-1 text-white rounded-md">
+                                            <icon :icon="['fas', 'trash']" />
+                                        </button>
+                                    </div>
+                                    <OpenIcon v-if="stat.children.length" :open="stat.open" class="float-end"
+                                        @click.native="stat.open = !stat.open" />
 
                                 </template>
                             </Draggable>
+                        </div>
+                    </div>
+                    <div class="col-span-8">
+                        <div class="p-4 bg-white">
+                            <div>
+                                <InputLabel for="InputSelectedIcon" value="Icon" />
+                                <InputSelectedIcon id="InputSelectedIcon" class="mt-1 block w-full border border-solid border-black h-10"
+                                    v-model="form.icon" />
+                                <InputError class="mt-2" :message="form.errors.icon" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -34,9 +58,15 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { ref } from 'vue';
-
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { BaseTree, Draggable, pro, OpenIcon } from '@he-tree/vue'
 import '@he-tree/vue/style/default.css'
+import InputLabel from '@/Components/InputLabel.vue';
+import TextInput from '@/Components/TextInput.vue';
+import InputError from '@/Components/InputError.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Checkbox from '@/Components/Checkbox.vue';
+import InputSelectedIcon from '@/Components/Input/InputSelectedIcon.vue';
 
 const isLoading = ref(false)
 const list = ref([
@@ -45,49 +75,79 @@ const list = ref([
         text: 'Projects',
         children: [
             {
-                 id: 2,
-                   text: 'Frontend',
+                id: 2,
+                text: 'Frontend',
                 children: [
                     {
-        id: 3,
-        text: 'Vue',
+                        id: 3,
+                        text: 'Vue',
                         children: [
                             {
-        id: 4,
-        text: 'Nuxt',
+                                id: 4,
+                                text: 'Nuxt',
                             },
                         ],
                     },
                     {
-        id: 5,
-        text: 'React',
+                        id: 5,
+                        text: 'React',
                         children: [
                             {
-        id: 6,
-        text: 'Next',
+                                id: 6,
+                                text: 'Next',
                             },
                         ],
                     },
                     {
-        id: 7,
+                        id: 7,
                         text: 'Angular',
                     },
                 ],
             },
             {
-        id: 8,
+                id: 8,
                 text: 'Backend',
             },
         ],
     },
-    {id: 9, text: 'Photos' },
-    {id: 10, text: 'Videos' },
+    { id: 9, text: 'Photos' },
+    { id: 10, text: 'Videos' },
 ]);
 const id_active = ref(null);
 
-const changeIdActive = (id) =>{
+const changeIdActive = (id) => {
     id_active.value = id;
     console.log(id)
+};
+
+const form = ref({
+    parentId: '',
+    name: '',
+    slug: '',
+    slug: '',
+    icon: '',
+    image: '',
+    desc: '',
+    status: '',
+    errors: {
+        name: '',
+        slug: '',
+        image: '',
+        icon: '',
+        parentId: '',
+        desc: '',
+        status: '',
+    }
+})
+
+
+const submit = () => {
+    form.transform(data => ({
+        ...data,
+        remember: form.remember ? 'on' : '',
+    })).post(route('login'), {
+        onFinish: () => form.reset('password'),
+    });
 };
 
 </script>
@@ -138,7 +198,8 @@ const changeIdActive = (id) =>{
 .he-tree__open-icon svg {
     width: 1em
 }
-.tree-node-inner{
+
+.tree-node-inner {
     cursor: grab;
     background: #dedede;
     border: 1px solid #19293c;
@@ -156,5 +217,4 @@ const changeIdActive = (id) =>{
     padding: 5px 10px 5px 20px;
     text-decoration: none;
 }
-
 </style>
