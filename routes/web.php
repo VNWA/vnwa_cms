@@ -48,6 +48,10 @@ Route::prefix('vnwa')
 
         Route::prefix('blog')
             ->group(function () {
-                Route::get('categories', [CategoryBlogController::class, 'index'])->name('Blog.Categories');
+                Route::prefix('categories')->group(function(){
+                    Route::get('/', [CategoryBlogController::class, 'index'])->name('Blog.Categories');
+                    Route::post('/update-tree', [CategoryBlogController::class, 'updateTree']);
+
+                });
             });
     });

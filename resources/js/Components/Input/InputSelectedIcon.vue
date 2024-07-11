@@ -1,11 +1,11 @@
 <template>
     <div class="flex items-center border border-gray-300 rounded-md ">
-        <div v-if="input" class="h-full flex items-center justify-center min-w-10 ">
-            <icon  :icon="input" />
+        <div v-if="input && input.length>0" class="h-full flex items-center justify-center min-w-10 ">
+            <icon :icon="input" />
 
         </div>
-        <VueSelect class="style-chooser  border-none " :class="props.class" taggable v-model="input" :options="options"
-            :reduce="(option) => option.value" label="label" placeholder="None">
+        <VueSelect :id="props.id" class="style-chooser  border-none " :class="props.class" taggable v-model="input"
+            :options="options" :reduce="(option) => option.value" label="label" placeholder="None">
             <template v-slot:option="option">
                 <div class="flex gap-4">
                     <icon v-if="option.value" :icon="option.value" />
@@ -20,7 +20,7 @@
 import VueSelect from 'vue-select';
 import "vue-select/dist/vue-select.css";
 import { ref, defineProps, watch, onMounted } from 'vue';
-import { fasArray, fabArray } from '@/data/fontawebsome_icon';
+import { fasArray, fabArray } from '@/Data/fontawebsome_icon';
 
 
 const options = ref([])
@@ -38,6 +38,8 @@ const props = defineProps({
         type: Array,
         default: []
     },
+    id: String,
+
     class: {
         type: String,
         default: ''

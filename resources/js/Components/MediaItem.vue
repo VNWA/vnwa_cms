@@ -1,10 +1,15 @@
 <template>
-    <div :class="{ 'bg-sky-500': selected == true }"  class="border-black/10 border border-solid  cursor-pointer " @contextmenu.prevent="showContextMenu($event)">
+    <div :class="{ 'bg-sky-500': selected == true }" class="border-black/10 border border-solid  cursor-pointer "
+        @contextmenu.prevent="showContextMenu($event)">
         <div class="item_avatar flex items-center justify-center relative">
-            <img v-if="dataItem.type === 'dir'" src="/images/folder.png" alt="Folder Image" class="max-w-full max-h-full w-auto h-auto">
-            <img v-else-if="dataItem.type === 'document'" src="/images/document.png" alt="Document Image" class="max-w-full max-h-full w-auto h-auto">
-            <img v-else-if="dataItem.type === 'image'" :src="dataItem.path" :alt="dataItem.name" class="max-w-full max-h-full w-auto h-auto">
-            <img v-else-if="dataItem.type === 'video'" src="/images/video.jpg" alt="Document Image" class="max-w-full max-h-full w-auto h-auto">
+            <img v-if="dataItem.type === 'dir'" src="/images/folder.png" alt="Folder Image"
+                class="max-w-full max-h-full w-auto h-auto">
+            <img v-else-if="dataItem.type === 'document'" src="/images/document.png" alt="Document Image"
+                class="max-w-full max-h-full w-auto h-auto">
+            <img v-else-if="dataItem.type === 'image'" :src="dataItem.path" :alt="dataItem.name"
+                class="max-w-full max-h-full w-auto h-auto">
+            <img v-else-if="dataItem.type === 'video'" src="/images/video.jpg" alt="Document Image"
+                class="max-w-full max-h-full w-auto h-auto">
             <img v-else src="/images/file.png" alt="Document Image" class="max-w-full max-h-full w-auto h-auto">
 
             <div class="absolute w-full h-full top-0 left-0"></div>

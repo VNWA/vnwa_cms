@@ -1,0 +1,12 @@
+[
+    {
+        "type":"product_item",
+        "name":"Product Item",
+        "aspectRatio":"3/2"
+    },
+    {
+        "type":"blog_item",
+        "name":"Blog Item",
+        "aspectRatio":"3/2"
+    }
+]

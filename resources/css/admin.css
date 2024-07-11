@@ -1,3 +1,7 @@
+body.no-scroll {
+    overflow: hidden;
+}
+
 #sidebar {
     position: sticky;
     width: 260px;
@@ -91,15 +95,18 @@ input[type=number] {
 #sidebar .sidebar-header .btn svg {
     font-size: 20px;
 }
-#sidebar #sidebar-content-list >li{
-  box-shadow: rgba(212, 215, 216, 0.3) 0 2px 3px 0, rgba(155, 34, 161, 0.15) 0 6px 10px 4px;
+
+#sidebar #sidebar-content-list>li {
+    box-shadow: rgba(212, 215, 216, 0.3) 0 2px 3px 0, rgba(155, 34, 161, 0.15) 0 6px 10px 4px;
 
 }
+
 #sidebar.active #sidebar-content-list li .sidebar-item-list-content {
     display: none;
 
 }
-#sidebar.active #sidebar-content-list  li:hover .sidebar-item-list-content {
+
+#sidebar.active #sidebar-content-list li:hover .sidebar-item-list-content {
     display: block;
     animation: show_sidbar_item_list_content 0.18s ease 0s 1 normal forwards;
 

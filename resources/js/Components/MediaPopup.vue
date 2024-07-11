@@ -3,28 +3,38 @@
         <div class="py-2 relative">
             <div class="absolute w-full h-full top-0 left-0 bg-white/50 z-50" v-if="isLoading">
                 <div role="status" class="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
-                    <svg aria-hidden="true" class="w-24 h-24 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
-                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                    <svg aria-hidden="true"
+                        class="w-24 h-24 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
                     </svg>
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-            <div v-if="showCreateDirectoryModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+            <div v-if="showCreateDirectoryModal"
+                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
                 <div class="bg-white p-6 rounded shadow-md">
                     <h2 class="text-xl mb-4">Create New Directory</h2>
-                    <input v-model="newDirectoryName" class="border p-2 mb-4 w-full" placeholder="Enter directory name" />
+                    <input v-model="newDirectoryName" class="border p-2 mb-4 w-full"
+                        placeholder="Enter directory name" />
                     <div class="flex justify-end">
                         <button @click="createDirectory" class="bg-purple-500 text-white px-4 py-2 rounded mr-2">
                             Create
                         </button>
-                        <button @click="showCreateDirectoryModal = false" class="bg-gray-500 text-white px-4 py-2 rounded">
+                        <button @click="showCreateDirectoryModal = false"
+                            class="bg-gray-500 text-white px-4 py-2 rounded">
                             Cancel
                         </button>
                     </div>
                 </div>
             </div>
-            <div v-if="isModalReaname" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+            <div v-if="isModalReaname"
+                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
                 <div class="bg-white p-6 rounded shadow-md">
                     <h2 class="text-xl mb-4">Reaname</h2>
                     <h5 class="text-sm mb-2 text-black/50">{{ reanameData.currentName }}</h5>
@@ -41,7 +51,8 @@
                 </div>
             </div>
 
-            <div v-if="isModalDelete" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 no_close_selected">
+            <div v-if="isModalDelete"
+                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20 no_close_selected">
                 <div class="bg-white p-6 rounded shadow-md">
                     <h2 class="text-xl mb-4">Delete</h2>
                     <div class="py-2">
@@ -69,7 +80,8 @@
                     </div>
                     <hr class="mb-3" />
                     <div class="flex justify-end">
-                        <button @click="submitDeleteFiles" class="bg-red-500 text-white px-4 py-2 rounded mr-2" v-if="keySelected.length > 0">
+                        <button @click="submitDeleteFiles" class="bg-red-500 text-white px-4 py-2 rounded mr-2"
+                            v-if="keySelected.length > 0">
                             Delete
                         </button>
                         <button @click="isModalDelete = false" class="bg-gray-500 text-white px-4 py-2 rounded">
@@ -82,21 +94,28 @@
                 <div class="border border-black/20 py-3 bg-white">
                     <div class="flex items-center justify-between">
                         <div class="flex px-3 gap-4">
-                            <button class="flex items-center justify-center gap-2 bg-purple-500 px-3 py-2 text-white rounded font-bold" @click="openFileDialog">
+                            <button
+                                class="flex items-center justify-center gap-2 bg-purple-500 px-3 py-2 text-white rounded font-bold"
+                                @click="openFileDialog">
                                 <icon :icon="['fas', 'upload']" />
                                 Uploads
                             </button>
                             <input type="file" ref="fileInput" class="hidden" multiple @change="handleFileChange" />
 
-                            <button class="flex items-center justify-center gap-2 bg-purple-500 px-3 py-2 text-white rounded font-bold" @click="showCreateDirectoryModal = !showCreateDirectoryModal">
+                            <button
+                                class="flex items-center justify-center gap-2 bg-purple-500 px-3 py-2 text-white rounded font-bold"
+                                @click="showCreateDirectoryModal = !showCreateDirectoryModal">
                                 <icon :icon="['fas', 'folder-plus']" />
                             </button>
-                            <button class="flex items-center justify-center gap-2 bg-purple-500 px-3 py-2 text-white rounded font-bold" @click="loadData">
+                            <button
+                                class="flex items-center justify-center gap-2 bg-purple-500 px-3 py-2 text-white rounded font-bold"
+                                @click="loadData">
                                 <icon :icon="['fas', 'rotate']" />
                             </button>
                         </div>
                         <div class="flex px-3 gap-4">
-                            <button type="button" v-if="keySelected.length > 0" @click="isModalDelete = !isModalDelete" class="no_close_selected flex items-center justify-center gap-2 bg-red-500 px-3 py-2 text-white rounded font-bold">
+                            <button type="button" v-if="keySelected.length > 0" @click="isModalDelete = !isModalDelete"
+                                class="no_close_selected flex items-center justify-center gap-2 bg-red-500 px-3 py-2 text-white rounded font-bold">
                                 <icon :icon="['fas', 'trash']" />
                                 Delete
                             </button>
@@ -114,7 +133,9 @@
                                 </li>
                                 <li v-for="(item, index) in basePathArray">
                                     /
-                                    <button class="bg-black/10 px-3 rounded-lg hover:text-white hover:bg-purple-500 ms-2" @click="basePath = item.path">
+                                    <button
+                                        class="bg-black/10 px-3 rounded-lg hover:text-white hover:bg-purple-500 ms-2"
+                                        @click="basePath = item.path">
                                         {{ item.name }}
                                     </button>
                                 </li>
@@ -122,7 +143,9 @@
                         </div>
                         <div class="flex items-center justify-end gap-4">
                             <div class="relative">
-                                <button class="bg-purple-500 text-white font-bold px-5 py-2 flex gap-1 items-center justify-center" @click="isFileterList = !isFileterList">
+                                <button
+                                    class="bg-purple-500 text-white font-bold px-5 py-2 flex gap-1 items-center justify-center"
+                                    @click="isFileterList = !isFileterList">
                                     <icon :icon="['fas', 'filter']" />
 
                                     <span v-for="(item, index) in fileterList" :key="index">
@@ -130,46 +153,60 @@
                                     </span>
                                     <icon :icon="['fas', 'caret-down']" />
                                 </button>
-                                <div class="absolute right-0 top-10 min-w-32 bg-white border border-black/50 z-10" v-if="isFileterList">
+                                <div class="absolute right-0 top-10 min-w-32 bg-white border border-black/50 z-10"
+                                    v-if="isFileterList">
                                     <ul>
                                         <li v-for="(item, index) in fileterList" :key="index">
-                                            <button @click="filterData(index, item)" class="hover:bg-black/10 w-full px-3 py-1 hover:text-black/80 text-start" :class="{ ' bg-black/50 text-white': item.active }">
+                                            <button @click="filterData(index, item)"
+                                                class="hover:bg-black/10 w-full px-3 py-1 hover:text-black/80 text-start"
+                                                :class="{ ' bg-black/50 text-white': item.active }">
                                                 {{ item.name }}
                                             </button>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <input type="text" class="min-w-52" placeholder="Search Name" v-model="searchTerm" @input="handleSearch" />
+                            <input type="text" class="min-w-52" placeholder="Search Name" v-model="searchTerm"
+                                @input="handleSearch" />
 
-                            <button type="button" @click="isDetailItem = !isDetailItem" class="bg-gray-500 py-1 px-5 text-2xl text-white rounded-md" :class="{ 'bg-purple-500 text-white/90 ': isDetailItem }">
-                                <icon :icon="['fas', 'circle-info']" />
-                            </button>
+                            <icon :icon="['fas', 'circle-info']"
+                                :class="{ 'text-purple-500  ': adminStore.isMediaDetailShow }"
+                                @click="adminStore.toggleMediaDetail" class="text-2xl cursor-pointer" />
                         </div>
                     </div>
                 </div>
 
                 <div class="flex">
-                    <div class="w-full max-h-60vh h-auto overflow-y-scroll overflow-x-visible">
+                    <div class="w-full max-h-60vh h-auto overflow-y-scroll overflow-x-visible" id="media_files" @mouseenter="isMouseInside = true"
+                    @mouseleave="isMouseInside = false">
                         <ul v-if="dataFiles && dataFiles.length > 0" class="grid grid-cols-12 gap-4 py-5">
                             <li v-for="(item, index) in filteredFiles" :key="index" class="col-span-2 media_item">
                                 <div class="w-full relative">
-                                    <MediaItem :dataItem="item" @click="oneClick(index, item, $event)" @dblclick="viewFolder(item)" :selected="keySelected.includes(index)" @contextmenu.prevent="showContextMenu(index, $event)" />
+                                    <MediaItem :dataItem="item" @click="oneClick(index, item, $event)"
+                                        @dblclick="viewFolder(item)" :selected="keySelected.includes(index)"
+                                        @contextmenu.prevent="showContextMenu(index, $event)" />
 
-                                    <div v-if="isMouseRightItemKey == index" class="no_close_selected absolute bottom-5 left-1/4 z-20 cursor-default">
-                                        <ul class="bg-black/80 text-white/80 font-bold w-full text-xs min-w-24 text-center rounded overflow-hidden">
+                                    <div v-if="isMouseRightItemKey == index"
+                                        class="no_close_selected absolute bottom-5 left-1/4 z-20 cursor-default">
+                                        <ul
+                                            class="bg-black/80 text-white/80 font-bold w-full text-xs min-w-24 text-center rounded overflow-hidden">
                                             <li v-if="item.type == 'dir'">
-                                                <button class="px-3 py-1 hover:bg-black/50 hover:text-white/60 border border-black/50 w-full flex items-center gap-4" @click="viewFolder(item)">
+                                                <button
+                                                    class="px-3 py-1 hover:bg-black/50 hover:text-white/60 border border-black/50 w-full flex items-center gap-4"
+                                                    @click="viewFolder(item)">
                                                     <icon :icon="['fas', 'folder-open']" /> Open
                                                 </button>
                                             </li>
                                             <li v-else>
-                                                <a @click="isMouseRightItemKey = null" target="_blank" :href="item.path" class="px-3 py-1 hover:bg-black/50 hover:text-white/60 border border-black/50 w-full flex items-center gap-4">
+                                                <a @click="isMouseRightItemKey = null" target="_blank" :href="item.path"
+                                                    class="px-3 py-1 hover:bg-black/50 hover:text-white/60 border border-black/50 w-full flex items-center gap-4">
                                                     <icon :icon="['fas', 'eye']" /> Preview
                                                 </a>
                                             </li>
                                             <li>
-                                                <button class="px-3 py-1 hover:bg-black/50 hover:text-white/60 border border-black/50 w-full flex items-center gap-4" @click="showModalReaname(item)">
+                                                <button
+                                                    class="px-3 py-1 hover:bg-black/50 hover:text-white/60 border border-black/50 w-full flex items-center gap-4"
+                                                    @click="showModalReaname(item)">
                                                     <icon :icon="['fas', 'pen-to-square']" /> Rename
                                                 </button>
                                             </li>
@@ -179,19 +216,25 @@
                             </li>
                         </ul>
 
-                        <div v-else class="bg-white w-full h-full flex py-20 justify-center text-black/80 text-xl font-bold">
+                        <div v-else
+                            class="bg-white w-full h-full flex py-20 justify-center text-black/80 text-xl font-bold">
                             No Data
                         </div>
                     </div>
-                    <div class="w-3/12 media_detail max-h-60vh overflow-y-scroll" v-if="isDetailItem">
+                    <div class="w-3/12 media_detail max-h-60vh overflow-y-scroll" v-if="adminStore.isMediaDetailShow">
                         <div class="w-full bg-white px-3 h-full py-5">
                             <div v-if="dataDetail.name">
                                 <div class="flex items-center justify-center">
-                                    <img v-if="dataDetail.type === 'image'" :src="dataDetail.path" alt="" class="w-auto h-auto max-w-full" />
-                                    <img v-else-if="dataDetail.type === 'dir'" src="/images/folder.png" alt="" class="w-auto h-auto max-w-full" />
-                                    <img v-else-if="dataDetail.type === 'document'" src="/images/document.png" alt="Document Image" class="w-auto h-auto max-w-full" />
-                                    <img v-else-if="dataDetail.type === 'video'" src="/images/video.jpg" alt="Document Image" class="w-auto h-auto max-w-full" />
-                                    <img v-else-if="dataDetail.type === 'other'" src="/images/file.png" alt="Document Image" class="w-auto h-auto max-w-full" />
+                                    <img v-if="dataDetail.type === 'image'" :src="dataDetail.path" alt=""
+                                        class="w-auto h-auto max-w-full" />
+                                    <img v-else-if="dataDetail.type === 'dir'" src="/images/folder.png" alt=""
+                                        class="w-auto h-auto max-w-full" />
+                                    <img v-else-if="dataDetail.type === 'document'" src="/images/document.png"
+                                        alt="Document Image" class="w-auto h-auto max-w-full" />
+                                    <img v-else-if="dataDetail.type === 'video'" src="/images/video.jpg"
+                                        alt="Document Image" class="w-auto h-auto max-w-full" />
+                                    <img v-else-if="dataDetail.type === 'other'" src="/images/file.png"
+                                        alt="Document Image" class="w-auto h-auto max-w-full" />
                                 </div>
                                 <div class="text-sm max-w-full overflow-hidden border-t-2 pt-3 border-black/10">
                                     <ul>
@@ -231,10 +274,12 @@
             </div>
         </div>
         <div class="w-full py-3 px-10 flex items-center justify-end bg-black/10">
-            <button v-if="keySelected.length <= 0" type="button" class="bg-gray-500/50 px-10 py-1 text-lg font-bold text-white rounded-sm no_close_selected">
+            <button v-if="keySelected.length <= 0" type="button"
+                class="bg-gray-500/50 px-10 py-1 text-lg font-bold text-white rounded-sm no_close_selected">
                 Insert
             </button>
-            <button v-else @click="insertData" type="button" class="bg-blue-500 px-10 py-1 text-lg font-bold text-white rounded-sm no_close_selected">
+            <button v-else @click="insertData" type="button"
+                class="bg-blue-500 px-10 py-1 text-lg font-bold text-white rounded-sm no_close_selected">
                 Insert
             </button>
         </div>
@@ -243,11 +288,13 @@
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from "vue";
-import { defineProps, defineEmits } from "vue";
-import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link, usePage } from "@inertiajs/vue3";
-import HeaderBreadcrumbs from "@/Components/HeaderBreadcrumbs.vue";
+import {  defineEmits } from "vue";
 import MediaItem from "@/Components/MediaItem.vue";
+import { useAdminStore } from '@/store/admin';
+
+const adminStore = useAdminStore();
+
+
 const isLoading = ref(false);
 const basePath = ref("");
 const basePathArray = ref({});
@@ -261,6 +308,8 @@ const fileInput = ref(null);
 const isMouseRightItemKey = ref(null);
 const isModalDelete = ref(false);
 const isModalReaname = ref(false);
+const isMouseInside = ref(false);
+
 const reanameData = ref({
     currentName: "",
     type: "",
@@ -288,7 +337,7 @@ const loadData = async () => {
     });
 
     try {
-        const response = await axios.post("/media/get-data-files", {
+        const response = await axios.post("/vnwa/media/get-data-files", {
             basePath: basePath.value,
         });
         dataFiles.value = response.data;
@@ -475,7 +524,7 @@ const submitChangeName = async () => {
 
 const handleKeyDown = (event) => {
     // Bắt sự kiện khi người dùng nhấn phím
-    if (event.key === "a" && event.ctrlKey) {
+    if (event.key === "a" && event.ctrlKey  && isMouseInside.value) {
         // Ctrl + A được nhấn, đẩy tất cả các chỉ số hiện có vào keySelected
         event.preventDefault();
         if (filteredFiles.value && filteredFiles.value.length > 0) {
@@ -556,18 +605,7 @@ watch(basePath, (newBasePath, oldBasePath) => {
         loadData();
     }
 });
-document.addEventListener("keydown", (event) => {
-    if (event.key === "a" && event.ctrlKey) {
-        event.preventDefault();
 
-        // Ctrl + A được nhấn, đẩy tất cả các key index hiện có vào keySelected
-        if (filteredFiles.value && filteredFiles.value.length > 0) {
-            keySelected.value = filteredFiles.value.map((item, index) => index);
-        } else {
-            keySelected.value = [];
-        }
-    }
-});
 </script>
 
 <style>

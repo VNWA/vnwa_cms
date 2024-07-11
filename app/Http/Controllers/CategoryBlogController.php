@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\CategoryBlog;
 use Carbon\Carbon;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class CategoryBlogController extends Controller
 {
@@ -46,7 +48,39 @@ class CategoryBlogController extends Controller
 
         return Inertia::render('CategoryBlog', ['data' => $data]);
     }
+    protected function updateTreeRecursive($parentId, $nodes)
+    {
+        foreach ($nodes as $index => $node) {
+            $categoryId = $node['id'];
+            $newOrd = $index + 1;
 
+            CategoryBlog::where('id', $categoryId)->update([
+                'parent_id' => $parentId,
+                'ord' => $newOrd,
+            ]);
+
+            if (isset($node['children']) && count($node['children']) > 0) {
+                $this->updateTreeRecursive($categoryId, $node['children']);
+            }
+        }
+    }
+    public function updateTree(Request $request)
+    {
+        $treeData = $request->input('treeData');
+
+        // Sử dụng transaction để đảm bảo tính nhất quán
+        DB::beginTransaction();
+
+        try {
+            // Gọi hàm đệ quy để cập nhật cây dữ liệu
+            $this->updateTreeRecursive(null, $treeData);
+            DB::commit();
+            return response()->json(['message' => 'The article category data tree has been updated successfully'], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Unable to update article category tree', 'error' => $e->getMessage()], 500);
+        }
+    }
     public function create(Request $request)
     {
         $validatedData = $request->validate([
