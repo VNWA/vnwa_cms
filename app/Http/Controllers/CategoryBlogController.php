@@ -81,25 +81,29 @@ class CategoryBlogController extends Controller
             return response()->json(['message' => 'Unable to update article category tree', 'error' => $e->getMessage()], 500);
         }
     }
+    function getDetailCategory($id)
+    {
+        try {
+            $data = CategoryBlog::where('id', $id)->first();
+            return response()->json($data, 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function create(Request $request)
     {
         $validatedData = $request->validate([
-            'parent_id' => 'nullable|exists:category_blogs,id',
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:category_blogs,slug',
-            'is_show' => 'nullable|boolean',
-            'is_highlight' => 'nullable|boolean',
-            'icon' => 'nullable|json',
-            'image' => 'nullable|string|max:255',
-            'desc' => 'nullable|string',
-            'meta_image' => 'nullable|string|max:255',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_desc' => 'nullable|string',
         ]);
 
-        $categoryBlog = CategoryBlog::create($validatedData);
 
-        return response()->json($categoryBlog, 201);
+
+
+        // $categoryBlog = CategoryBlog::create($validatedData);
+
+        // return response()->json($categoryBlog, 201);
     }
     public function update(Request $request, $id)
     {

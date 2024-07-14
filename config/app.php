@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
 return [
-
+    'page_url' => env('PAGE_URL', 'https://vinawebapp.com'),
     /*
     |--------------------------------------------------------------------------
     | Application Name

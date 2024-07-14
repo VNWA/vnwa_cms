@@ -13,18 +13,19 @@
                         <div class="bg-black/80 p-5">
                             <div class=" mb-5 flex items-center justify-between font-bold text-xl bg-white py-2 px-2">
                                 <h3 class="text-black ">List</h3>
-                                <button @click="formCreate"
+                                <button @click="showFormCreate"
                                     class="bg-sky-700 hover:bg-sky-900 py-1 px-5 rounded-sm text-white">
                                     <icon icon="fa-plus" />
                                     Create
                                 </button>
                             </div>
-                            <Draggable class="mtl-tree" v-model="treeData" treeLine @update:modelValue="onTreeChange">
+                            <Draggable class="mtl-tree capitalize" v-model="treeData" treeLine :defaultOpen="false"
+                                @update:modelValue="onTreeChange">
                                 <template #default="{ node, stat }">
                                     <div class=" mx-3 flex cursor-pointer items-center gap-4 "
-                                        :class="{ 'font-bold': id_active === node.id }"
-                                        @click="changeIdActive(node.id)">{{
-                                            node.name }} (1)
+                                        :class="{ 'font-bold': id_active === node.id }" @click="showFormEdit(node.id)">
+                                        {{
+                                            node.name }} ({{ node.children.length }})
                                         <button v-if="id_active === node.id"
                                             class="bg-red-500 hover:bg-red-600 px-2 py-1 text-white rounded-md">
                                             <icon :icon="['fas', 'trash']" />
@@ -43,40 +44,68 @@
                             <div class="p-4">
                                 <div class="mb-4">
                                     <InputLabel for="name">Name <span class="text-red-500">*</span></InputLabel>
-                                    <TextInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
-                                        required />
-                                    <InputError class="mt-2" :message="form.errors.name" />
+                                    <InputText id="name" :maxLength="150" v-model="form.name" type="text"
+                                        class="mt-1 block w-full" @change="nameChange" required />
+                                    <InputError class="mt-2" :message="errors.name" />
                                 </div>
                                 <div class="mb-4">
                                     <InputLabel for="slug">Slug <span class="text-red-500">*</span></InputLabel>
-                                    <TextInput id="slug" v-model="form.slug" type="text" class="mt-1 block w-full"
-                                        required />
-                                    <InputError class="mt-2" :message="form.errors.slug" />
+                                    <div>
+                                        <div class="relative">
+
+                                            <TextInput id="slug" v-model="form.slug" type="text"
+                                                class="mt-1 block w-full pe-14"
+                                                :class="{ 'border-red-500 focus:ring-red-500': errors.slug.trim().length > 0 }"
+                                                required @change="" />
+                                            <div class="absolute top-2 right-5">
+                                                <div role="status" v-if="isSlugLoading">
+                                                    <svg aria-hidden="true"
+                                                        class="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
+                                                        viewBox="0 0 100 101" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                            fill="currentColor" />
+                                                        <path
+                                                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                            fill="currentFill" />
+                                                    </svg>
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                                <icon
+                                                    v-if="!isSlugLoading && form.slug.trim().length > 0 && errors.name.trim().length <= 0 && errors.slug.trim().length > 0"
+                                                    class="text-red-500 font-bold text-lg" :icon="['fas', 'x']" />
+                                                <icon
+                                                    v-else-if="!isSlugLoading && form.slug.trim().length > 0 && errors.name.trim().length <= 0 && errors.slug.trim().length <= 0"
+                                                    class="text-green-500 font-bold text-lg" :icon="['fas', 'check']" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <InputError class="mt-2" :message="errors.slug" />
                                 </div>
                                 <div class="mb-4 relative">
-                                    <InputLabel for="parentId">Parent Id </InputLabel>
+                                    <InputLabel for="parentId">Parent Id : {{ form.parentId }} </InputLabel>
                                     <InputTreeSelect id="parentId" :options=treeData v-model="form.parentId"
                                         class="mt-1 block w-full" required />
-                                    <InputError class="mt-2" :message="form.errors.slug" />
+                                    <InputError class="mt-2" :message="errors.parentId" />
                                 </div>
                                 <div class="mb-4">
                                     <InputLabel for="desc" value="Description" />
                                     <InputDesc id="desc" v-model="form.desc" class="mt-1 block w-full" />
-                                    <InputError class="mt-2" :message="form.errors.desc" />
+                                    <InputError class="mt-2" :message="errors.desc" />
                                 </div>
                                 <div class="mb-4">
                                     <InputLabel for="InputSelectedIcon" value="Icon" />
                                     <InputSelectedIcon id="InputSelectedIcon"
                                         class="mt-1 block w-full border border-solid border-black h-10"
                                         v-model="form.icon" />
-                                    <InputError class="mt-2" :message="form.errors.icon" />
+                                    <InputError class="mt-2" :message="errors.icon" />
                                 </div>
                                 <div class="mb-4">
                                     <InputLabel for="InputUrlImage" value="Image" />
-                                    <InputUrlImage id="InputUrlImage"
-                                        class="mt-1 block w-full border border-solid border-black h-10"
-                                        v-model="form.image" />
-                                    <InputError class="mt-2" :message="form.errors.icon" />
+                                    <InputUrlImage id="InputUrlImage" class="mt-1 block   " v-model="form.image" />
+                                    <InputError class="mt-2" :message="errors.image" />
                                 </div>
                                 <div class="mb-4">
                                     <div
@@ -107,6 +136,25 @@
                                             bật
                                         </label>
                                     </div>
+
+                                </div>
+                                <div
+                                    class="flex items-center px-4 border border-gray-200 rounded dark:border-gray-700 mb-4">
+                                    <SeoMetaForm v-model="form.seo_meta" />
+
+                                </div>
+                                <div class="flex items-center justify-end gap-4  mt-3 ">
+
+                                    <button
+                                        class="flex-items-center justify-center bg-white/80 hover:bg-white rounded-md px-5 py-2 min-w-24 text-black/80 text-lg font-bold mt-5 border border-black/80 border-solid">
+                                        <icon :icon="['fasr', 'share-from-square']" /> Save & Exit
+
+                                    </button>
+                                    <button @click="submit"
+                                        class="flex-items-center justify-center bg-purple-500 hover:bg-purple-500/80 rounded-md px-5 py-2 min-w-24 text-white text-lg font-bold mt-5">
+                                        <icon :icon="['fas', 'floppy-disk']" /> Save
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
@@ -127,6 +175,7 @@ import { BaseTree, Draggable, pro, OpenIcon } from '@he-tree/vue'
 import '@he-tree/vue/style/default.css'
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
+import InputText from '@/Components/Input/InputText.vue';
 import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Checkbox from '@/Components/Checkbox.vue';
@@ -135,6 +184,11 @@ import InputDesc from '@/Components/Input/InputDesc.vue'
 import InputUrlImage from '@/Components/Input/InputUrlImage.vue'
 import InputTreeSelect from '@/Components/Input/InputTreeSelect.vue'
 import Loading from '@/Components/Loading.vue'
+import SeoMetaForm from '@/Components/SeoMetaForm.vue'
+import axios from 'axios';
+import { convertToSlug } from '@/utils';
+
+
 const props = defineProps({
     data: Object
 })
@@ -166,7 +220,9 @@ const onTreeChange = (newData) => {
 };
 
 const form = ref({
-    parentId: { null: true },
+    type: 'create',
+    id: null,
+    parentId: null,
     name: '',
     slug: '',
     icon: [],
@@ -174,7 +230,27 @@ const form = ref({
     desc: '',
     is_show: true,
     is_highlight: false,
-    errors: {
+    seo_meta: {
+        meta_title: "",
+        meta_desc: "",
+        meta_image: "",
+    }
+});
+
+const errors = ref({
+    name: '',
+    slug: '',
+    image: '',
+    icon: '',
+    parentId: '',
+    desc: '',
+    is_show: '',
+    is_highlight: '',
+})
+
+
+const clearError = () => {
+    errors.value = {
         name: '',
         slug: '',
         image: '',
@@ -183,14 +259,17 @@ const form = ref({
         desc: '',
         is_show: '',
         is_highlight: '',
+
     }
-})
-const formCreate = () => {
+}
+const showFormCreate = () => {
     isLoading.value = true
     id_active.value = null
     setTimeout(() => {
         form.value = {
-            parentId: {},
+            type: 'create',
+            id: null,
+            parentId: null,
             name: '',
             slug: '',
             icon: [],
@@ -198,15 +277,10 @@ const formCreate = () => {
             desc: '',
             is_show: true,
             is_highlight: false,
-            errors: {
-                name: '',
-                slug: '',
-                image: '',
-                icon: '',
-                parentId: '',
-                desc: '',
-                is_show: '',
-                is_highlight: '',
+            seo_meta: {
+                meta_title: "",
+                meta_desc: "",
+                meta_image: "",
             }
         }
         isLoading.value = false
@@ -214,16 +288,112 @@ const formCreate = () => {
     }, 100);
 
 }
+const showFormEdit = (id) => {
+    isLoading.value = true
+    id_active.value = id
+    clearError();
+
+    axios.get('/vnwa/blog/categories/get-detail-category/' + id)
+        .then(response => {
+            form.value = {
+                type: 'update',
+                id: response.data.id,
+                parentId: response.data.parent_id,
+                name: response.data.name,
+                slug: response.data.slug,
+                icon: response.data.icon,
+                image: response.data.image,
+                desc: response.data.desc,
+                is_show: response.data.is_show === 1 ? true : false,
+                is_highlight: response.data.is_highlight === 1 ? true : false,
+                seo_meta: {
+                    meta_title: response.data.meta_title,
+                    meta_desc: response.data.meta_desc,
+                    meta_image: response.data.meta_image,
+                }
+            }
+
+            isLoading.value = false
+
+        })
+        .catch(error => {
+            isLoading.value = false
+            console.log(error)
+        });
+
+};
+const isSlugLoading = ref(false);
+const checkSlug = (value) => {
+    clearError();
+    isSlugLoading.value = true;
+    const type = form.value.type;
+    const id = form.value.id;
+
+    // Gửi request kiểm tra slug
+    axios.post('/vnwa/check-slug', {
+        type: type,
+        model: 'App\\Models\\CategoryBlog',
+        id: id,
+        value: value
+    })
+        .then(response => {
+            // Xử lý kết quả trả về từ server
+            if (response.data.type === 'error') {
+                // Xử lý khi slug đã tồn tại
+                errors.value.slug = response.data.message;
+
+                // Hiển thị thông báo hoặc xử lý người dùng
+            } else {
+                // Nếu slug hợp lệ, có thể thực hiện các bước tiếp theo
+                // Ví dụ: cập nhật meta_title
+
+            }
+        })
+        .catch(error => {
+            errors.value.slug = error.response.data.message;
+        });
+    isSlugLoading.value = false;
+
+}
+
+const nameChange = (value) => {
+    form.value.slug = convertToSlug(value);
+    checkSlug(form.value.slug);
+}
 
 
-// const submit = () => {
-//     form.transform(data => ({
-//         ...data,
-//         remember: form.remember ? 'on' : '',
-//     })).post(route('login'), {
-//         onFinish: () => form.reset('password'),
-//     });
-// };
+
+
+
+
+const submit = () => {
+    clearError();
+    const url = ref('');
+    if (form.value.type === 'create') {
+        url.value = '/vnwa/blog/categories/create';
+    } else if (form.value.type === 'edit') {
+        url.value = '/vnwa/blog/categories/update/' + form.value.id;
+    }
+    axios.post(url.value, form.value).then(response => {
+        console.log(response.data);
+    })
+        .catch(error => {
+            const errorKeys = Object.keys(error.response.data.errors);
+            errorKeys.forEach(key => {
+                if (key in errors.value) {
+                    errors.value[key] = error.response.data.errors[key][0]; // Lấy giá trị lỗi đầu tiên (nếu có)
+                }
+            });
+            toast.error(error.response.data.message, {
+                autoClose: 1500,
+            });
+
+        });
+
+
+
+
+};
 
 </script>
 

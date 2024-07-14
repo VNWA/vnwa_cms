@@ -16,7 +16,7 @@ class CategoryBlogFactory extends Factory
             'ord' => 0, // Sẽ cập nhật sau
             'is_show' => $this->faker->boolean,
             'is_highlight' => $this->faker->boolean,
-            'icon' => json_encode([$this->faker->word, $this->faker->word]),
+            'icon' => json_encode([]),
             'image' => $this->faker->imageUrl,
             'name' => $this->faker->words(3, true),
             'slug' => $this->faker->slug,

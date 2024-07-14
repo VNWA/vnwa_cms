@@ -381,7 +381,7 @@ const handleFileChange = async (event) => {
         }
 
         try {
-            const response = await axios.post("/media/upload-files", formData, {
+            const response = await axios.post("/vnwa/media/upload-files", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -404,7 +404,7 @@ const handleFileChange = async (event) => {
 const createDirectory = async () => {
     isLoading.value = true;
     try {
-        const response = await axios.post("/media/create-directory", {
+        const response = await axios.post("/vnwa/media/create-directory", {
             directoryName: newDirectoryName.value,
             basePath: basePath.value, // Đảm bảo basePath đã được định nghĩa và có giá trị hợp lệ
         });
@@ -430,7 +430,7 @@ const submitDeleteFiles = async () => {
         });
 
         try {
-            const response = await axios.post("/media/delete", {
+            const response = await axios.post("/vnwa/media/delete", {
                 data: dataDelete,
                 path: basePath.value,
             });
@@ -512,7 +512,7 @@ const showModalReaname = (item) => {
 
 const submitChangeName = async () => {
     try {
-        const response = await axios.post("/media/rename", reanameData.value);
+        const response = await axios.post("/vnwa/media/rename", reanameData.value);
         isModalReaname.value = false;
         reanameData.value = {};
         loadData();

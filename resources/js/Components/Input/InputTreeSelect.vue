@@ -4,24 +4,35 @@
   </template>
 
   <script setup>
-  import { watch, computed } from 'vue';
-  import { defineProps, defineEmits, ref } from 'vue';
+  import { watch, computed, ref } from 'vue';
+  import { defineProps, defineEmits } from 'vue';
   import TreeSelect from 'primevue/treeselect';
 
   const props = defineProps({
-    modelValue: Object, // Đảm bảo rằng đây là Object nếu bạn muốn giữ một giá trị đơn lẻ cho TreeSelect
+    modelValue: [Number, null], // Đảm bảo rằng đây là Number hoặc null
     options: Array, // Đảm bảo options là một mảng các đối tượng
   });
 
-  const value = ref(props.modelValue);
   const emit = defineEmits();
+
+  // Khởi tạo value như một đối tượng dựa trên modelValue nếu modelValue không phải là null
+  const value = ref(props.modelValue !== null ? { [props.modelValue]: true } : null);
+
+  // Theo dõi sự thay đổi của modelValue và cập nhật value
+  watch(() => props.modelValue, (newValue) => {
+    if (newValue !== null) {
+      value.value = { [newValue]: true };
+    } else {
+      value.value = null;
+    }
+  });
 
   // Tính toán transformedOptions từ props.options
   const transformedOptions = computed(() => {
     let options = [];
 
     // Thêm lựa chọn null nếu cần thiết
-      options.push({ label: 'None', value: null, key: 'null' });
+    options.push({ label: 'None', value: null, key: 'null' });
 
     if (props.options && props.options.length > 0) {
       options = options.concat(props.options.map(node => ({
@@ -47,7 +58,12 @@
 
   // Watcher để theo dõi thay đổi của value và emit event
   watch(value, (newValue) => {
-    emit('update:modelValue', newValue);
+    if (newValue !== null) {
+      const selectedKey = Object.keys(newValue)[0];
+      emit('update:modelValue', parseInt(selectedKey, 10));
+    } else {
+      emit('update:modelValue', null);
+    }
   });
   </script>
 

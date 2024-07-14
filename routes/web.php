@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\CategoryBlogController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\ListSlugController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,8 @@ Route::prefix('vnwa')
     ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
     ->group(function () {
 
+        Route::post('check-slug', [ListSlugController::class, 'checkSlug']);
+
         Route::get('/', function () {
             return Inertia::render('Dashboard');
         })->name('dashboard');
@@ -51,6 +54,8 @@ Route::prefix('vnwa')
                 Route::prefix('categories')->group(function(){
                     Route::get('/', [CategoryBlogController::class, 'index'])->name('Blog.Categories');
                     Route::post('/update-tree', [CategoryBlogController::class, 'updateTree']);
+                    Route::get('/get-detail-category/{id}', [CategoryBlogController::class, 'getDetailCategory']);
+                    Route::post('/create', [CategoryBlogController::class, 'create']);
 
                 });
             });
