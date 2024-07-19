@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('list_slugs', function (Blueprint $table) {
+
+        Schema::create('tag_blogs', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('slug')->unique();
-            $table->string('model_type'); // Loại model (ví dụ: CategoryBlog, Post)
-            $table->unsignedBigInteger('model_id'); // ID của model tương ứng
             $table->timestamps();
-            $table->index(['slug', 'model_type']);
+            $table->index('slug');
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('list_slugs');
+        Schema::dropIfExists('tag_blogs');
     }
 };

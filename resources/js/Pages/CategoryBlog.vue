@@ -1,12 +1,59 @@
 <template>
     <div>
-        <AppLayout title="Categories Blog">
+        <AppLayout title="Categories Blog" :isLoading="isPageLoading">
+
             <template #header>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Categories Blog
-                </h2>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Categories Blog
+                        </h2>
+                    </div>
+                    <div>
+                        <HeaderBreadcrumbs :breadcrumbs="[['Categories', 'Blog.Categories']]" />
+                    </div>
+                </div>
+
             </template>
 
+            <DialogModal :show="isModalDeleteForm" @close="closeModal">
+                <template #title>
+                    <div>
+                    </div>
+                    <div class=" text-red-500   text-center">
+                        <div>
+                            <icon :icon="['fas', 'triangle-exclamation']" class="text-4xl" />
+
+                        </div>
+                        <div>
+                            Delete Category
+                        </div>
+                    </div>
+                </template>
+
+                <template #content>
+                    <div class="text-center" v-if="deleteDetailItem.name">
+                        <span class="text-base font-bold text-black/80 ">Are you sure you want to delete category :
+                            {{ deleteDetailItem.name }} ?
+                        </span>
+                    </div>
+                    <div class="text-center ">
+                        <span>
+                            Deleting this category will also delete subcategories that depend on it
+                        </span>
+
+                    </div>
+                </template>
+
+                <template #footer>
+                    <SecondaryButton @click="closeModal">
+                        Cancel
+                    </SecondaryButton>
+
+                    <DangerButton v-if="deleteDetailItem.id" class="ms-3" @click="deleteItem(deleteDetailItem.id)">
+                        Delete
+                    </DangerButton>
+                </template>
+            </DialogModal>
             <div class="p-5">
                 <div class="grid grid-cols-12 gap-4">
                     <div class="col-span-4">
@@ -23,10 +70,11 @@
                                 @update:modelValue="onTreeChange">
                                 <template #default="{ node, stat }">
                                     <div class=" mx-3 flex cursor-pointer items-center gap-4 "
-                                        :class="{ 'font-bold': id_active === node.id }" @click="showFormEdit(node.id)">
-                                        {{
-                                            node.name }} ({{ node.children.length }})
-                                        <button v-if="id_active === node.id"
+                                        :class="{ 'font-bold': id_active === node.id }">
+
+                                        <div @click="showFormEdit(node.id)"> {{ node.name }} ({{ node.children.length
+                                            }})</div>
+                                        <button v-if="id_active === node.id" @click="showFormDelete(node.id)"
                                             class="bg-red-500 hover:bg-red-600 px-2 py-1 text-white rounded-md">
                                             <icon :icon="['fas', 'trash']" />
                                         </button>
@@ -40,7 +88,6 @@
                     <div class="col-span-8 ">
                         <div class=" bg-white relative">
                             <Loading v-if="isLoading" />
-                            {{ form }}
                             <div class="p-4">
                                 <div class="mb-4">
                                     <InputLabel for="name">Name <span class="text-red-500">*</span></InputLabel>
@@ -56,7 +103,7 @@
                                             <TextInput id="slug" v-model="form.slug" type="text"
                                                 class="mt-1 block w-full pe-14"
                                                 :class="{ 'border-red-500 focus:ring-red-500': errors.slug.trim().length > 0 }"
-                                                required @change="" />
+                                                required @change="checkSlug($event.target.value)" />
                                             <div class="absolute top-2 right-5">
                                                 <div role="status" v-if="isSlugLoading">
                                                     <svg aria-hidden="true"
@@ -145,11 +192,7 @@
                                 </div>
                                 <div class="flex items-center justify-end gap-4  mt-3 ">
 
-                                    <button
-                                        class="flex-items-center justify-center bg-white/80 hover:bg-white rounded-md px-5 py-2 min-w-24 text-black/80 text-lg font-bold mt-5 border border-black/80 border-solid">
-                                        <icon :icon="['fasr', 'share-from-square']" /> Save & Exit
 
-                                    </button>
                                     <button @click="submit"
                                         class="flex-items-center justify-center bg-purple-500 hover:bg-purple-500/80 rounded-md px-5 py-2 min-w-24 text-white text-lg font-bold mt-5">
                                         <icon :icon="['fas', 'floppy-disk']" /> Save
@@ -177,7 +220,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputText from '@/Components/Input/InputText.vue';
 import InputError from '@/Components/InputError.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
+import SecondaryButton from '@/Components/PrimaryButton.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import InputSelectedIcon from '@/Components/Input/InputSelectedIcon.vue';
 import InputDesc from '@/Components/Input/InputDesc.vue'
@@ -185,9 +229,9 @@ import InputUrlImage from '@/Components/Input/InputUrlImage.vue'
 import InputTreeSelect from '@/Components/Input/InputTreeSelect.vue'
 import Loading from '@/Components/Loading.vue'
 import SeoMetaForm from '@/Components/SeoMetaForm.vue'
-import axios from 'axios';
+import DialogModal from '@/Components/DialogModal.vue';
 import { convertToSlug } from '@/utils';
-
+import HeaderBreadcrumbs from '@/Components/HeaderBreadcrumbs.vue'
 
 const props = defineProps({
     data: Object
@@ -195,30 +239,9 @@ const props = defineProps({
 const treeData = ref(props.data);
 const isLoading = ref(false)
 const id_active = ref(null);
-
-const changeIdActive = (id) => {
-    id_active.value = id;
-    console.log(id)
-};
-
-const onTreeChange = (newData) => {
-    // Cập nhật dữ liệu cây
-    treeData.value = newData;
-
-    // Gọi API để cập nhật dữ liệu vào cơ sở dữ liệu
-    axios.post('/vnwa/blog/categories/update-tree', { treeData: newData })
-        .then(response => {
-            toast.success(response.data.message, {
-                autoClose: 1500,
-            });
-        })
-        .catch(error => {
-            toast.error(error.message, {
-                autoClose: 1500,
-            });
-        });
-};
-
+const isModalDeleteForm = ref(false)
+const deleteDetailItem = ref({});
+const isPageLoading = ref(false)
 const form = ref({
     type: 'create',
     id: null,
@@ -247,8 +270,6 @@ const errors = ref({
     is_show: '',
     is_highlight: '',
 })
-
-
 const clearError = () => {
     errors.value = {
         name: '',
@@ -262,7 +283,47 @@ const clearError = () => {
 
     }
 }
+const closeModal = () => {
+    isModalDeleteForm.value = false
+    deleteDetailItem.value = {};
+};
+const loadNewTreeCategories = () => {
+    isPageLoading.value = true;
+    axios.get('/vnwa/blog/categories/load-new-tree-data')
+        .then(response => {
+            treeData.value = response.data
+            isPageLoading.value = false;
+            console.log(response.data)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
+
+
+const onTreeChange = (newData) => {
+    // Cập nhật dữ liệu cây
+    treeData.value = newData;
+
+    // Gọi API để cập nhật dữ liệu vào cơ sở dữ liệu
+    axios.post('/vnwa/blog/categories/update-tree', { treeData: newData })
+        .then(response => {
+            toast.success(response.data.message, {
+                autoClose: 1500,
+            });
+        })
+        .catch(error => {
+            toast.error(error.message, {
+                autoClose: 1500,
+            });
+        });
+};
+
+
+
 const showFormCreate = () => {
+    clearError();
     isLoading.value = true
     id_active.value = null
     setTimeout(() => {
@@ -289,6 +350,7 @@ const showFormCreate = () => {
 
 }
 const showFormEdit = (id) => {
+
     isLoading.value = true
     id_active.value = id
     clearError();
@@ -299,27 +361,28 @@ const showFormEdit = (id) => {
                 type: 'update',
                 id: response.data.id,
                 parentId: response.data.parent_id,
-                name: response.data.name,
-                slug: response.data.slug,
+                name: response.data.name || '',
+                slug: response.data.slug || '',
                 icon: response.data.icon,
-                image: response.data.image,
-                desc: response.data.desc,
+                image: response.data.image || '',
+                desc: response.data.desc || '',
                 is_show: response.data.is_show === 1 ? true : false,
                 is_highlight: response.data.is_highlight === 1 ? true : false,
                 seo_meta: {
-                    meta_title: response.data.meta_title,
-                    meta_desc: response.data.meta_desc,
-                    meta_image: response.data.meta_image,
+                    meta_title: response.data.meta_title || '',
+                    meta_desc: response.data.meta_desc || '',
+                    meta_image: response.data.meta_image || '',
                 }
             }
 
-            isLoading.value = false
+            isLoading.value = false;
 
         })
         .catch(error => {
-            isLoading.value = false
-            console.log(error)
+            isLoading.value = false;
+            console.error('Error fetching category:', error);
         });
+
 
 };
 const isSlugLoading = ref(false);
@@ -330,9 +393,7 @@ const checkSlug = (value) => {
     const id = form.value.id;
 
     // Gửi request kiểm tra slug
-    axios.post('/vnwa/check-slug', {
-        type: type,
-        model: 'App\\Models\\CategoryBlog',
+    axios.post('/vnwa/blog/categories/check-slug', {
         id: id,
         value: value
     })
@@ -361,21 +422,25 @@ const nameChange = (value) => {
     checkSlug(form.value.slug);
 }
 
-
-
-
-
-
 const submit = () => {
+    isLoading.value = true;
     clearError();
     const url = ref('');
     if (form.value.type === 'create') {
         url.value = '/vnwa/blog/categories/create';
-    } else if (form.value.type === 'edit') {
+    } else if (form.value.type === 'update') {
         url.value = '/vnwa/blog/categories/update/' + form.value.id;
     }
     axios.post(url.value, form.value).then(response => {
-        console.log(response.data);
+        toast.success(response.data.message, {
+            autoClose: 1500,
+        });
+        loadNewTreeCategories();
+        setTimeout(() => {
+            showFormEdit(response.data.id);
+
+        }, 1000);
+
     })
         .catch(error => {
             const errorKeys = Object.keys(error.response.data.errors);
@@ -384,16 +449,44 @@ const submit = () => {
                     errors.value[key] = error.response.data.errors[key][0]; // Lấy giá trị lỗi đầu tiên (nếu có)
                 }
             });
-            toast.error(error.response.data.message, {
+            toast.error(error.message, {
                 autoClose: 1500,
             });
 
         });
+    isLoading.value = false;
 
 
 
 
 };
+const showFormDelete = (id) => {
+    isModalDeleteForm.value = true;
+
+    deleteDetailItem.value = form.value;
+}
+const deleteItem = (id) => {
+    isPageLoading.value = true;
+
+    axios.post('/vnwa/blog/categories/delete/' + id).then(response => {
+        toast.success(response.data.message, {
+            autoClose: 1500,
+        });
+        isModalDeleteForm.value = false
+        showFormCreate();
+        loadNewTreeCategories();
+
+    }).catch(error => {
+        toast.error(error.response.data.message, {
+            autoClose: 1500,
+        });
+    })
+    isPageLoading.value = false;
+
+}
+
+
+
 
 </script>
 

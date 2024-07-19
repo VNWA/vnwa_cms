@@ -11,6 +11,7 @@ window.toast = toast;
 import axios from 'axios';
 window.axios = axios;
 import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -23,7 +24,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
-
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 
 const pinia = createPinia();
@@ -45,6 +46,7 @@ createInertiaApp({
                 }
             })
             .component('transition', Transition)
+            .use(CKEditor)
             .component('DataTable', Vue3EasyDataTable)
             .use(ZiggyVue)
             .use(pinia)

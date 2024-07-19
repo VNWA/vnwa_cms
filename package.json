@@ -20,6 +20,8 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^42.0.1",
+        "@ckeditor/ckeditor5-vue": "^5.1.0",
         "@fortawesome/fontawesome-svg-core": "^6.5.2",
         "@fortawesome/free-brands-svg-icons": "^6.5.2",
         "@fortawesome/free-regular-svg-icons": "^6.5.2",
@@ -27,6 +29,7 @@
         "@fortawesome/vue-fontawesome": "^3.0.8",
         "@he-tree/vue": "^2.8.2",
         "@primevue/themes": "^4.0.0",
+        "ckeditor5": "^42.0.1",
         "ckeditor5-custom-build": "file:ckeditor-vnwa",
         "compressorjs": "^1.2.1",
         "cropperjs": "^1.6.2",

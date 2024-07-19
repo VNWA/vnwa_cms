@@ -22,7 +22,6 @@ class CategoryBlogController extends Controller
                 $category->children = $this->getChildCategories($category->id);
                 return $category;
             });
-
         return $categories;
     }
 
@@ -47,6 +46,11 @@ class CategoryBlogController extends Controller
         $data = $this->loadDataTable();
 
         return Inertia::render('CategoryBlog', ['data' => $data]);
+    }
+    function loadNewDataTree()
+    {
+        $data = $this->loadDataTable();
+        return response()->json($data, 200);
     }
     protected function updateTreeRecursive($parentId, $nodes)
     {
@@ -84,58 +88,127 @@ class CategoryBlogController extends Controller
     function getDetailCategory($id)
     {
         try {
-            $data = CategoryBlog::where('id', $id)->first();
+            $data = CategoryBlog::findOrFail($id);
             return response()->json($data, 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    public function checkSlug(Request $request)
+    {
+        $slug = $request->input('value');
+        $id = $request->input('id');
 
+        if (!$id) {
+            $category = CategoryBlog::where('slug', $slug)->exists();
+
+            if ($category) {
+                return response()->json(['type' => 'error', 'message' => 'Slug already exists.'], 500);
+            }
+        } else {
+
+            $category = CategoryBlog::where('id', '!=', $id)->where('slug', $slug)->exists();
+            if ($category) {
+                return response()->json(['type' => 'error', 'message' => 'Slug already exists.'], 500);
+            }
+        }
+        return response()->json(['type' => 'success', 'message' => 'Slug is available.'], 200);
+
+
+    }
     public function create(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:category_blogs,slug',
         ]);
 
+        $data = [];
+        $data['parent_id'] = $request->parentId;
+        $data['name'] = $request->name;
+        $data['slug'] = $request->slug;
+        $data['desc'] = $request->desc;
+        $data['icon'] = $request->icon;
+        $data['image'] = $request->image;
+        $data['is_highlight'] = $request->is_highlight === true ? 1 : 0;
+        $data['is_show'] = $request->is_show === true ? 1 : 0;
+        $data['meta_title'] = $request->seo->meta_title ?? null;
+        $data['meta_desc'] = $request->seo->meta_desc ?? null;
+        $data['meta_image'] = $request->seo->meta_image ?? null;
+        try {
+            $category = CategoryBlog::create($data);
+            return response()->json(['message' => 'Uploads Category Blog Success', 'id' => $category->id], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 507);
 
+        }
 
-
-        // $categoryBlog = CategoryBlog::create($validatedData);
-
-        // return response()->json($categoryBlog, 201);
     }
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'parent_id' => 'nullable|exists:category_blogs,id',
+        $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:category_blogs,slug,' . $id,
-            'is_show' => 'nullable|boolean',
-            'is_highlight' => 'nullable|boolean',
-            'icon' => 'nullable|json',
-            'image' => 'nullable|string|max:255',
-            'desc' => 'nullable|string',
-            'meta_image' => 'nullable|string|max:255',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_desc' => 'nullable|string',
+            'slug' => 'required|string|max:255|unique:category_blogs,slug',
         ]);
 
-        $categoryBlog = CategoryBlog::findOrFail($id);
+        $data = [
+            'parent_id' => $request->parentId,
+            'slug' => $request->slug,
+            'name' => $request->name,
+            'desc' => $request->desc,
+            'icon' => $request->icon,
+            'image' => $request->image,
+            'is_highlight' => $request->is_highlight === true ? 1 : 0,
+            'is_show' => $request->is_show === true ? 1 : 0,
+            'meta_title' => $request->seo['meta_title'] ?? null,
+            'meta_desc' => $request->seo['meta_desc'] ?? null,
+            'meta_image' => $request->seo['meta_image'] ?? null,
+        ];
 
-        // Cập nhật giá trị `ord` nếu cần thiết
-        if ($request->has('parent_id')) {
-            $newParentId = $request->input('parent_id');
-            if ($categoryBlog->parent_id != $newParentId) {
-                // Thiết lập lại giá trị `ord`
-                $maxOrd = CategoryBlog::where('parent_id', $newParentId)->max('ord');
-                $validatedData['ord'] = $maxOrd + 1;
+        try {
+            $categoryBlog = CategoryBlog::findOrFail($id);
+
+            if ($request->has('parent_id') && $categoryBlog->parent_id != $request->input('parent_id')) {
+                // Thiết lập lại giá trị `ord` khi thay đổi `parent_id`
+                $maxOrd = CategoryBlog::where('parent_id', $request->input('parent_id'))->max('ord');
+                $data['ord'] = $maxOrd + 1;
             }
+
+            $categoryBlog->update($data);
+
+            return response()->json(['message' => 'Update Category Blog Success', 'id' => $id], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
 
-        $categoryBlog->update($validatedData);
+    function delete($id)
+    {
+        try {
+            // Tìm category blog cần xóa
+            $categoryBlog = CategoryBlog::findOrFail($id);
 
-        return response()->json($categoryBlog, 200);
+            // Xóa category blog
+            DB::transaction(function () use ($categoryBlog) {
+                // Xóa bất kỳ liên kết nào (nếu có) trước khi xóa category blog
+                // Ví dụ: nếu có các liên kết với các bài viết, bạn có thể xóa chúng ở đây
+                // $categoryBlog->posts()->delete();
+
+                // Tiến hành xóa category blog
+                $categoryBlog->delete();
+            });
+
+            return response()->json([
+                'message' => 'Successfully deleted blog category.'
+            ]);
+        } catch (\Exception $e) {
+            // Xử lý lỗi nếu có
+            return response()->json([
+                'message' => 'An error occurred while deleting blog category.'
+            ], 500);
+
+
+        }
     }
 
 }

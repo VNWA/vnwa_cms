@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ListSlug extends Model
+class TagBlog extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'slug',
-        'model_type',
-        'model_id',
+        'name',
+        'slug'
     ];
 
-    // Relationship với các model khác
-    public function model()
+    public function blogs()
     {
-        return $this->morphTo();
+        return $this->belongsToMany(Blog::class, 'blog_with_tags', 'tag_id', 'blog_id');
     }
 }

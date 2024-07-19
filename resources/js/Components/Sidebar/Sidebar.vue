@@ -1,13 +1,13 @@
 <!-- resources/js/Components/Sidebar.vue -->
 <template>
-    <aside id="sidebar" :class="{ 'active': adminStore.isSidebarShow }"
+    <aside id="sidebar" :class="{ 'active': adminStore.isSidebarShow || isMobile() }"
         class="w-full p-1 bg-gray-900 text-gray-100 min-h-screen h-auto sticky ease-in duration-300">
         <div class="sidebar-header">
             <div class="logo">
                 <img src="/images/vnwaLogoFull.png" class="show" alt="Vinawebapp Logo">
                 <img src="/images/vnwaLogoIcon.png" class="hide" alt="Vinawebapp Logo">
             </div>
-            <div class="btn" @click="adminStore.toggleSidebar">
+            <div class="btn" @click="adminStore.toggleSidebar" v-if="!isMobile()">
                 <span class="relative inline-block overflow-hidden rounded-full p-[1px]">
                     <span
                         class="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
@@ -45,6 +45,12 @@
                                         :active="check('/blog/categories')">
                                         Categories
                                     </SideBarMenuItemLink>
+                                    <SideBarMenuItemLink :href="route('Blog.Tag')" :active="check('/blog/tags')">
+                                        Tags
+                                    </SideBarMenuItemLink>
+                                    <SideBarMenuItemLink :href="route('Blog.Post')" :active="check('/blog/posts')">
+                                        Post
+                                    </SideBarMenuItemLink>
                                 </li>
 
                             </ul>
@@ -62,7 +68,14 @@ import SideBarLink from './SideBarLink.vue';
 import SideBarMenuItemLink from './SideBarMenuItemLink.vue';
 import { usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
-
+const isMobile = () => {
+    if (window.innerWidth <= 500) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 const adminStore = useAdminStore();
 const check = (path) => {
     const { url } = usePage();

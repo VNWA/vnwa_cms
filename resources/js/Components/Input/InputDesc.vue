@@ -2,7 +2,10 @@
 import { onMounted, ref } from 'vue';
 
 const props = defineProps({
-    modelValue: String,
+    modelValue: {
+        type: String,
+        default: ''
+    },
     class: String,
     id: String,
     maxLength: {
@@ -26,7 +29,7 @@ defineExpose({ focus: () => input.value.focus() });
 
 <template>
     <div class="relative">
-        <div :class="{ 'text-red-500': modelValue.length >= props.maxLength }"
+        <div :class="{ 'text-red-500':   modelValue.length >= props.maxLength }"
             class="absolute right-0 -top-1 bg-white px-1 text-xs ">
             {{ modelValue.length }} / {{ props.maxLength }}
         </div>
