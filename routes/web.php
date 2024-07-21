@@ -19,6 +19,9 @@ use App\Http\Controllers\MediaController;
 |
 */
 
+Route::get("/", function () {
+    return view("wellcome");
+});
 Route::get('vnwa/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -81,6 +84,7 @@ Route::prefix('vnwa')
                         return Inertia::render('Post/Show');
                     })->name('Blog.Post');
                     Route::get('/load-data-table', [BlogController::class, 'loadDataTable']);
+                    Route::get('/load-data-categories-and-tags', [BlogController::class, 'loadDataCategoriesAndTags']);
                     Route::get('/create', function () {
                         return Inertia::render('Post/Create');
                     })->name('Blog.Post.Create');

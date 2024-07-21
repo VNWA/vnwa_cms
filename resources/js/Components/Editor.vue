@@ -15,17 +15,17 @@
             <button @click="isModal = true" class="flex gap-4 items-center px-4 py-2 border border-black hover:bg-purple-500/90 hover:text-white uppercase font-bold">
                 <icon :icon="['fas', 'image']" /> Insert Image
             </button>
-            <button @click="insertUiBlock" class="flex gap-4 items-center px-4 py-2 border border-black hover:bg-purple-500/90 hover:text-white uppercase font-bold">
+            <!-- <button @click="insertUiBlock" class="flex gap-4 items-center px-4 py-2 border border-black hover:bg-purple-500/90 hover:text-white uppercase font-bold">
                 <icon :icon="['fas', 'image']" /> UI Block
-            </button>
+            </button> -->
         </div>
-        <CKEditor v-model="editer_data" :config="editorConfig" :editor="editor" @ready="onReady"></CKEditor>
+        <ckeditor v-model="editer_data" :config="editorConfig" :editor="editor" @ready="onReady"></ckeditor>
     </div>
 </template>
 
 <script>
 import { ref, watchEffect } from 'vue';
-import Editor from 'ckeditor5-custom-build/build/ckeditor';
+import Editor from 'ckeditor5-custom-build';
 import MediaPopup from './MediaPopup.vue';
 
 export default {
@@ -201,7 +201,7 @@ export default {
 
 <style>
 .ck-editor__editable {
-    min-height: 700px;
+    min-height: 400px;
     max-height: 700px;
     overflow-y: scroll;
 }
@@ -937,4 +937,11 @@ export default {
         display: none;
     }
 }
+.ck-widget.raw-html-embed .raw-html-embed__content-wrapper, .ck-widget.raw-html-embed .raw-html-embed__preview-content{
+    background-color: #8217a5  !important;
+    color: white;
+    font-weight: bold;
+}
+
+
 </style>

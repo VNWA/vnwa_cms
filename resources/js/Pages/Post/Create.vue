@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AppLayout title="Post Create" :isLoading="isPageLoading">
+        <AppLayout title=" Create New Post" :isLoading="isPageLoading">
             <template #header>
                 <div class="flex items-center justify-between">
                     <div>
@@ -66,11 +66,87 @@
                             <Editor id="content" v-model="form.content" class="mt-1 block w-full" />
                         </div>
                     </div>
+                    <div class="bg-white shadow rounded-sm mb-3 p-2">
+
+                        <div>
+                            <SeoMetaForm v-model="form.seo_meta" />
+
+                        </div>
+                    </div>
                 </div>
                 <div class="lg:col-span-4 col-span-12">
                     <div class="flex flex-col">
+                        <div class="bg-white shadow rounded-sm mb-3 p-2 sticky top-0">
+                            <div class="py-2 border-b border-black/10 mb-5">
+                                <h2 class="text-lg font-bold">Publish</h2>
+                            </div>
+                            <div class="flex items-center justify-end gap-4  ">
+                                <button @click="submit"
+                                    class="flex-items-center justify-center bg-white hover:bg-white/80 rounded-md px-5 py-2 min-w-24 text-black/80 border text-lg font-bold">
+                                    <icon :icon="['fas', 'floppy-disk']" /> Save & Exit
+                                </button>
+                                <button @click="submit"
+                                    class="flex-items-center justify-center bg-purple-500 hover:bg-purple-500/80 rounded-md px-5 py-2 min-w-24 text-white text-lg font-bold">
+                                    <icon :icon="['fas', 'floppy-disk']" /> Save
+                                </button>
+
+                            </div>
+                        </div>
                         <div class="bg-white shadow rounded-sm mb-3 p-2">
-                            sdgádg
+                            <div class="py-2 border-b border-black/10 mb-5">
+                                <h2 class="text-md flex items-center gap-2">Status <span
+                                        class="text-red-500 font-bold">*</span>
+                                </h2>
+                            </div>
+                            <div class="flex items-center ps-4">
+                                <Checkbox v-model:checked="form.is_show" id="bordered-checkbox-1" type="checkbox"
+                                    name="bordered-checkbox"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+
+                                <label for="bordered-checkbox-1"
+                                    class="w-full py-2 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer">
+                                    Status: <span v-if="form.is_show"> Published </span>
+                                    <span v-else>
+                                        Draft
+                                    </span>
+
+                                </label>
+                            </div>
+                        </div>
+                        <div class="bg-white shadow rounded-sm mb-3 p-2">
+                            <div class="py-2 border-b border-black/10 mb-5">
+                                <h2 class="text-md flex items-center gap-2">Category</h2>
+                            </div>
+                            <div>
+                                <CheckBoxTree v-model="form.parentIds" :data="categoriesData" />
+                            </div>
+                        </div>
+                        <div class="bg-white shadow rounded-sm mb-3 p-2">
+                            <div class="py-2 border-b border-black/10 mb-5">
+                                <h2 class="text-md flex items-center gap-2">Image</h2>
+                            </div>
+                            <div>
+                                <InputUrlImage v-model="form.image" />
+                            </div>
+                        </div>
+                        <div class="bg-white shadow rounded-sm mb-3 p-2">
+                            <div class="py-2 border-b border-black/10 mb-5">
+                                <h2 class="text-md flex items-center gap-2">Banner image (1920x170px)</h2>
+                            </div>
+                            <div>
+                                <InputUrlImage v-model="form.banner_image" />
+                            </div>
+                        </div>
+                        <div class="bg-white shadow rounded-sm mb-3 p-2">
+                            <div class="py-2 border-b border-black/10 mb-5">
+                                <h2 class="text-md flex items-center gap-2">Tags</h2>
+                            </div>
+                            <div>
+
+                                <MultiSelect v-model="form.tags" display="chip" :options="tagsData" optionLabel="name"
+                                    filter placeholder="Select Tags"  class="w-full py-1" />
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -99,13 +175,25 @@ import InputUrlImage from '@/Components/Input/InputUrlImage.vue'
 import InputTreeSelect from '@/Components/Input/InputTreeSelect.vue'
 import SeoMetaForm from '@/Components/SeoMetaForm.vue'
 import Editor from '@/Components/Editor.vue'
+import CheckBoxTree from '@/Components/CheckBoxTree.vue'
+import MultiSelect from 'primevue/multiselect';
+import Select from 'primevue/select';
 import { convertToSlug } from '@/utils';
 const isPageLoading = ref(false);
 const form = ref({
+    parentIds: [],
+    tags: [],
+    image: '',
+    banner_image: '',
     name: '',
     slug: '',
     desc: '',
-    content:'',
+    content: '',
+    seo_meta: {
+        meta_title: "",
+        meta_desc: "",
+        meta_image: "",
+    }
 });
 const errors = ref({
     name: '',
@@ -114,6 +202,22 @@ const errors = ref({
 
 })
 const isSlugLoading = ref(false);
+const categoriesData = ref([]);
+const tagsData = ref([]);
+const loadDataCategoriesAndTags = () => {
+    axios.get('/vnwa/blog/posts/load-data-categories-and-tags').then(response => {
+        categoriesData.value = response.data.categories;
+        tagsData.value = response.data.tags;
+    }).catch(error => {
+        console.error(error)
+    })
+}
+
+onMounted(() => {
+    loadDataCategoriesAndTags();
+})
+
+
 const checkSlug = (value) => {
     clearError();
     isSlugLoading.value = true;
