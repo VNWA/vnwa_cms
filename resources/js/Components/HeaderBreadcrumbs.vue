@@ -23,7 +23,7 @@ const props = defineProps({
 
                 </li>
                 <li v-for="(item, index) in breadcrumbs" :key="index" class="">
-                    <Link :href="route(item[1])" :class="{ 'text-purple-600  capitalize  hover:text-purple-600 font-semibold': index === breadcrumbs.length - 1 }" class="flex cursor-pointer items-center text-sm font-medium text-gray-700  hover:text-black">
+                    <Link :href="item[1]" :class="{ 'text-purple-600  capitalize  hover:text-purple-600 font-semibold': index === breadcrumbs.length - 1 }" class="flex cursor-pointer items-center text-sm font-medium text-gray-700  hover:text-black">
                     <icon :icon="['fas', 'chevron-right']" class="me-2" />
                     {{ item[0] }}
                     </Link>

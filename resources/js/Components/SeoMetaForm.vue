@@ -9,7 +9,11 @@ import { useAdminStore } from '@/store/admin';
 const adminStore = useAdminStore();
 
 const props = defineProps({
-    modelValue: Object,
+    modelValue: {
+        type: Object,
+        default: ''
+    },
+    slug: String
 });
 const emit = defineEmits(['update:modelValue']);
 
@@ -31,7 +35,6 @@ const updateFormHeight = async () => {
 
     if (formContainer.value) {
         formHeight.value = adminStore.isMetaSeoFormShow ? `${formContainer.value.scrollHeight}px` : '0px';
-        console.log('formHeight.value:', formHeight.value);
     }
 };
 
@@ -52,7 +55,6 @@ watchEffect(async () => {
 
 watch(() => adminStore.isMetaSeoFormShow, async () => {
     await updateFormHeight();
-    console.log('adminStore.isMetaSeoFormShow changed:', adminStore.isMetaSeoFormShow);
 });
 </script>
 
@@ -69,8 +71,8 @@ watch(() => adminStore.isMetaSeoFormShow, async () => {
 
         </div>
         <div>
-            <SearchEnige
-                v-if="dataForm.meta_title.trim().length > 0 && dataForm.meta_desc.trim().length > 0 && dataForm.meta_image.trim().length > 0"
+            <SearchEnige :slug="props.slug"
+                v-if="dataForm.meta_title && dataForm.meta_image && dataForm.meta_desc && dataForm.meta_title.trim().length > 0 && dataForm.meta_desc.trim().length > 0 && dataForm.meta_image.trim().length > 0"
                 :metaTitle="dataForm.meta_title" :metaImage="dataForm.meta_image" :metaDesc="dataForm.meta_desc"
                 class="mb-4" />
 

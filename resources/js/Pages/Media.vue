@@ -7,7 +7,7 @@
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Media</h2>
                     </div>
                     <div>
-                        <!-- <HeaderBreadcrumbs :breadcrumbs="[['Media', 'media']]" /> -->
+                        <HeaderBreadcrumbs :breadcrumbs="[['Media', route('Media')]]" />
                     </div>
                 </div>
             </template>

@@ -7,7 +7,7 @@
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Posts</h2>
                     </div>
                     <div>
-                        <HeaderBreadcrumbs :breadcrumbs="[['Post', 'Blog.Post'], [' Create', 'Blog.Post.Create']]" />
+                        <HeaderBreadcrumbs :breadcrumbs="[['Post', route('Blog.Post')], [' Create', route('Blog.Post.Create')]]" />
                     </div>
                 </div>
             </template>
@@ -26,9 +26,16 @@
                             <div>
                                 <div class="relative">
 
-                                    <TextInput id="slug" v-model="form.slug" type="text" class="mt-1 block w-full pe-14"
-                                        :class="{ 'border-red-500 focus:ring-red-500': errors.slug.trim().length > 0 }"
-                                        required @change="checkSlug($event.target.value)" />
+                                    <div class="flex items-center justify-start">
+                                        <div
+                                            class=" block border-r-0 rounded-r-none border h-full py-2 px-2 bg-gray-50 text-nowrap ">
+                                            {{ url_web.origin }} /
+                                        </div>
+                                        <TextInput id="slug" v-model="form.slug" type="text"
+                                            class=" block w-full pe-14 rounded-l-none"
+                                            :class="{ 'border-red-500 focus:ring-red-500': errors.slug.trim().length > 0 }"
+                                            required @change="checkSlug($event.target.value)" />
+                                    </div>
                                     <div class="absolute top-2 right-5">
                                         <div role="status" v-if="isSlugLoading">
                                             <svg aria-hidden="true"
@@ -81,7 +88,7 @@
                                 <h2 class="text-lg font-bold">Publish</h2>
                             </div>
                             <div class="flex items-center justify-end gap-4  ">
-                                <button @click="submit"
+                                <button @click="submit(false)"
                                     class="flex-items-center justify-center bg-white hover:bg-white/80 rounded-md px-5 py-2 min-w-24 text-black/80 border text-lg font-bold">
                                     <icon :icon="['fas', 'floppy-disk']" /> Save & Exit
                                 </button>
@@ -143,15 +150,15 @@
                             </div>
                             <div>
 
-                                <MultiSelect v-model="form.tags" display="chip" :options="tagsData" optionLabel="name"
-                                    filter placeholder="Select Tags"  class="w-full py-1" />
+                                <MultiSelect v-model="form.tags" display="chip" :options="tagsData" optionLabel="name" optionValue="id"
+                                    filter placeholder="Select Tags" class="w-full py-1" />
 
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+            {{ route }}
         </AppLayout>
     </div>
 </template>
@@ -179,10 +186,13 @@ import CheckBoxTree from '@/Components/CheckBoxTree.vue'
 import MultiSelect from 'primevue/multiselect';
 import Select from 'primevue/select';
 import { convertToSlug } from '@/utils';
+const url_web = new URL(window.location.href)
+
 const isPageLoading = ref(false);
 const form = ref({
     parentIds: [],
     tags: [],
+    is_show: true,
     image: '',
     banner_image: '',
     name: '',
@@ -198,14 +208,13 @@ const form = ref({
 const errors = ref({
     name: '',
     slug: '',
-    desc: '',
 
 })
 const isSlugLoading = ref(false);
 const categoriesData = ref([]);
 const tagsData = ref([]);
 const loadDataCategoriesAndTags = () => {
-    axios.get('/vnwa/blog/posts/load-data-categories-and-tags').then(response => {
+    axios.get('/vnwa/blog/posts/load-data-categories-tree-and-tags').then(response => {
         categoriesData.value = response.data.categories;
         tagsData.value = response.data.tags;
     }).catch(error => {
@@ -216,36 +225,44 @@ const loadDataCategoriesAndTags = () => {
 onMounted(() => {
     loadDataCategoriesAndTags();
 })
+const clearError = () => {
+    errors.value = {
+        name: '',
+        slug: '',
+    }
+}
 
-
-const checkSlug = (value) => {
+const checkSlug = (slug) => {
     clearError();
-    isSlugLoading.value = true;
-    const type = form.value.type;
-    const id = form.value.id;
+    if (slug) {
+        const model_type = 'App\Models\Blog';
+        isSlugLoading.value = true;
+        const url = ref('');
+        if (form.value.id) {
+            url.value = '/vnwa/check-slug/' + slug + '/' + model_type + '/' + form.value.id;
+        } else {
+            url.value = '/vnwa/check-slug/' + slug;
+        }
+        // Gửi request kiểm tra slug
+        axios.get(url.value)
+            .then(response => {
+                // Xử lý kết quả trả về từ server
+                if (response.data.type === 'error') {
+                    // Xử lý khi slug đã tồn tại
+                    errors.value.slug = response.data.message;
 
-    // Gửi request kiểm tra slug
-    axios.post('/vnwa/blog/categories/check-slug', {
-        id: id,
-        value: value
-    })
-        .then(response => {
-            // Xử lý kết quả trả về từ server
-            if (response.data.type === 'error') {
-                // Xử lý khi slug đã tồn tại
-                errors.value.slug = response.data.message;
+                    // Hiển thị thông báo hoặc xử lý người dùng
+                } else {
+                    // Nếu slug hợp lệ, có thể thực hiện các bước tiếp theo
+                    // Ví dụ: cập nhật meta_title
 
-                // Hiển thị thông báo hoặc xử lý người dùng
-            } else {
-                // Nếu slug hợp lệ, có thể thực hiện các bước tiếp theo
-                // Ví dụ: cập nhật meta_title
-
-            }
-        })
-        .catch(error => {
-            errors.value.slug = error.response.data.message;
-        });
-    isSlugLoading.value = false;
+                }
+            })
+            .catch(error => {
+                errors.value.slug = error.response.data.message;
+            });
+        isSlugLoading.value = false;
+    }
 
 }
 
@@ -253,6 +270,52 @@ const nameChange = (value) => {
     form.value.slug = convertToSlug(value);
     checkSlug(form.value.slug);
 }
+
+const submit = (isRollBack = true) => {
+    clearError();
+    isPageLoading.value = true;
+    axios.post('/vnwa/blog/posts/create', form.value).then(response => {
+        toast.success(response.data.message);
+        isPageLoading.value = false;
+        if (!isRollBack) {
+            window.history.back();
+        } else {
+            form.value = {
+                parentIds: [],
+                tags: [],
+                is_show: true,
+                image: '',
+                banner_image: '',
+                name: '',
+                slug: '',
+                desc: '',
+                content: '',
+                seo_meta: {
+                    meta_title: "",
+                    meta_desc: "",
+                    meta_image: "",
+                }
+            };
+        }
+    }).catch(error => {
+        isPageLoading.value = false;
+
+        if (error.response.data.errors) {
+            const errorKeys = Object.keys(error.response.data.errors);
+            errorKeys.forEach(key => {
+                if (key in errors.value) {
+                    errors.value[key] = error.response.data.errors[key][0]; // Lấy giá trị lỗi đầu tiên (nếu có)
+                }
+            });
+        }
+
+        toast.error(error.message, {
+            autoClose: 1500,
+        });
+    })
+
+}
+
 </script>
 
 <style></style>

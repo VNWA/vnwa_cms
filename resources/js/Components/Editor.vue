@@ -1,6 +1,7 @@
 <template>
     <div class="w-full h-full mb-3">
-        <div v-if="isModal" class="fixed w-full h-full top-0 left-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50 p-10">
+        <div v-if="isModal"
+            class="fixed w-full h-full top-0 left-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50 p-10">
             <div class="min-w-52 min-h-52 max-h-full max-w-full w-full h-full">
                 <div class="flex items-center justify-between px-3 pt-2 bg-white rounded-t-lg">
                     <h3 class="font-bold text-xl">Media Gallery</h3>
@@ -12,7 +13,8 @@
             </div>
         </div>
         <div class="w-full h-full py-2 px-1 flex gap-4 items-center">
-            <button @click="isModal = true" class="flex gap-4 items-center px-4 py-2 border border-black hover:bg-purple-500/90 hover:text-white uppercase font-bold">
+            <button @click="isModal = true"
+                class="flex gap-4 items-center px-4 py-2 border border-black hover:bg-purple-500/90 hover:text-white uppercase font-bold">
                 <icon :icon="['fas', 'image']" /> Insert Image
             </button>
             <!-- <button @click="insertUiBlock" class="flex gap-4 items-center px-4 py-2 border border-black hover:bg-purple-500/90 hover:text-white uppercase font-bold">
@@ -937,11 +939,11 @@ export default {
         display: none;
     }
 }
-.ck-widget.raw-html-embed .raw-html-embed__content-wrapper, .ck-widget.raw-html-embed .raw-html-embed__preview-content{
-    background-color: #8217a5  !important;
+
+.ck-widget.raw-html-embed .raw-html-embed__content-wrapper,
+.ck-widget.raw-html-embed .raw-html-embed__preview-content {
+    background-color: #8217a5 !important;
     color: white;
     font-weight: bold;
 }
-
-
 </style>

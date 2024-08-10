@@ -7,7 +7,7 @@
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tags Blog</h2>
                     </div>
                     <div>
-                        <HeaderBreadcrumbs :breadcrumbs="[['Tags Blog', 'Blog.Tag']]" />
+                        <HeaderBreadcrumbs :breadcrumbs="[['Tags Blog', route('Blog.Tag')]]" />
                     </div>
                 </div>
 
@@ -20,13 +20,14 @@
                                 <button v-if="itemsSelected.length > 0"
                                     class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-4 text-xs"
                                     @click="showisModalDeleteMutipleItem">
-                                    <icon :icon="['fas', 'x']" class="mr-1" /> Xóa dữ liệu chọn
+                                    <icon :icon="['fas', 'x']" class="mr-1" /> Clear data selection
+
                                 </button>
                             </div>
                             <div class="float-right text-xs uppercase">
                                 <button @click="showFormCreate"
                                     class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-2 rounded ">
-                                    <icon :icon="['fas', 'plus']" /> Thêm dữ liệu
+                                    <icon :icon="['fas', 'plus']" /> Create
                                 </button>
                             </div>
 
@@ -77,10 +78,16 @@
                                 <div>
                                     <div class="relative">
 
-                                        <TextInput id="slug" v-model="form.slug" type="text"
-                                            class="mt-1 block w-full pe-14"
-                                            :class="{ 'border-red-500 focus:ring-red-500': errors.slug.trim().length > 0 }"
-                                            required @change="checkSlug($event.target.value)" />
+                                        <div class="flex items-center justify-start">
+                                            <div
+                                                class=" block border-r-0 rounded-r-none border h-full py-2 px-2 bg-gray-50 text-nowrap ">
+                                                {{ url_web.origin }} /
+                                            </div>
+                                            <TextInput id="slug" v-model="form.slug" type="text"
+                                                class=" block w-full pe-14 rounded-l-none"
+                                                :class="{ 'border-red-500 focus:ring-red-500': errors.slug.trim().length > 0 }"
+                                                required @change="checkSlug($event.target.value)" />
+                                        </div>
                                         <div class="absolute top-2 right-5">
                                             <div role="status" v-if="isSlugLoading">
                                                 <svg aria-hidden="true"
@@ -188,6 +195,7 @@ import TextInput from '@/Components/TextInput.vue';
 import InputText from '@/Components/Input/InputText.vue';
 import InputError from '@/Components/InputError.vue';
 import { convertToSlug } from '@/utils';
+const url_web = new URL(window.location.href)
 const form = ref({
     id: null,
     name: '',
@@ -305,7 +313,7 @@ const deleteItems = async () => {
         axios.post('/vnwa/blog/tags/delete', { dataId: dataDelete }).then(response => {
 
             toast.success(response.data.message);
-            isModalDelete.value =false;
+            isModalDelete.value = false;
             loadDataTable();
 
         }).catch(error => {
@@ -342,31 +350,38 @@ const showisModalDeleteItem = async (deleteId, deleteName) => {
 };
 
 const isSlugLoading = ref(false);
-const checkSlug = (value) => {
+
+const checkSlug = (slug) => {
     clearError();
-    isSlugLoading.value = true;
-    const id = form.id;
-    axios.post('/vnwa/blog/tags/check-slug', {
-        id: id,
-        value: value
-    })
-        .then(response => {
-            // Xử lý kết quả trả về từ server
-            if (response.data.type === 'error') {
-                // Xử lý khi slug đã tồn tại
-                errors.value.slug = response.data.message;
+    if (slug) {
+        const model_type = 'App\Models\TagBlog';
+        isSlugLoading.value = true;
+        const url = ref('');
+        if (form.value.id) {
+            url.value = '/vnwa/check-slug/' + slug + '/' + model_type + '/' + form.value.id;
+        } else {
+            url.value = '/vnwa/check-slug/' + slug;
+        }
+        // Gửi request kiểm tra slug
+        axios.get(url.value)
+            .then(response => {
+                // Xử lý kết quả trả về từ server
+                if (response.data.type === 'error') {
+                    // Xử lý khi slug đã tồn tại
+                    errors.value.slug = response.data.message;
 
-                // Hiển thị thông báo hoặc xử lý người dùng
-            } else {
-                // Nếu slug hợp lệ, có thể thực hiện các bước tiếp theo
-                // Ví dụ: cập nhật meta_title
+                    // Hiển thị thông báo hoặc xử lý người dùng
+                } else {
+                    // Nếu slug hợp lệ, có thể thực hiện các bước tiếp theo
+                    // Ví dụ: cập nhật meta_title
 
-            }
-        })
-        .catch(error => {
-            errors.value.slug = error.response.data.message;
-        });
-    isSlugLoading.value = false;
+                }
+            })
+            .catch(error => {
+                errors.value.slug = error.response.data.message;
+            });
+        isSlugLoading.value = false;
+    }
 
 }
 

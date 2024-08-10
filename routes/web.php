@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\TagBlogController;
+use App\Http\Controllers\UrlController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,6 +36,7 @@ Route::prefix('vnwa')
     ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
     ->group(function () {
 
+        Route::get('/check-slug/{slug}/{model_type?}/{model_id?}', [UrlController::class, 'checkSlug']);
 
         Route::get('/', function () {
             return Inertia::render('Dashboard');
@@ -58,7 +60,6 @@ Route::prefix('vnwa')
                 Route::prefix('categories')->group(function () {
                     Route::get('/', [CategoryBlogController::class, 'index'])->name('Blog.Categories');
                     Route::get('/load-new-tree-data', [CategoryBlogController::class, 'loadNewDataTree']);
-                    Route::post('/check-slug', [CategoryBlogController::class, 'checkSlug']);
 
                     Route::post('/update-tree', [CategoryBlogController::class, 'updateTree']);
                     Route::get('/get-detail-category/{id}', [CategoryBlogController::class, 'getDetailCategory']);
@@ -69,30 +70,25 @@ Route::prefix('vnwa')
                 });
                 Route::prefix('tags')->group(function () {
                     Route::get('/load-data-table', [TagBlogController::class, 'loadDataTable']);
-                    Route::post('/check-slug', [TagBlogController::class, 'checkSlug']);
                     Route::get('/', function () {
                         return Inertia::render('TagBlog');
                     })->name('Blog.Tag');
-
                     Route::post('/create', [TagBlogController::class, 'create']);
                     Route::post('/update/{id}', [TagBlogController::class, 'update']);
                     Route::post('/delete', [TagBlogController::class, 'delete']);
-
                 });
                 Route::prefix('posts')->group(function () {
                     Route::get('/', function () {
                         return Inertia::render('Post/Show');
                     })->name('Blog.Post');
                     Route::get('/load-data-table', [BlogController::class, 'loadDataTable']);
+                    Route::get('/load-data-categories-tree-and-tags', [BlogController::class, 'loadDataCategoriesTreeAndTags']);
                     Route::get('/load-data-categories-and-tags', [BlogController::class, 'loadDataCategoriesAndTags']);
                     Route::get('/create', function () {
                         return Inertia::render('Post/Create');
                     })->name('Blog.Post.Create');
-
-                    Route::post('/check-slug', [BlogController::class, 'checkSlug']);
-
-
                     Route::post('/create', [BlogController::class, 'create']);
+                    Route::get('/edit/{id}', [BlogController::class, 'showEdit'])->name('Blog.Post.Edit');
                     Route::post('/update/{id}', [BlogController::class, 'update']);
                     Route::post('/delete', [BlogController::class, 'delete']);
 

@@ -13,34 +13,13 @@ class TagBlogController extends Controller
         $tags = TagBlog::latest()->get();
         return response()->json($tags, 200);
     }
-    public function checkSlug(Request $request)
-    {
-        $slug = $request->input('value');
-        $id = $request->input('id');
 
-        if (!$id) {
-            $category = TagBlog::where('slug', $slug)->exists();
-
-            if ($category) {
-                return response()->json(['type' => 'error', 'message' => 'Slug already exists.'], 500);
-            }
-        } else {
-
-            $category = TagBlog::where('id', '!=', $id)->where('slug', $slug)->exists();
-            if ($category) {
-                return response()->json(['type' => 'error', 'message' => 'Slug already exists.'], 500);
-            }
-        }
-        return response()->json(['type' => 'success', 'message' => 'Slug is available.'], 200);
-
-
-    }
     function create(Request $request)
     {
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:tag_blogs,slug',
+            'slug' => 'required|string|max:255|unique:urls,slug',
         ]);
         $data = [];
         $data['name'] = $request->name;
@@ -55,16 +34,17 @@ class TagBlogController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $tagBlog = TagBlog::findOrFail($id);
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:tag_blogs,slug,' . $id,
+            'slug' => 'required|string|max:255|unique:urls,slug,' . $tagBlog->url->id,
         ]);
 
         $data = $request->only(['name', 'slug']);
 
         try {
-            $categoryBlog = TagBlog::findOrFail($id);
-            $categoryBlog->update($data);
+            $tagBlog = TagBlog::findOrFail($id);
+            $tagBlog->update($data);
 
             return response()->json(['message' => 'Update Category Blog Success'], 200);
         } catch (\Exception $e) {

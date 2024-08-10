@@ -44,7 +44,6 @@ class CategoryBlogController extends Controller
     public function index()
     {
         $data = $this->loadDataTable();
-
         return Inertia::render('CategoryBlog', ['data' => $data]);
     }
     function loadNewDataTree()
@@ -94,33 +93,12 @@ class CategoryBlogController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    public function checkSlug(Request $request)
-    {
-        $slug = $request->input('value');
-        $id = $request->input('id');
 
-        if (!$id) {
-            $category = CategoryBlog::where('slug', $slug)->exists();
-
-            if ($category) {
-                return response()->json(['type' => 'error', 'message' => 'Slug already exists.'], 500);
-            }
-        } else {
-
-            $category = CategoryBlog::where('id', '!=', $id)->where('slug', $slug)->exists();
-            if ($category) {
-                return response()->json(['type' => 'error', 'message' => 'Slug already exists.'], 500);
-            }
-        }
-        return response()->json(['type' => 'success', 'message' => 'Slug is available.'], 200);
-
-
-    }
     public function create(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:category_blogs,slug',
+            'slug' => 'required|string|max:255|unique:urls,slug',
         ]);
 
         $data = [];
@@ -146,9 +124,10 @@ class CategoryBlogController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $categoryBlog = CategoryBlog::findOrFail($id);
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:category_blogs,slug',
+            'slug' => 'required|string|max:255|unique:urls,slug,' . $categoryBlog->url->id,
         ]);
 
         $data = [
@@ -166,7 +145,6 @@ class CategoryBlogController extends Controller
         ];
 
         try {
-            $categoryBlog = CategoryBlog::findOrFail($id);
 
             if ($request->has('parent_id') && $categoryBlog->parent_id != $request->input('parent_id')) {
                 // Thiết lập lại giá trị `ord` khi thay đổi `parent_id`

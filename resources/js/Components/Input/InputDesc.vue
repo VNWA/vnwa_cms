@@ -1,6 +1,7 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 
+// Định nghĩa props
 const props = defineProps({
     modelValue: {
         type: String,
@@ -14,28 +15,35 @@ const props = defineProps({
     }
 });
 
+// Định nghĩa emits
 const emit = defineEmits(['update:modelValue']);
 
-const input = ref(null);
+// Sử dụng ref cho textarea
+const input = ref('');
 
+// Đảm bảo textarea được focus khi có thuộc tính autofocus
 onMounted(() => {
-    if (input.value.hasAttribute('autofocus')) {
+    if (input.value && input.value.hasAttribute('autofocus')) {
         input.value.focus();
     }
 });
 
-defineExpose({ focus: () => input.value.focus() });
+// Expose hàm focus ra ngoài
+defineExpose({ focus: () => input.value?.focus() });
+
+// Computed property để xử lý modelValue không bao giờ là null
+const safeModelValue = computed(() => props.modelValue ?? '');
 </script>
 
 <template>
     <div class="relative">
-        <div :class="{ 'text-red-500':   modelValue.length >= props.maxLength }"
-            class="absolute right-0 -top-1 bg-white px-1 text-xs ">
-            {{ modelValue.length }} / {{ props.maxLength }}
+        <div v-show="safeModelValue.length > 0" :class="{ 'text-red-500': safeModelValue.length >= props.maxLength }"
+            class="absolute right-0 -top-1 bg-white px-1 text-xs">
+            {{ safeModelValue.length }} / {{ props.maxLength }}
         </div>
         <textarea ref="input"
             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm min-h-32"
-            :class="props.class" :id="props.id" :value="modelValue"
+            :class="props.class" :id="props.id" :value="safeModelValue"
             @input="$emit('update:modelValue', $event.target.value)">
         </textarea>
     </div>

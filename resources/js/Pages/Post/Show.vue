@@ -1,201 +1,301 @@
 <template>
-    <div>
-        <AppLayout title="Post" :isLoading="isPageLoading">
-            <template #header>
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Posts</h2>
-                    </div>
-                    <div>
-                        <HeaderBreadcrumbs :breadcrumbs="[['Post', 'Blog.Post']]" />
-                    </div>
+    <AppLayout title="Post" :isLoading="isPageLoading">
+        <template #header>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Posts</h2>
                 </div>
-            </template>
-            <div class="p-2 ">
-                <div class="grid grid-cols-12 gap-4">
-                    <div class="lg:col-span-12 col-span-12">
-                        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg pt-8 pb-12 px-2">
-                            <div class="float-left">
-                                <button v-if="itemsSelected.length > 0"
+                <div>
+                    <HeaderBreadcrumbs :breadcrumbs="[['Post', route('Blog.Post')]]" />
+                </div>
+            </div>
+        </template>
+
+        <div class="p-2">
+            <div class="grid grid-cols-12 gap-4">
+                <div class="lg:col-span-12 col-span-12">
+                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg pt-8 pb-12 px-2 ">
+                        <div class="flex items-center justify-between w-full mb-5">
+
+                            <div class="">
+                                <button :disabled="itemsSelected.length === 0"
                                     class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-4 text-xs"
+                                    :class="{ 'bg-red-600/60 hover:bg-red-600/60': itemsSelected.length === 0 }"
                                     @click="showisModalDeleteMutipleItem">
-                                    <icon :icon="['fas', 'x']" class="mr-1" /> Xóa dữ liệu chọn
+                                    <icon :icon="['fas', 'x']" class="mr-1" /> Clear data selection
                                 </button>
                             </div>
-                            <div class="float-right text-xs uppercase">
-                                <Link :href="route('Blog.Post.Create')"
-                                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-2 rounded ">
-                                <icon :icon="['fas', 'plus']" /> Thêm dữ liệu
-                                </Link>
+                            <div class=" text-xs uppercase">
+
+                                <div class="flex items-center justify-end gap-4">
+                                    <button type="button" @click="isFormFilter = !isFormFilter"
+                                        :class="{ 'shadow-2xl shadow-purple-500 text-purple-500': serverOptions.name || serverOptions.categories && serverOptions.categories.length > 0 || serverOptions.tags && serverOptions.tags.length > 0 }"
+                                        class="bg-sky-500 uppercase border border-gray-300 font-bold text-center text-gray-100 text-sm rounded-lg block w-full py-2 px-3">
+                                        <icon :icon="['fas', 'search']" />
+                                        Filter
+                                    </button>
+
+                                    <Link :href="route('Blog.Post.Create')"
+                                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-2 rounded text-nowrap ">
+                                    <icon :icon="['fas', 'plus']" /> Create
+                                    </Link>
+                                </div>
                             </div>
 
-                            <div class="my-2 py-10">
-                                <DataTable :headers="headers" :items="dataTable" buttons-pagination show-index
-                                    v-model:items-selected="itemsSelected">
+                        </div>
+                        <div :class="{ 'max-h-0': !isFormFilter, 'max-h-screen': isFormFilter }"
+                            class="overflow-hidden transition-max-height duration-500 ease-in-out">
+                            <div class="px-2 py-5 shadow-md border-2 border-black  bg-purple-500/20">
+                                <div class="flex items-center justify-between gap-4 mb-5">
+                                    <label for="name" class="text-lg font-bold w-24"> Name: </label>
+                                    <input type="text" v-model="serverOptions.name" id="name"
+                                        class="w-full rounded-md border border-gray-400/50">
+                                </div>
+                                <div class="flex items-center justify-between gap-4 mb-5" v-if="tagsData.length > 0">
+                                    <label for="tags" class="text-lg font-bold w-24"> Tags: </label>
+                                    <MultiSelect id="tags" v-model="serverOptions.tags" display="chip"
+                                        :options="tagsData" optionLabel="name" filter placeholder="Select Tags"
+                                        class="w-full py-1 px-3 overflow-hidden" />
+                                </div>
+                                <div class="flex items-center justify-between gap-4 mb-5"
+                                    v-if="categoriesData.length > 0">
+                                    <label for="categories" class="text-lg font-bold w-24"> Category: </label>
+                                    <MultiSelect id="categories" v-model="serverOptions.categories" display="chip"
+                                        :options="categoriesData" optionLabel="name" filter placeholder="Select Tags"
+                                        class="w-full py-1 px-3 overflow-hidden" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-2 ">
+                            <DataTable :key="reRender" v-model:server-options="serverOptions" :headers="headers"
+                                :items="items" :server-items-length="serverItemsLength" :isTableLoading="isTableLoading"
+                                buttons-pagination show-index v-model:items-selected="itemsSelected">
+                                <template #item-image="{ image }">
+                                    <div class="py-2">
+                                        <img :src="image" width="80" v-if="image" />
+                                        <img src="/images/no_img.jpg" width="100" v-else />
+                                    </div>
+                                </template>
+                                <template #item-categories="{ categories }">
+                                    <div class="flex justify-start flex-wrap gap-1 p-3">
 
-
-
-                                    <template #item-operation="item">
-                                        <div class="flex items-center justify-center gap-5">
-                                            <button class=" text-xl text-yellow-600" @click="showFormEdit(item)">
-                                                <icon :icon="['fas', 'edit']" />
-                                            </button>
-                                            <button class=" text-xl text-red-500"
-                                                @click="showisModalDeleteItem(item.id, item.name)">
-                                                <icon :icon="['fas', 'trash']" />
-                                            </button>
+                                        <div class="" v-for="(item, index) in categories" :key="index">
+                                            <span
+                                                class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                                {{ item.name }}
+                                            </span>
                                         </div>
-                                    </template>
 
-                                </DataTable>
-                            </div>
+                                    </div>
+                                </template>
+                                <template #item-tags="{ tags }">
+                                    <div>
+                                        <div class="flex justify-start flex-wrap gap-1 p-3">
+
+                                            <div class="" v-for="(item, index) in tags" :key="index">
+                                                <span
+                                                    class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+                                                    {{ item.name }}
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </template>
+                                <template #item-name="{ name, slug }">
+                                    <a :href="slug" target="_blank"
+                                        class="flex items-center justify-start gap-3 text-blue-500/80 hover:text-blue-500/60">
+                                        <icon :icon="['fas', 'arrow-up-right-from-square']" class="h-4" />
+                                        <h5 class="text-md">{{ name }}</h5>
+                                    </a>
+                                </template>
+                                <template #item-operation="item">
+                                    <div class="flex items-center  gap-5">
+                                        <Link :href="route('Blog.Post.Edit', item.id)" class=" text-xl text-yellow-600">
+                                        <icon :icon="['fas', 'edit']" />
+                                        </Link>
+                                        <button class=" text-xl text-red-500"
+                                            @click="showIsModalDeleteItem(item.id, item.name)">
+                                            <icon :icon="['fas', 'trash']" />
+                                        </button>
+                                    </div>
+                                </template>
+
+                            </DataTable>
+
+                            <!-- Modal Delete -->
+                            <DialogModal :show="isModalDelete" @close="isModalDelete = false">
+                                <template #title>
+                                    Xóa dữ liệu
+                                </template>
+
+                                <template #content>
+                                    Chắc chắn xóa các dữ liệu này!
+                                    <div class="mt-4"></div>
+                                    <div v-if="itemsDelete.length > 0">
+                                        <div class="flex items-center" v-for="item in itemsDelete" :key="item.id">
+                                            <icon :icon="['fas', 'x']" class="text-red-600 mr-1" /> <span>{{ item.name
+                                                }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mb-1">
+                                        <div class="text-xs text-gray-600">Lưu ý :
+                                            <ul class="pl-4">
+                                                <li class="font-bold list-disc"
+                                                    style="font-family: Arial, Helvetica, sans-serif;">Các dữ liệu được
+                                                    xóa sẽ tự động đưa vào thùng rác</li>
+                                                <li class="font-bold list-disc"
+                                                    style="font-family: Arial, Helvetica, sans-serif;">Các dữ liệu trong
+                                                    thùng rác được tự động xóa sau 30 ngày</li>
+                                                <li class="font-bold list-disc"
+                                                    style="font-family: Arial, Helvetica, sans-serif;">Muốn xóa trực
+                                                    tiếp hãy bỏ chọn checkbox bên dưới</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template #footer>
+                                    <button
+                                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-4 text-xs"
+                                        @click="deleteItems">
+                                        Xóa dữ liệu
+                                    </button>
+                                    <button
+                                        class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 rounded mr-4 text-xs"
+                                        @click="isModalDelete = false">
+                                        Hủy lệnh
+                                    </button>
+                                </template>
+                            </DialogModal>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
-
-            <DialogModal :show="isModalDelete" @close="isModalDelete = false">
-                <template #title>
-                    Xóa dữ liệu
-                </template>
-
-                <template #content>
-                    Chắc chắn xóa các dữ liệu này!
-                    <div class="mt-4">
-                    </div>
-                    <div v-if="itemsDelete.length > 0">
-                        <div class="flex items-center" v-for="item in itemsDelete">
-                            <icon :icon="['fas', 'x']" class="text-red-600 mr-1" /> <span>{{ item.name }}</span>
-                        </div>
-                    </div>
-
-                    <div class="mt-3 mb-1">
-                        <div class="text-xs text-gray-600">Lưu ý :
-                            <ul class="pl-4">
-                                <li class=" font-bold list-disc" style="font-family: Arial, Helvetica, sans-serif;">Các
-                                    dữ liệu được xóa sẽ tự động đưa vào thùng rác </li>
-                                <li class=" font-bold list-disc" style="font-family: Arial, Helvetica, sans-serif;">Các
-                                    dữ liệu trong thùng rác được tự động xóa sau 30 </li>
-                                <li class=" font-bold list-disc" style="font-family: Arial, Helvetica, sans-serif;">Muốn
-                                    xóa trực tiếp hãy bỏ chọn checkbox bên dưới</li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </template>
-
-                <template #footer>
-
-
-                    <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-4 text-xs"
-                        @click="deleteItems">
-                        Xóa dữ liệu
-                    </button>
-                    <button class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-2 rounded mr-4 text-xs"
-                        @click="isModalDelete = false">
-                        Hủy lệnh
-                    </button>
-                </template>
-            </DialogModal>
-
-        </AppLayout>
-
-    </div>
+        </div>
+    </AppLayout>
 </template>
 
 <script setup>
+import { ref, watch, computed, onMounted } from 'vue';
+import axios from 'axios';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import HeaderBreadcrumbs from '@/Components/HeaderBreadcrumbs.vue';
-import { onMounted, ref } from 'vue';
 import DialogModal from '@/Components/DialogModal.vue';
 import { Link } from '@inertiajs/vue3';
+import MultiSelect from 'primevue/multiselect';
 
-const dataTable = ref([]);
-
-const loadDataTable = () => {
-    isPageLoading.value = true;
-    axios.get('/vnwa/blog/posts/load-data-table').then(response => {
-        dataTable.value = response.data
-    }).catch(error => {
-        console.error(error);
-    });
-    isPageLoading.value = false;
-}
-onMounted(() => {
-    loadDataTable();
-})
-
-
-const isPageLoading = ref(false);
-const itemsDelete = ref([])
-const isModalDelete = ref(false)
-const itemsSelected = ref([]);
+const isFormFilter = ref(false);
+const items = ref([]);
 const headers = [
-    { text: "Name", value: "name" },
-    { text: "Qnt Post", value: "qnt_post" },
+    { text: "Avatar", value: "image", width: 200 },
+    { text: "Name", value: "name", sortable: true },
+    { text: "Categories", value: "categories" },
+    { text: "Tags", value: "tags" },
+    { text: "Status", value: "is_show" },
+    { text: "Created At", value: "created_at", sortable: true },
+    { text: "Update At", value: "updated_at", sortable: true },
     { text: "Action", value: "operation" },
 ];
 
+const serverItemsLength = ref(0);
+const serverOptions = ref({
+    page: 1,
+    rowsPerPage: 10,
+    sortBy: 'created_at',
+    sortType: 'desc',
+    name: '',
+    categories: [],
+    tags: [],
+});
+const categoriesData = ref([]);
+const tagsData = ref([]);
+const loadDataCategoriesAndTags = () => {
+    axios.get('/vnwa/blog/posts/load-data-categories-and-tags').then(response => {
+        categoriesData.value = response.data.categories;
+        tagsData.value = response.data.tags;
+    }).catch(error => {
+        console.error(error)
+    })
+}
 
 
+const isTableLoading = ref(false);
+const isPageLoading = ref(false);
+const isModalDelete = ref(false);
+const itemsSelected = ref([]);
+const itemsDelete = ref([]);
+const reRender = ref(1);
+const restApiUrl = computed(() => {
+    const { page, rowsPerPage, sortBy, sortType, name, categories, tags } = serverOptions.value;
+    let url = `/vnwa/blog/posts/load-data-table?page=${page}&per_page=${rowsPerPage}&sortBy=${sortBy}&sortType=${sortType}`;
+    if (name) {
+        url += `&name=${name}`
+    }
+    if (categories) {
+        categories.forEach(element => {
+            url += `&categories_id[]=${element.id}`
+        });
+    }
+    if (tags) {
+        tags.forEach(element => {
+            url += `&tags_id[]=${element.id}`
+        });
+    }
+    return url;
+});
 
+const loadFromServer = async () => {
+    isTableLoading.value = true;
+    reRender.value++;
+    try {
+        const response = await axios.get(restApiUrl.value);
+        items.value = response.data.data;
+        serverItemsLength.value = response.data.total;
+    } catch (error) {
+        console.error(error);
+    } finally {
+        isTableLoading.value = false;
+    }
 
+};
+onMounted(() => {
+    loadFromServer();
+    loadDataCategoriesAndTags();
+})
+// Load data initially
 
-
-
+// Watch serverOptions to reload data on changes
+watch(serverOptions, () => {
+    loadFromServer();
+}, { deep: true });
 
 const deleteItems = async () => {
     isPageLoading.value = true;
     try {
-        const dataDelete = [];
-        itemsDelete.value.forEach(element => {
-            dataDelete.push(element.id)
-
-        });
-        axios.post('/vnwa/blog/tags/delete', { dataId: dataDelete }).then(response => {
-
-            toast.success(response.data.message);
-            isModalDelete.value = false;
-            loadDataTable();
-
-        }).catch(error => {
-            toast.success(error.message);
-
-        })
+        const dataDelete = itemsSelected.value.map(item => item.id);
+        await axios.post('/vnwa/blog/posts/delete', { dataId: dataDelete });
+        toast.success('Data deleted successfully');
+        isModalDelete.value = false;
+        loadFromServer();
     } catch (error) {
-        console.error('Error while changing status:', error);
+        toast.error('Error deleting data');
+        console.error(error);
+    } finally {
+        isPageLoading.value = false;
     }
-    isPageLoading.value = false;
-
 };
-
-
 
 const showisModalDeleteMutipleItem = () => {
-
-    itemsDelete.value = [];
-    itemsSelected.value.forEach(element => {
-        // itemsDelete.value['id'] = element.id;
-        // itemsDelete.value[id] = element.name;
-        itemsDelete.value.push({ id: element.id, name: element.name })
-
-    });
-    console.log(itemsDelete.value)
+    itemsDelete.value = itemsSelected.value.map(item => ({ id: item.id, name: item.name }));
     isModalDelete.value = true;
-
-};
-const showisModalDeleteItem = async (deleteId, deleteName) => {
-    itemsDelete.value = [];
-    itemsDelete.value.push({ id: deleteId, name: deleteName })
-    isModalDelete.value = true;
-
 };
 
-
-
+const showIsModalDeleteItem = (deleteId, deleteName) => {
+    itemsDelete.value = [{ id: deleteId, name: deleteName }];
+    isModalDelete.value = true;
+};
 </script>
 
-<style></style>
+<style>
+/* Add any styles you need here */
+</style>

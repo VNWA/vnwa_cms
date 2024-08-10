@@ -9,10 +9,9 @@
                         </h2>
                     </div>
                     <div>
-                        <HeaderBreadcrumbs :breadcrumbs="[['Categories', 'Blog.Categories']]" />
+                        <HeaderBreadcrumbs :breadcrumbs="[['Categories', route('Blog.Categories')]]" />
                     </div>
                 </div>
-
             </template>
 
             <DialogModal :show="isModalDeleteForm" @close="closeModal">
@@ -98,12 +97,18 @@
                                 <div class="mb-4">
                                     <InputLabel for="slug">Slug <span class="text-red-500">*</span></InputLabel>
                                     <div>
-                                        <div class="relative">
+                                        <div class="relative mt-1">
+                                            <div class="flex items-center justify-start">
+                                                <div
+                                                    class=" block border-r-0 rounded-r-none border h-full py-2 px-2 bg-gray-50">
+                                                    {{ url_web.origin }}/
+                                                </div>
+                                                <TextInput id="slug" v-model="form.slug" type="text"
+                                                    class=" block w-full pe-14 rounded-l-none"
+                                                    :class="{ 'border-red-500 focus:ring-red-500': errors.slug.trim().length > 0 }"
+                                                    required @change="checkSlug($event.target.value)" />
+                                            </div>
 
-                                            <TextInput id="slug" v-model="form.slug" type="text"
-                                                class="mt-1 block w-full pe-14"
-                                                :class="{ 'border-red-500 focus:ring-red-500': errors.slug.trim().length > 0 }"
-                                                required @change="checkSlug($event.target.value)" />
                                             <div class="absolute top-2 right-5">
                                                 <div role="status" v-if="isSlugLoading">
                                                     <svg aria-hidden="true"
@@ -161,14 +166,14 @@
                                             type="checkbox" name="bordered-checkbox"
                                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
 
-                                            <label for="bordered-checkbox-1"
-                                    class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                    Status: <span v-if="form.is_show"> Published </span>
-                                    <span v-else>
-                                        Draft
-                                    </span>
+                                        <label for="bordered-checkbox-1"
+                                            class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            Status: <span v-if="form.is_show"> Published </span>
+                                            <span v-else>
+                                                Draft
+                                            </span>
 
-                                </label>
+                                        </label>
                                     </div>
                                     <div
                                         class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
@@ -230,7 +235,7 @@ import SeoMetaForm from '@/Components/SeoMetaForm.vue'
 import DialogModal from '@/Components/DialogModal.vue';
 import { convertToSlug } from '@/utils';
 import HeaderBreadcrumbs from '@/Components/HeaderBreadcrumbs.vue'
-
+const url_web = new URL(window.location.href)
 const props = defineProps({
     data: Object
 })
@@ -384,34 +389,37 @@ const showFormEdit = (id) => {
 
 };
 const isSlugLoading = ref(false);
-const checkSlug = (value) => {
+const checkSlug = (slug) => {
     clearError();
-    isSlugLoading.value = true;
-    const type = form.value.type;
-    const id = form.value.id;
+    if (slug) {
+        const model_type = 'App\Models\CategoryBlog';
+        isSlugLoading.value = true;
+        const url = ref('');
+        if (form.value.id) {
+            url.value = '/vnwa/check-slug/' + slug + '/' + model_type + '/' + form.value.id;
+        } else {
+            url.value = '/vnwa/check-slug/' + slug;
+        }
+        // Gửi request kiểm tra slug
+        axios.get(url.value)
+            .then(response => {
+                // Xử lý kết quả trả về từ server
+                if (response.data.type === 'error') {
+                    // Xử lý khi slug đã tồn tại
+                    errors.value.slug = response.data.message;
 
-    // Gửi request kiểm tra slug
-    axios.post('/vnwa/blog/categories/check-slug', {
-        id: id,
-        value: value
-    })
-        .then(response => {
-            // Xử lý kết quả trả về từ server
-            if (response.data.type === 'error') {
-                // Xử lý khi slug đã tồn tại
-                errors.value.slug = response.data.message;
+                    // Hiển thị thông báo hoặc xử lý người dùng
+                } else {
+                    // Nếu slug hợp lệ, có thể thực hiện các bước tiếp theo
+                    // Ví dụ: cập nhật meta_title
 
-                // Hiển thị thông báo hoặc xử lý người dùng
-            } else {
-                // Nếu slug hợp lệ, có thể thực hiện các bước tiếp theo
-                // Ví dụ: cập nhật meta_title
-
-            }
-        })
-        .catch(error => {
-            errors.value.slug = error.response.data.message;
-        });
-    isSlugLoading.value = false;
+                }
+            })
+            .catch(error => {
+                errors.value.slug = error.response.data.message;
+            });
+        isSlugLoading.value = false;
+    }
 
 }
 

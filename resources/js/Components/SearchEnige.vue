@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="bg-black/80 text-white p-2 w-full">
-            <div>{{ $page.props.page_url }}</div>
+            <div>{{ $page.props.page_url }}/{{ props.slug }} </div>
             <div>
                 {{ computedMetaTitle }}
             </div>
@@ -23,6 +23,8 @@ import { useAdminStore } from '@/store/admin';
 const adminStore = useAdminStore();
 
 const props = defineProps({
+
+    slug: String,
     metaTitle: String,
     metaDesc: String,
     metaImage: String,
