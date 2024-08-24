@@ -13,15 +13,17 @@
 
 
         </DialogModal>
-
-
+        <div class="text-gray-500 test-sm ps-3">
+            <slot name="desc"></slot>
+        </div>
         <div class="relative border min-w-32 w-auto h-44 border-purple-400 flex items-center justify-center rounded-md rounded-b-none bg-black/5 hover:bg-black/10 cursor-pointer"
             @click="isModal = true">
-            <img v-if="url_image" :src="url_image" class="h-44 max-h-44 w-auto" alt="Photo does not exist" />
+            <img v-if="url_image" :src="url_image" class="h-44 max-h-32 w-auto" alt="Photo does not exist" />
             <div v-else class="inline-flex items-center justify-center">
                 <icon :icon="['fas', 'image']" class="text-4xl text-black/80" />
             </div>
         </div>
+
         <div class="relative formkit-field">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
                 <icon :icon="['fas', 'image']" />
@@ -29,6 +31,7 @@
             <input :id="props.id" v-model="url_image" @input="emit('update:modelValue', url_image)"
                 class="formkit-input bg-gray-50 border border-gray-300 w-full text-gray-900 text-sm rounded-lg focus:ring-stone-500 focus:border-stone-500 block pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-stone-500 dark:focus:border-stone-500 rounded-t-none"
                 name="email_address" aria-label="Đường dẫn ảnh" placeholder="Đường dẫn ảnh" required="" type="text" />
+
         </div>
     </div>
 </template>
@@ -41,7 +44,8 @@ const isModal = ref(false);
 const props = defineProps({
     modelValue: String,
     id: String,
-    class: String
+    class: String,
+    desc: String,
 });
 
 const emit = defineEmits(['update:modelValue']);

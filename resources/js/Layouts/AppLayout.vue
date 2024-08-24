@@ -44,7 +44,7 @@ const logout = () => {
         <Banner />
         <div class="flex gap-4 w-full">
             <Sidebar />
-            <div class="min-h-screen bg-gray-100 w-full">
+            <div class="min-h-screen bg-gray-100 w-full overflow-hidden">
                 <nav class="bg-white border-b border-gray-100">
                     <!-- Primary Navigation Menu -->
                     <div class=" px-4 sm:px-6 lg:px-8">
@@ -318,3 +318,5 @@ const logout = () => {
 
     </div>
 </template>
+<style>
+</style>

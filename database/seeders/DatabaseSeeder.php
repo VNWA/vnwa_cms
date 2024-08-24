@@ -15,10 +15,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            CategoryBlogSeeder::class,
-            BlogSeeder::class,
-            TagBlogSeeder::class,
+            BlogCategorySeeder::class,
+            BlogTagSeeder::class,
+            BlogPostSeeder::class,
+            AppearanceOneSeeder::class,
+            ProductCategorySeeder::class,
         ]);
+        User::truncate();
         User::create([
             'name' => 'DEV',
             'email' => 'nhatnguyen.dev.fullstack@gmail.com',

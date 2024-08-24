@@ -45,10 +45,10 @@
                                         :active="check('/blog/categories')">
                                         Categories
                                     </SideBarMenuItemLink>
-                                    <SideBarMenuItemLink :href="route('Blog.Tag')" :active="check('/blog/tags')">
+                                    <SideBarMenuItemLink :href="route('Blog.Tags')" :active="check('/blog/tags')">
                                         Tags
                                     </SideBarMenuItemLink>
-                                    <SideBarMenuItemLink :href="route('Blog.Post')" :active="check('/blog/posts')">
+                                    <SideBarMenuItemLink :href="route('Blog.Posts')" :active="check('/blog/posts')">
                                         Post
                                     </SideBarMenuItemLink>
                                 </li>
@@ -56,6 +56,37 @@
                             </ul>
                         </div>
                     </div>
+                </li>
+                <li class="mb-3">
+                    <div class=" cursor-pointer relative w-100 py-2 px-4 rounded sidebar-item-list "
+                        :class="{ 'active': isEcommerceActive || check('/ecommerce') }">
+                        <div class="flex items-center justify-start sidebar-item-list-title"
+                            @click=" isEcommerceActive = !isEcommerceActive;">
+                            <icon :icon="['fas', 'bag-shopping']" class="mr-2" />
+                            <span class="show  font-semibold  text-slate-200">Ecommerce</span>
+                            <icon :icon="['fas', 'chevron-down']" class="ml-2 show" />
+                        </div>
+
+                        <div class="sidebar-item-list-content  mt-3">
+                            <ul class=" border-l border-purple-100">
+                                <li class="mb-1">
+                                    <SideBarMenuItemLink :href="route('Ecommerce.ProductCategories')"
+                                        :active="check('/ecommerce/product-categories')">
+                                       Product Categories
+                                    </SideBarMenuItemLink>
+
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="mb-3 ">
+                    <SideBarLink :href="route('Appearance')" :active="check('/appearance')">
+                        <icon icon="fa-paintbrush" class="mr-2" />
+                        <span class="show font-semibold  text-slate-200">Appearance</span>
+                    </SideBarLink>
+
                 </li>
             </ul>
         </div>
@@ -88,5 +119,6 @@ const check = (path) => {
     }
     // return isActive;
 };
+const isEcommerceActive = ref(false);
 const isBlogsActive = ref(false);
 </script>
