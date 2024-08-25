@@ -24,14 +24,14 @@ use App\Http\Controllers\MediaController;
 */
 
 
-Route::get('vnwa/', function () {
-    return Inertia::render('Admin/Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('vnwa/', function () {
+//     return Inertia::render('Admin/Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
 Route::prefix('vnwa')
     ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])

@@ -5,7 +5,8 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/js/app.js'],
+            input: 'resources/js/app.js',
+            ssr: 'resources/js/ssr.js',
             refresh: true,
         }),
         vue({
@@ -22,7 +23,8 @@ export default defineConfig({
     },
     build: {
         commonjsOptions: {
-            exclude: ['ckeditor5-custom-build']
+            include: [/ckeditor-vnwa/, /node_modules/],
+
         }
-    },
+    }
 });

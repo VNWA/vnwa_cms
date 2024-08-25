@@ -183,6 +183,12 @@ const logout = () => {
                                         </template>
                                     </Dropdown>
                                 </div>
+                                <div class="ms-3">
+                                    <a href="/" target="_blank">
+                                        <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-sm bg-purple-900 text-white/90 hover:text-white cursor-pointer">
+                                        <icon :icon="['fas', 'globe']" /> <h5 class="lg:block hidden">View Webite</h5>
+                                    </div></a>
+                                </div>
                             </div>
 
                             <!-- Hamburger -->

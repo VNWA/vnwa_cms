@@ -131,10 +131,13 @@
                         <div class="col-span-4">
                             <div class="bg-white  rounded-b-md  py-2">
                                 <ul class="text-sm font-medium">
-                                    <li v-for="(item, index) in data.productCategories" :key="index"
-                                        @mouseenter="showContent(item.id)" @mouseleave="hideContentWithDelay"
-                                        class="px-5 py-2 mb-1 text-sm cursor-pointer"
-                                        :class="{ 'bg-gray-100': currentContent === item.id }">
+                                    <li v-for="(item, index) in data.productCategories" :key="index">
+                                        <Link href="/">
+                                        <div @mouseenter="showContent(item.id)" @mouseleave="hideContentWithDelay"
+                                            class="px-5 py-2 mb-1 text-sm cursor-pointer"
+                                            :class="{ 'bg-gray-100': currentContent === item.id }">
+
+                                        </div>
                                         <div class="flex items-center jusitfy-center gap-2">
                                             <div v-if="item.icon && item.image === null">
                                                 <icon :icon="item.icon" class="text-gray-500 text-xl " />
@@ -145,6 +148,7 @@
                                             </div>
                                             <h5>{{ item.name }}</h5>
                                         </div>
+                                        </Link>
 
                                     </li>
                                 </ul>
@@ -156,7 +160,7 @@
                             <div v-for="(item, index) in data.productCategories" :key="index"
                                 @mouseenter="clearHideTimeout" @mouseleave="hideContentWithDelay"
                                 v-show="currentContent === item.id && item.children.length > 0">
-                                <div class="child bg-white min-h-full">
+                                <div class="child bg-white min-h-full py-2 px-5">
                                     <ul>
                                         <li v-for="(child, childIndex) in item.children" :key="childIndex">
                                             {{ child.name }}
