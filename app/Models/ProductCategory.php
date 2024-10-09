@@ -26,7 +26,10 @@ class ProductCategory extends Model
     protected $casts = [
         'icon' => 'array', // Chuyển các trường JSON thành mảng
     ];
-
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_category_assignments', 'product_category_id', 'product_id');
+    }
     protected static function boot()
     {
         parent::boot();

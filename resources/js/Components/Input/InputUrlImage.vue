@@ -29,7 +29,7 @@
                 <icon :icon="['fas', 'image']" />
             </div>
             <input :id="props.id" v-model="url_image" @input="emit('update:modelValue', url_image)"
-                class="formkit-input bg-gray-50 border border-gray-300 w-full text-gray-900 text-sm rounded-lg focus:ring-stone-500 focus:border-stone-500 block pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-stone-500 dark:focus:border-stone-500 rounded-t-none"
+                class="formkit-input bg-gray-50 border border-gray-300 w-full text-gray-900 text-sm rounded-lg focus:ring-stone-500 focus:border-stone-500 block pl-10 p-2.5     rounded-t-none"
                 name="email_address" aria-label="Đường dẫn ảnh" placeholder="Đường dẫn ảnh" required="" type="text" />
 
         </div>

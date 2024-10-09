@@ -72,14 +72,28 @@
                                 <li class="mb-1">
                                     <SideBarMenuItemLink :href="route('Ecommerce.ProductCategories')"
                                         :active="check('/ecommerce/product-categories')">
-                                       Product Categories
+                                        Categories
                                     </SideBarMenuItemLink>
-
+                                    <SideBarMenuItemLink :href="route('Ecommerce.Brand')"
+                                        :active="check('/ecommerce/brands')">
+                                        Brands
+                                    </SideBarMenuItemLink>
+                                    <SideBarMenuItemLink :href="route('Ecommerce.Product')"
+                                        :active="check('/ecommerce/products')">
+                                        Products
+                                    </SideBarMenuItemLink>
                                 </li>
 
                             </ul>
                         </div>
                     </div>
+                </li>
+                <li class="mb-3 ">
+                    <SideBarLink :href="route('Banner')" :active="check('/banners')">
+                        <icon :icon="['fas', 'images']" class="mr-2" />
+                        <span class="show font-semibold  text-slate-200">Banners</span>
+                    </SideBarLink>
+
                 </li>
                 <li class="mb-3 ">
                     <SideBarLink :href="route('Appearance')" :active="check('/appearance')">
@@ -110,7 +124,6 @@ const isMobile = () => {
 const adminStore = useAdminStore();
 const check = (path) => {
     const { url } = usePage();
-
     if (url.includes(path)) {
         return true;
     } else {

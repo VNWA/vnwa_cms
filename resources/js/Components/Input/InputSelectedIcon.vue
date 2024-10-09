@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center border border-gray-300 rounded-md ">
+    <div class="flex items-center border border-gray-300 rounded-md text-black/80">
         <div v-if="input && input.length > 0" class="h-full flex items-center justify-center min-w-10 ">
             <icon :icon="input" />
         </div>
@@ -28,7 +28,7 @@
 import VueSelect from 'vue-select';
 import "vue-select/dist/vue-select.css";
 import { ref, defineProps, watch, onMounted } from 'vue';
-import { fasArray, fabArray } from '@/Data/fontawebsome_icon';
+import { fasArray, fabArray } from '@/data/fontawebsome_icon';
 
 const options = ref([]);
 onMounted(() => {

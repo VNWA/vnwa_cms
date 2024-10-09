@@ -209,7 +209,7 @@ class BlogPostController extends Controller
             'meta_title' => $request->seo_meta['meta_title'] ?? null,
             'meta_desc' => $request->seo_meta['meta_desc'] ?? null,
         ];
-
+        $blog->update($data);
         DB::beginTransaction();
 
         try {
@@ -240,6 +240,16 @@ class BlogPostController extends Controller
             \Log::error($th);
 
             return response()->json(['message' => $th->getMessage()], 500);
+        }
+    }
+    function delete(Request $request)
+    {
+
+        try {
+            BlogPost::whereIn('id', $request->dataId)->delete();
+            return response()->json(['message' => 'Xóa dữ liệu thành công'], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }

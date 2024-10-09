@@ -5,7 +5,7 @@
             <template #header>
                 <div class="flex items-center justify-between">
                     <div>
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Categories Blog
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Categories Blog2
                         </h2>
                     </div>
                     <div>
@@ -100,7 +100,7 @@
                                         <div class="relative mt-1">
                                             <div class="flex items-center justify-start">
                                                 <div
-                                                    class=" block border-r-0 rounded-r-none border h-full py-2 px-2 bg-gray-50">
+                                                    class=" block border-r-0 rounded-r-none border h-full py-2 px-2 text-black bg-gray-50">
                                                     {{ url_web.origin }}/
                                                 </div>
                                                 <TextInput id="slug" v-model="form.slug" type="text"
@@ -112,7 +112,7 @@
                                             <div class="absolute top-2 right-5">
                                                 <div role="status" v-if="isSlugLoading">
                                                     <svg aria-hidden="true"
-                                                        class="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
+                                                        class="w-6 h-6 text-gray-200 animate-spin  fill-purple-600"
                                                         viewBox="0 0 100 101" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
                                                         <path
@@ -161,13 +161,13 @@
                                 </div>
                                 <div class="mb-4">
                                     <div
-                                        class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+                                        class="flex items-center ps-4 border border-gray-200 rounded ">
                                         <Checkbox v-model:checked="form.is_show" id="bordered-checkbox-1"
                                             type="checkbox" name="bordered-checkbox"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500   focus:ring-2  " />
 
                                         <label for="bordered-checkbox-1"
-                                            class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">
                                             Status: <span v-if="form.is_show"> Published </span>
                                             <span v-else>
                                                 Draft
@@ -176,20 +176,20 @@
                                         </label>
                                     </div>
                                     <div
-                                        class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+                                        class="flex items-center ps-4 border border-gray-200 rounded ">
 
                                         <Checkbox v-model:checked="form.is_highlight" id="bordered-checkbox-1"
                                             type="checkbox" name="bordered-checkbox"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500   focus:ring-2  " />
                                         <label for="bordered-checkbox-2"
-                                            class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nổi
+                                            class="w-full py-4 ms-2 text-sm font-medium text-gray-900 ">Nổi
                                             bật
                                         </label>
                                     </div>
 
                                 </div>
                                 <div
-                                    class="flex items-center px-4 border border-gray-200 rounded dark:border-gray-700 mb-4">
+                                    class="flex items-center px-4 border border-gray-200 rounded  mb-4">
                                     <SeoMetaForm v-model="form.seo_meta" />
 
                                 </div>

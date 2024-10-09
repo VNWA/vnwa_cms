@@ -45,7 +45,7 @@ const logout = () => {
         <div class="flex gap-4 w-full">
             <Sidebar />
             <div class="min-h-screen bg-gray-100 w-full overflow-hidden">
-                <nav class="bg-white border-b border-gray-100">
+                <nav class="bg-white border-b border-gray-100 text-black/80">
                     <!-- Primary Navigation Menu -->
                     <div class=" px-4 sm:px-6 lg:px-8">
                         <div class="flex justify-between h-16">
@@ -130,7 +130,11 @@ const logout = () => {
                                         </template>
                                     </Dropdown>
                                 </div>
-
+                                <a href="/" target="_blank">
+                                    <button class="flex items-center justify-center gap-4 px-3 py-2 bg-cyan-500 text-white shadow-2xl shadow-black border border-purple-500">
+                                        <icon :icon="['fas', 'shop']" />
+                                    </button>
+                                </a>
                                 <!-- Settings Dropdown -->
                                 <div class="ms-3 relative">
                                     <Dropdown align="right" width="48">
@@ -319,4 +323,8 @@ const logout = () => {
     </div>
 </template>
 <style>
+main input, main button, main textarea{
+    color: rgb(49, 49, 49);
+
+}
 </style>

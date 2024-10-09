@@ -26,6 +26,25 @@ class AppearanceController extends Controller
     }
 
 
+    public function loadJsonDataProfile()
+    {
+
+        $data = Appearance::where('type', 'profile')->first();
+
+        return response()->json($data->value, 200);
+    }
+    function updateProfile(Request $request)
+    {
+        try {
+            Appearance::where('type', 'profile')->update(['value' => $request->data]);
+            return response()->json(['message' => 'Update Porifie Company  Success'], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Update Porifie Company  Failing'], 500);
+
+        }
+    }
+
+
     public function loadJsonDataBotSearch()
     {
 

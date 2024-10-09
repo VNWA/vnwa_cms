@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             BlogPostSeeder::class,
             AppearanceOneSeeder::class,
             ProductCategorySeeder::class,
+            BrandSeeder::class,
+            ProductSeeder::class
         ]);
         User::truncate();
         User::create([

@@ -11,15 +11,24 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
     ],
-
+    darkMode: false,
     theme: {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                'main-color': '#1435c3',
-              },
+                primary: '#333fff', // Màu chủ đạo
+                grayTitle: '#c5c5c5',
+                grayContent: '#767676',
+                bgfooter: '#252525',
+                bgfooterBot: '#1c1c1c',
+                colorContent: '#404040',
+                codeProducts: '#fe9c00',
+            },
+            fontFamily: {
+                oswald: ['Oswald', 'sans-serif'], // Thêm font Oswald
+            },
         },
     },
 

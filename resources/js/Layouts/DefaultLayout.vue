@@ -1,182 +1,137 @@
 <template>
-    <div>
-        <div id="top-banner">
-            <div height="56" class="css-ymtqaj">
-                <picture>
-                    <source
-                        srcset="https://lh3.googleusercontent.com/3YjSsl02BY5KU6N2VEenV-RWYekzoP9qKd5AMYVXQOrfQCdfAS1ihDtpHU59EpuvgDBStvLcbkcgF_A0fwAB2-K3BHM1r2w=w1920-rw"
-                        type="image/webp">
-                    <source
-                        srcset="https://lh3.googleusercontent.com/3YjSsl02BY5KU6N2VEenV-RWYekzoP9qKd5AMYVXQOrfQCdfAS1ihDtpHU59EpuvgDBStvLcbkcgF_A0fwAB2-K3BHM1r2w=w1920"
-                        type="image/png"><img class="lazyload css-o4eu2v" alt=""
-                        src="https://lh3.googleusercontent.com/3YjSsl02BY5KU6N2VEenV-RWYekzoP9qKd5AMYVXQOrfQCdfAS1ihDtpHU59EpuvgDBStvLcbkcgF_A0fwAB2-K3BHM1r2w=w1920-rw"
-                        loading="lazy" decoding="async">
-                </picture>
-            </div>
-        </div>
-        <nav id="top-nav" class="w-full h-20">
-            <ul class="px-3 gap-5 max-w-screen-lg mx-auto">
-                <li v-for="(item, index) in data.top_nav" :key="index">
-                    <a :href="item.link" target="_blank" rel="noopener noreferrer" class="hover:text-white/80">
-                        <div class=" flex items-center justify-between gap-2">
-                            <icon v-if="item.icon" :icon="item.icon" />
-                            <h5 class="text-sm">
-                                {{ item.name }}
-                            </h5>
+
+    <Head>
+        <title>{{ seo.title }}</title>
+        <meta name="title" :content="seo.meta_title">
+        <meta name="description" :content="seo.meta_description">
+        <meta name="keywords" :content="seo.meta_keywords">
+        <meta name="image" :content="seo.meta_image">
+        <meta property="og:type" content="website">
+        <meta property="og:title" :content="seo.meta_title">
+        <meta property="og:description" :content="seo.meta_description">
+        <meta property="og:image" :content="seo.meta_image">
+    </Head>
+    <div class="flex flex-col min-h-screen">
+        <header class="shadow-xl shadow-black/10"
+            :class="['fixed top-0 right-0 w-full  z-50 transition-all duration-300', { 'bg-black/90': isScrolled, 'bg-transparent': !isScrolled }]">
+            <div class="h-[90px] lg:h-[135px]">
+                <div class="max-w-screen-xl mx-auto">
+                    <div class="lg:flex justify-end items-center pt-4 mb-4 gap-4 lg:mb-0 hidden">
+                        <a v-for="item in layout.topNav" :key="item"
+                            :class="{ 'text-white': isScrolled, 'text-black': !isScrolled }" :href="item.link">
+                            <button class="flex items-center justity-center gap-1">
+                                <icon :icon="item.icon" v-if="item.icon.length > 0" /> <span> {{ item.name }}</span>
+                            </button>
+                        </a>
+
+                    </div>
+                    <div class="lg:hidden flex">
+                        <div class="p-5">
+                            <Link :href="route('Client.Home')">
+                            <img width="360" height="37" class="max-w-full h-auto" :src="layout.logo.logo_full" />
+                            </Link>
+                            <div class="text-primary italic text-sm">
+                                Providing the Offshore Community Technical Solutions
+                            </div>
                         </div>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <header class="shadow-md  sticky top-0 bg-white">
-            <div class="bg-white flex items-center py-5 h-full max-w-screen-lg mx-auto">
-                <div class="grid grid-cols-12 gap-4 w-full items-center ">
-                    <div class="col-span-8">
-                        <div class="flex items-center justify-start w-full max-w-full">
-                            <div class="flex items-center justify-start gap-2">
-                                <Link href="/">
-                                <div id="logo" :class="[
-                                    'h-[35px]',
-                                    'transition-all',
-                                    'duration-300',
-                                    'ease-in-out',
-                                    isButtonShowMenu ? 'showIcon' : '',
-                                    isButtonShowMenu ? 'w-[35px]' : 'w-[251px]'
-                                ]" class="transition duration-700 ease-in-out">
-                                    <img class="logo_icon" v-if="isButtonShowMenu" width="35" height="35"
-                                        :src="data.logo.logo_icon" alt="Logo Icon">
-                                    <img class="logo_full" v-else width="251" height="35" :src="data.logo.logo_full"
-                                        alt="Logo Full">
-                                </div>
-
-                                </Link>
-                                <button v-if="isButtonShowMenu" @click="isShowMenu = !isShowMenu"
-                                    class="flex items-center justify-start gap-5 border text-gray-500/80  rounded-md h-[35px] w-full px-3 cursor-pointer hover:bg-black/5">
-                                    <icon :icon="['fas', 'fa-bars']" />
-                                    <h3 class="text-nowrap text-sm font-medium">Category Product</h3>
-                                </button>
-                            </div>
-
-                            <div class="w-full px-3  overflow-hidden pt-7  ">
-                                <div class="relative">
-                                    <form action="" method="GET" class="w-full">
-                                        <input type="text"
-                                            class=" w-full px-3 py-3 text-sm  rounded-md bg-slate-500/10 border-black/10"
-                                            placeholder="Enter the keyword you want to search for">
-                                        <button type="submit"
-                                            class="absolute top-0 right-0 w-12  text-xl h-full text-gray-500">
-                                            <icon :icon="['fas', 'magnifying-glass']" />
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class=" ">
-                                    <p class="whitespace-nowrap max-w-full overflow-hidden text-ellipsis">
-                                        <a v-for="(item, index) in data.bot_search" :key="index" :href="item.link"
-                                            target="_blank" rel="noopener noreferrer"
-                                            class="text-gray-500/90 text-xs hover:text-black/80 font-normal leading-normal border-none mt-3">
-                                            <span v-if="index > 0">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                            {{ item.name }}
-                                        </a>
-                                    </p>
-
-                                </div>
-                            </div>
+                        <div @click="  isMenuOpen = !isMenuOpen" class="p-5">
+                            <icon class="text-3xl text-white " :icon="['fas', 'bars']" />
                         </div>
                     </div>
-                    <div class="col-span-4">
-                        <div
-                            class="w-full max-w-full flex items-center gap-5 justify-between text-gray-500 font-medium">
-                            <div class="">
-                                <Link href="/" class="hover:text-main-color">
-                                <div class="flex h-full items-center gap-2">
-                                    <icon :icon="['far', 'circle-user']" class="text-3xl" />
-                                    <div class="text-xs ">
-                                        <h5>Login</h5>
-                                        <h5>Register</h5>
-                                    </div>
+                    <div :class="{ 'nav-menu': true, 'active': isMenuOpen }">
+                        <div class="flex lg:hidden pt-5 pr-5 justify-end" @click="  isMenuOpen = !isMenuOpen">
+                            <icon class="text-3xl" :icon="['fas', 'xmark']" />
+                        </div>
+                        <ul class="divide-y mx-3 divide-gray-200">
+                            <li v-for="(item, index) in productCategories" :key="index" class="pb-2">
+                                <div>
+                                    <Link :href="route('Client.Home')" :class="{
+                                        'text-gray-700': selectedMenu !== index
+                                    }" class="block py-2 transition duration-300 ease-in-out hover:text-primary">
+                                    {{ item.name }}
+                                    </Link>
+                                    <button @click.prevent="toggleMenu(index)">
+                                        sadg
+                                    </button>
                                 </div>
-                                </Link>
-                            </div>
-                            <div class="">
-                                <Link href="/" class="hover:text-main-color">
-                                <div class="flex h-full items-center">
-                                    <icon :icon="['far', 'bell']" class="text-3xl" />
+
+
+                                <!-- Menu con hiển thị khi click -->
+                                <div v-if="selectedMenu === index" class="">
+                                    <ul class="p-0">
+                                        <li v-for="(subItem, subIndex) in item.submenu" :key="subIndex"
+                                            class="text-sm text-gray-600 hover:text-gray-800 transition duration-200">
+                                            {{ subItem }}
+                                        </li>
+                                    </ul>
                                 </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="grid lg:grid-cols-12 items-center justify-center lg:justify-between">
+                        <div class="lg:col-span-5">
+                            <div class="lg:block hidden">
+                                <Link :href="route('Client.Home')">
+                                <img width="200" height="50" class="w-auto h-24" :src="layout.logo.logo_full" />
                                 </Link>
                             </div>
 
-                            <div class="">
-                                <Link href="/" class="hover:text-main-color">
-                                <div class="flex h-full items-center gap-2">
-                                    <icon :icon="['fas', 'cart-shopping']" class="text-3xl" />
-                                    <div class="text-xs ">
-                                        <h5>My Cart</h5>
-                                        <h5 class="font-normal">(0) products</h5>
-                                    </div>
-                                </div>
-                                </Link>
-                            </div>
+                        </div>
+                        <div class="lg:col-span-7 hidden lg:block font-bold">
+                            <ul class="lg:flex items-center justify-end gap-5 text-white ">
+                                <li class=" text-primary hover:text-red-500 cursor-pointer"
+                                    :class="{ 'text-red-500': page.url === '/' }">
+                                    <Link class="text-lg" :href="route('Client.Home')">Home</Link>
+                                </li>
+                                <li class="relative  text-primary hover:text-red-500 cursor-pointer"
+                                    :class="{ 'text-red-500': page.url === '/products' }">
+                                    <Link class="text-lg block" :href="route('Client.Products')">Products</Link>
+                                    <ul class="menu-hover">
+                                        <li v-for="(item, index) in productCategories" :key="index"
+                                            class="border-t relative border-red-500 hover:bg-red-500 px-6 py-4">
+                                            <Link :href="route('Client.Documents')"> {{ item.name }}</Link>
+                                            <ul class="submenu-hover" v-if="item.children.length > 0">
+                                                <li class="px-6 py-4 border-t border-red-500"
+                                                    v-for="(value, n) in item.children" :key="n">
+                                                    <Link :href="route('Client.Documents')" class=" ">{{ value.name }}
+                                                    </Link>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li class=" text-primary hover:text-red-500 cursor-pointer"
+                                    :class="{ 'text-red-500': page.url === 'documents' }">
+                                    <Link class="text-lg" :href="route('Client.Documents')">Documents and Software
+                                    </Link>
+                                </li>
+                                <li class=" text-primary hover:text-red-500 cursor-pointer"
+                                    :class="{ 'text-red-500': page.url === '/about-us' }">
+                                    <Link class="text-lg" :href="route('Client.About')">About</Link>
+                                </li>
+                                <li class=" text-primary hover:text-red-500 cursor-pointer"
+                                    :class="{ 'text-red-500': page.url === '/contact' }">
+                                    <Link class="text-lg" :href="route('Client.Contact')">Contact</Link>
+                                </li>
+                                <li class=" text-primary hover:text-red-500 cursor-pointer"
+                                    :class="{ 'text-red-500': page.url === '/blogs' }">
+                                    <Link class="text-lg" :href="route('Client.Blogs')">Blog</Link>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
-        <div class=" fixed  w-full h-full top-[122px] z-50 bg-black/50" v-if="isShowMenu && isButtonShowMenu"
-            @click="isShowMenu = false">
-
-            <div class="w-full h-full ">
-                <div class="max-w-screen-lg mx-auto">
-                    <div class="grid grid-cols-12">
-                        <!-- Danh mục sản phẩm bên trái -->
-                        <div class="col-span-4">
-                            <div class="bg-white  rounded-b-md  py-2">
-                                <ul class="text-sm font-medium">
-                                    <li v-for="(item, index) in data.productCategories" :key="index"
-                                        @mouseenter="showContent(item.id)" @mouseleave="hideContentWithDelay"
-                                        class="px-5 py-2 mb-1 text-sm cursor-pointer"
-                                        :class="{ 'bg-gray-100': currentContent === item.id }">
-                                        <div class="flex items-center jusitfy-center gap-2">
-                                            <div v-if="item.icon && item.image === null">
-                                                <icon :icon="item.icon" class="text-gray-500 text-xl " />
-                                            </div>
-                                            <div v-if="item.image">
-                                                <img :src="item.image" width="25" height="25"
-                                                    alt="Product Category Image">
-                                            </div>
-                                            <h5>{{ item.name }}</h5>
-                                        </div>
-
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Nội dung sản phẩm bên phải -->
-                        <div class="col-span-8">
-                            <div v-for="(item, index) in data.productCategories" :key="index"
-                                @mouseenter="clearHideTimeout" @mouseleave="hideContentWithDelay"
-                                v-show="currentContent === item.id && item.children.length > 0">
-                                <div class="child bg-white min-h-full">
-                                    <ul>
-                                        <li v-for="(child, childIndex) in item.children" :key="childIndex">
-                                            {{ child.name }}
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <main class="">
+        <div :class="{ 'bg-white pt-[80px] lg:pt-[150px]': !isHome }">
             <slot />
-        </main>
+        </div>
         <footer class="w-full">
             <div class="bg-black/80">
                 <div class=" max-w-screen-lg mx-auto py-5">
                     <ul class=" flex items-start  justify-between flex-wrap gap-4 ">
-                        <li v-for="(item, index) in data.footer.footer_sidebar" :key="index">
+                        <li v-for="(item, index) in layout.footer.footer_sidebar" :key="index">
                             <div>
                                 <h3 class="font-bold text-base text-white mb-2 ">
                                     {{ item.name }}
@@ -204,154 +159,242 @@
                                 <div>
                                     <h3 class="text-xl mb-5">Connect with us
                                     </h3>
-                                    <ul class="flex items-center justify-start gap-2">
-                                        <li>
-                                            <Link href="/">
-                                            <div
-                                                class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
-                                                <icon :icon="['fab', 'fa-facebook']" class="text-md text-white" />
-                                            </div>
-                                            </Link>
+                                    <ul class="grid grid-cols-4 gap-1">
+                                        <li v-for="(item, index) in layout.profile.social" :key="index"
+                                            class="col-span-1">
+                                            <a target="_blank" :href="item.link">
+                                                <div
+                                                    class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
+                                                    <icon :icon="item.icon" v-if="item.icon.length > 0"
+                                                        class="text-md text-white" />
+                                                </div>
+                                            </a>
+
                                         </li>
-                                        <li>
-                                            <Link href="/">
-                                            <div
-                                                class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
-                                                <icon :icon="['fab', 'fa-facebook']" class="text-md text-white" />
-                                            </div>
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/">
-                                            <div
-                                                class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
-                                                <icon :icon="['fab', 'fa-facebook']" class="text-md text-white" />
-                                            </div>
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/">
-                                            <div
-                                                class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
-                                                <icon :icon="['fab', 'fa-facebook']" class="text-md text-white" />
-                                            </div>
-                                            </Link>
-                                        </li>
+
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="col-span-9">
-                            <div v-html="data.footer.footer_bottom" class="text-xs font-normal"></div>
+                            <div v-html="layout.footer.footer_bottom" class="text-xs font-normal"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </footer>
+        <!-- <footer>
+            <div class="bg-bgfooter lg:py-10 pt-10">
+                <div class="max-w-screen-xl mx-auto text-white">
+                    <div class="p-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-12">
+                            <div class="lg:col-span-4">
+                                <h4 class="font-bold text-xl text-grayTitle uppercase">Social</h4>
+                                <div class="flex lg:mt-4 lg:mb-6 my-6 mt-4 ">
+                                    <button class="border hover:bg-red-500 w-12 h-12 rounded-md mr-2">
+                                        <icon class="text-2xl text-grayContent" :icon="['fab', 'facebook-f']" />
+                                    </button>
+                                    <button class="border hover:bg-red-500 w-12 h-12 rounded-md mr-2">
+                                        <icon class="text-2xl text-grayContent" :icon="['fab', 'facebook-f']" />
+                                    </button>
+                                    <button class="border hover:bg-red-500 w-12 h-12 rounded-md mr-2">
+                                        <icon class="text-2xl text-grayContent" :icon="['fab', 'facebook-f']" />
+                                    </button>
+                                    <button class="border hover:bg-red-500 w-12 h-12 rounded-md mr-2">
+                                        <icon class="text-2xl text-grayContent" :icon="['fab', 'facebook-f']" />
+                                    </button>
+                                </div>
+                                <div class="border-t border-grayContent pt-7" style="width: 360px;">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15338.43487931804!2d108.17844570000001!3d16.033871549999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1728243447637!5m2!1svi!2s"
+                                        width="360" height="250" style="border:0;" loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
+                            </div>
+                            <div class="lg:col-span-4">
+                                <div class="lg:ml-6 mt-4 lg:mt-0">
+                                    <h4 class="font-bold text-xl text-grayTitle mb-1 uppercase">Quick links</h4>
+                                    <div class="py-2">
+                                        <Link class="text-grayContent hover:text-red-500 " :href="route('Client.Home')">
+                                        Selco USA</Link>
+                                    </div>
+                                    <div class="py-2">
+                                        <Link class="text-grayContent hover:text-red-500 " :href="route('Client.Home')">
+                                        Ground Fault</Link>
+                                    </div>
+                                    <div class="py-2">
+                                        <Link class="text-grayContent hover:text-red-500 " :href="route('Client.Home')">
+                                        Generator Controller
+                                        </Link>
+                                    </div>
+                                    <div class="py-2">
+                                        <Link class="text-grayContent hover:text-red-500 " :href="route('Client.Home')">
+                                        Flexgen</Link>
+                                    </div>
+                                    <div class="py-2">
+                                        <Link class="text-grayContent hover:text-red-500 " :href="route('Client.Home')">
+                                        Potentiometer</Link>
+                                    </div>
+                                    <div class="py-2">
+                                        <Link class="text-grayContent hover:text-red-500 " :href="route('Client.Home')">
+                                        Insulation Detection
+                                        </Link>
+                                    </div>
+                                    <div class="py-2">
+                                        <Link class="text-grayContent hover:text-red-500 " :href="route('Client.Home')">
+                                        Synchroscope</Link>
+                                    </div>
+                                    <div class="py-2">
+                                        <Link class="text-grayContent hover:text-red-500 " :href="route('Client.Home')">
+                                        Arc Protection Relay
+                                        </Link>
+                                    </div>
+                                    <div class="py-2">
+                                        <Link class="text-grayContent hover:text-red-500 " :href="route('Client.Home')">
+                                        Marine Alarm Panel
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lg:col-span-4">
+                                <div class="lg:mr-8 my-4 lg:my-0">
+                                    <h4 class="font-bold text-xl text-grayTitle my-2 lg:mb-1 uppercase">Search for
+                                        Products</h4>
+                                    <div class="lg:my-7 mb-7">
+                                        <form action="">
+                                            <input type="text"
+                                                class="pl-2 py-3 w-full rounded-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary"
+                                                placeholder="Search...">
+                                        </form>
+                                    </div>
+                                    <div class="border-t border-grayContent pt-7">
+                                        <h6 class="text-grayContent text-sm lg:text-xl">Phone:</h6>
+                                        <h6>
+                                            <Link
+                                                class="text-sm lg:text-xl text-grayContent hover:text-red-500 underline hover:no-underline"
+                                                :href="route('Client.Home')">
+                                            +1-770-455-9110</Link>
+                                        </h6>
+                                    </div>
+                                    <div class="my-7">
+                                        <h6 class="text-grayContent text-sm lg:text-xl">Phone:</h6>
+                                        <h6>
+                                            <Link
+                                                class="text-sm lg:text-xl text-grayContent hover:text-red-500 underline hover:no-underline"
+                                                :href="route('Client.Home')">
+                                            4560
+                                            River Bottom Drive
+                                            Norcross, GA 30092
+                                            USA</Link>
+                                        </h6>
+                                    </div>
+                                    <div class="my-7">
+                                        <h6 class="text-grayContent text-sm lg:text-xl">Email:</h6>
+                                        <h6>
+                                            <Link
+                                                class="text-sm lg:text-xl text-grayContent hover:text-red-500 underline hover:no-underline"
+                                                :href="route('Client.Home')">
+                                            4560
+                                            info@selcousa.com</Link>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-bgfooterBot">
+                <div class="max-w-screen-xl mx-auto">
+                    <div class="py-8 text-center lg:text-left lg:flex lg:justify-between text-grayContent">
+                        <div class="pb-3 lg:pb-0">
+                            Copyright © 2024 . All Rights Reserved. Our Policies
+                        </div>
+                        <div class=" ">
+                            SELCO USA, INC. | DUNS: 86-952-7408 | CAGE code 88BF3
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer> -->
     </div>
 </template>
 
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-const currentContent = ref(null);
-const hideTimeout = ref(null);
-const isButtonShowMenu = ref(false);
-const isShowMenu = ref(false);
-const showContent = (id) => {
-    clearTimeout(hideTimeout.value);
-    currentContent.value = id;
-};
+import '../../css/style.css';
 
-const hideContentWithDelay = () => {
-    hideTimeout.value = setTimeout(() => {
-        currentContent.value = null;
-    }, 50); // Độ trễ 200ms trước khi ẩn nội dung
-};
+const page = usePage();
+const layout = page.props.layout
+const productCategories = page.props.productCategories
+defineProps({
+    isHome: {
+        type: Boolean,
+        default: false
+    },
+    seo: {
+        type: Object,
+        default: () => ({
+            title: 'Global Procurement Logistics Solutions Co., LTD',
+            meta_title: 'Công ty TNHH Giải pháp Logistics Mua sắm Toàn cầu | Global Procurement Logistics Solutions Co., LTD',
+            meta_description: 'Chúng tôi cung cấp các giải pháp logistics và mua sắm toàn cầu chuyên nghiệp, đáng tin cậy và hiệu quả. Tối ưu hóa chuỗi cung ứng với Global Procurement Logistics Solutions Co., LTD.',
+            meta_keywords: 'Logistics, mua sắm toàn cầu, giải pháp logistics, Global Procurement Logistics, giải pháp chuỗi cung ứng',
+        }),
+    },
+});
 
-const clearHideTimeout = () => {
-    clearTimeout(hideTimeout.value);
-};
+// Khai báo biến và kiểu dữ liệu
+const selectedMenu = ref(null)
+
+// Dữ liệu menu với kiểu MenuItem[]
+const menuItems = [
+    {
+        name: 'Home',
+        submenu: ['Submenu 1', 'Submenu 2', 'Submenu 3']
+    },
+    {
+        name: 'Nail Polishes',
+        submenu: ['Nail Color 1', 'Nail Color 2', 'Nail Color 3']
+    },
+    {
+        name: 'Manicure',
+        submenu: ['Manicure 1', 'Manicure 2']
+    },
+    {
+        name: 'Kits',
+        submenu: ['Kit 1', 'Kit 2', 'Kit 3']
+    },
+    {
+        name: 'Outlet',
+        submenu: ['Outlet 1', 'Outlet 2']
+    },
+    {
+        name: 'Learn With Us',
+        submenu: ['Lesson 1', 'Lesson 2']
+    }
+]
+// Hàm toggleMenu để thay đổi selectedMenu
+const toggleMenu = (index) => {
+    selectedMenu.value = selectedMenu.value === index ? null : index
+}
+const isMenuOpen = ref(false)
+// -------------------------------------------------------------------
+const isScrolled = ref(false); // Khởi tạo biến để theo dõi trạng thái cuộn
+
+
+// Hàm để kiểm tra trạng thái cuộn
 const handleScroll = () => {
-    isButtonShowMenu.value = window.scrollY > 98;
+    isScrolled.value = window.scrollY > 135; // Cập nhật giá trị isScrolled dựa vào vị trí cuộn
 };
 
 onMounted(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll); // Thêm sự kiện cuộn khi component được gắn
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('scroll', handleScroll); // Xóa sự kiện cuộn khi component bị hủy
 });
-const data = ref({
-    top_nav: [],
-
-    logo: {
-        favicon: '',
-        logo_full: '',
-        logo_icon: ''
-    },
-    bot_search: [],
-    footer: {
-        footer_sidebar: [],
-        footer_bottom: '',
-
-    }
-});
-const loadDataLayout = () => {
-    axios.get('/api/load-data-layout')
-        .then(response => {
-            data.value = response.data
-
-        })
-        .catch(error => {
-            console.log(error);
-        });
-}
-
-loadDataLayout();
 </script>
 
-<style scoped>
-header {
-    height: 122px;
-}
-
-/*
-header #logo {
-    height: 35px;
-    width: 251px;
-} */
-
-header #logo .logo_icon {
-    display: none;
-}
-
-header #logo .logo_full {
-    display: block;
-}
-
-
-/* header #logo.showIcon {
-    height: 35px;
-    width: 35px;
-} */
-
-header #logo.showIcon .logo_icon {
-    display: block;
-}
-
-header #logo.showIcon .logo_full {
-    display: none;
-}
-
-header #logo .logo_full {
-    height: 35px;
-    width: 251px;
-}
-
-header #logo .logo_icon {
-    height: 35px;
-    width: 35px;
-}
-</style>
+<style></style>

@@ -80,7 +80,7 @@
 
                                         <div class="flex items-center justify-start">
                                             <div
-                                                class=" block border-r-0 rounded-r-none border h-full py-2 px-2 bg-gray-50 text-nowrap ">
+                                                class=" block border-r-0 rounded-r-none border h-full py-2 px-2 bg-gray-50 text-nowrap text-black ">
                                                 {{ url_web.origin }} /
                                             </div>
                                             <TextInput id="slug" v-model="form.slug" type="text"
@@ -91,7 +91,7 @@
                                         <div class="absolute top-2 right-5">
                                             <div role="status" v-if="isSlugLoading">
                                                 <svg aria-hidden="true"
-                                                    class="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600"
+                                                    class="w-6 h-6 text-gray-200 animate-spin  fill-purple-600"
                                                     viewBox="0 0 100 101" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <path

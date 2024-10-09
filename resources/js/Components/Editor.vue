@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-full mb-3">
+    <div class="w-full h-full mb-3 text-black">
         <div v-if="isModal"
             class="fixed w-full h-full top-0 left-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50 p-10">
             <div class="min-w-52 min-h-52 max-h-full max-w-full w-full h-full">
