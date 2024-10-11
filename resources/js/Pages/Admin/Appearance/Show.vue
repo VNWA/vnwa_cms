@@ -34,13 +34,24 @@
                         Top Nav Link
                     </div>
                     </Link>
-                    <Link :href="route('Appearance.BotSearch')">
+                    <!-- <Link :href="route('Appearance.BotSearch')">
                     <div
                         class="px-10 py-5 text-center border-black bg-purple-600/90 hover:bg-purple-900 cursor-pointer rounded-md shadow-md font-bold text-xl text-white">
                         BotSearch
                     </div>
+                    </Link> -->
+                    <Link :href="route('Appearance.Profile')">
+                    <div
+                        class="px-10 py-5 text-center border-black bg-purple-600/90 hover:bg-purple-900 cursor-pointer rounded-md shadow-md font-bold text-xl text-white">
+                        Profile
+                    </div>
                     </Link>
-
+                    <Link :href="route('Appearance.About')">
+                    <div
+                        class="px-10 py-5 text-center border-black bg-purple-600/90 hover:bg-purple-900 cursor-pointer rounded-md shadow-md font-bold text-xl text-white">
+                        About
+                    </div>
+                    </Link>
                 </div>
             </div>
 

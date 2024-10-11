@@ -1,191 +1,182 @@
 <template>
-    <div>
-        <div id="top-banner">
-            <div height="56" class="css-ymtqaj">
-                <picture>
-                    <source
-                        srcset="https://lh3.googleusercontent.com/3YjSsl02BY5KU6N2VEenV-RWYekzoP9qKd5AMYVXQOrfQCdfAS1ihDtpHU59EpuvgDBStvLcbkcgF_A0fwAB2-K3BHM1r2w=w1920-rw"
-                        type="image/webp">
-                    <source
-                        srcset="https://lh3.googleusercontent.com/3YjSsl02BY5KU6N2VEenV-RWYekzoP9qKd5AMYVXQOrfQCdfAS1ihDtpHU59EpuvgDBStvLcbkcgF_A0fwAB2-K3BHM1r2w=w1920"
-                        type="image/png"><img class="lazyload css-o4eu2v" alt=""
-                        src="https://lh3.googleusercontent.com/3YjSsl02BY5KU6N2VEenV-RWYekzoP9qKd5AMYVXQOrfQCdfAS1ihDtpHU59EpuvgDBStvLcbkcgF_A0fwAB2-K3BHM1r2w=w1920-rw"
-                        loading="lazy" decoding="async">
-                </picture>
-            </div>
-        </div>
-        <nav id="top-nav" class="w-full h-20">
-            <ul class="px-3 gap-5 max-w-screen-lg mx-auto">
-                <li v-for="(item, index) in data.top_nav" :key="index">
-                    <a :href="item.link" target="_blank" rel="noopener noreferrer" class="hover:text-white/80">
-                        <div class=" flex items-center justify-between gap-2">
-                            <icon v-if="item.icon" :icon="item.icon" />
-                            <h5 class="text-sm">
-                                {{ item.name }}
-                            </h5>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <header class="shadow-md  sticky top-0 bg-white">
-            <div class="bg-white flex items-center py-5 h-full max-w-screen-lg mx-auto">
-                <div class="grid grid-cols-12 gap-4 w-full items-center ">
-                    <div class="col-span-8">
-                        <div class="flex items-center justify-start w-full max-w-full">
-                            <div class="flex items-center justify-start gap-2">
-                                <Link href="/">
-                                <div id="logo" :class="[
-                                    'h-[35px]',
-                                    'transition-all',
-                                    'duration-300',
-                                    'ease-in-out',
-                                    isButtonShowMenu ? 'showIcon' : '',
-                                    isButtonShowMenu ? 'w-[35px]' : 'w-[251px]'
-                                ]" class="transition duration-700 ease-in-out">
-                                    <img class="logo_icon" v-if="isButtonShowMenu" width="35" height="35"
-                                        :src="data.logo.logo_icon" alt="Logo Icon">
-                                    <img class="logo_full" v-else width="251" height="35" :src="data.logo.logo_full"
-                                        alt="Logo Full">
-                                </div>
 
-                                </Link>
-                                <button v-if="isButtonShowMenu" @click="isShowMenu = !isShowMenu"
-                                    class="flex items-center justify-start gap-5 border text-gray-500/80  rounded-md h-[35px] w-full px-3 cursor-pointer hover:bg-black/5">
-                                    <icon :icon="['fas', 'fa-bars']" />
-                                    <h3 class="text-nowrap text-sm font-medium">Category Product</h3>
-                                </button>
-                            </div>
+    <Head>
+        <title>{{ seo.title }}</title>
+        <meta name="title" :content="seo.meta_title">
+        <meta name="description" :content="seo.meta_description">
+        <meta name="keywords" :content="seo.meta_keywords">
+        <meta name="image" :content="seo.meta_image">
+        <meta property="og:type" content="website">
+        <meta property="og:title" :content="seo.meta_title">
+        <meta property="og:description" :content="seo.meta_description">
+        <meta property="og:image" :content="seo.meta_image">
+    </Head>
+    <div class="flex flex-col min-h-screen">
+        <header class="shadow-xl shadow-black/10"
+            :class="['fixed top-0 right-0 w-full  z-50 transition-all duration-300', { 'bg-black/90': isScrolled, 'bg-transparent': !isScrolled }]">
+            <div class="h-[80px] lg:h-[135px]">
+                <div class="max-w-screen-xl mx-auto h-full">
+                    <div class="lg:flex justify-end items-center pt-4 mb-4 gap-4 lg:mb-0 hidden">
+                        <a v-for="item in layout.topNav" :key="item"
+                            :class="{ 'text-white': isScrolled, 'text-black': !isScrolled }" :href="item.link">
+                            <button class="flex items-center justity-center gap-1">
+                                <icon :icon="item.icon" v-if="item.icon.length > 0" /> <span> {{ item.name }}</span>
+                            </button>
+                        </a>
 
-                            <div class="w-full px-3  overflow-hidden pt-7  ">
-                                <div class="relative">
-                                    <form action="" method="GET" class="w-full">
-                                        <input type="text"
-                                            class=" w-full px-3 py-3 text-sm  rounded-md bg-slate-500/10 border-black/10"
-                                            placeholder="Enter the keyword you want to search for">
-                                        <button type="submit"
-                                            class="absolute top-0 right-0 w-12  text-xl h-full text-gray-500">
-                                            <icon :icon="['fas', 'magnifying-glass']" />
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class=" ">
-                                    <p class="whitespace-nowrap max-w-full overflow-hidden text-ellipsis">
-                                        <a v-for="(item, index) in data.bot_search" :key="index" :href="item.link"
-                                            target="_blank" rel="noopener noreferrer"
-                                            class="text-gray-500/90 text-xs hover:text-black/80 font-normal leading-normal border-none mt-3">
-                                            <span v-if="index > 0">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                            {{ item.name }}
-                                        </a>
-                                    </p>
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <div class="col-span-4">
-                        <div
-                            class="w-full max-w-full flex items-center gap-5 justify-between text-gray-500 font-medium">
-                            <div class="">
-                                <Link href="/" class="hover:text-main-color">
-                                <div class="flex h-full items-center gap-2">
-                                    <icon :icon="['far', 'circle-user']" class="text-3xl" />
-                                    <div class="text-xs ">
-                                        <h5>Login</h5>
-                                        <h5>Register</h5>
-                                    </div>
-                                </div>
-                                </Link>
-                            </div>
-                            <div class="">
-                                <Link href="/" class="hover:text-main-color">
-                                <div class="flex h-full items-center">
-                                    <icon :icon="['far', 'bell']" class="text-3xl" />
-                                </div>
+                    <div class="lg:hidden flex items-center justify-between px-3 h-full">
+                        <div class="">
+                            <Link :href="route('Client.Home')">
+                            <img width="360" height="37" class="max-w-52 w-auto h-auto"
+                                :src="layout.logo.logo_full" />
+                            </Link>
+
+                        </div>
+                        <button  @click="  isMenuOpen = !isMenuOpen">
+                            <icon class="text-3xl  " :class="{ 'text-white': isScrolled, 'text-black': !isScrolled }" :icon="['fas', 'bars']" />
+                        </button>
+                    </div>
+                    <div :class="{ 'nav-menu': true, 'active': isMenuOpen }">
+                        <div class="flex lg:hidden pt-5 pr-5 justify-end" @click="  isMenuOpen = !isMenuOpen">
+                            <icon class="text-3xl" :icon="['fas', 'xmark']" />
+                        </div>
+                        <ul class="divide-y mx-3 divide-gray-200">
+                            <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
+                                :class="{ 'text-subPrimary': page.url === '/' }">
+                                <Link class="text-xl font-bold" :href="route('Client.Home')">Home</Link>
+                            </li>
+                            <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
+                                :class="{ 'text-subPrimary': page.url === '/about-us' }">
+                                <Link class="text-xl font-bold" :href="route('Client.About')">About</Link>
+                            </li>
+                            <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
+                                :class="{ 'text-subPrimary': page.url === '/products' }">
+                                <Link class="text-xl font-bold" :href="route('Client.Products')">Products</Link>
+                            </li>
+                            <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
+                                :class="{ 'text-subPrimary': page.url === '/brands' }">
+                                <Link class="text-xl font-bold" :href="route('Client.Brands')">Brands</Link>
+                            </li>
+                            <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
+                                :class="{ 'text-subPrimary': page.url === '/blogs' }">
+                                <Link class="text-xl font-bold" :href="route('Client.Blogs')">Blogs</Link>
+                            </li>
+                            <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
+                                :class="{ 'text-subPrimary': page.url === '/contact' }">
+                                <Link class="text-xl font-bold" :href="route('Client.Contact')">Contact Us</Link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="grid lg:grid-cols-12 items-center justify-center lg:justify-between">
+                        <div class="lg:col-span-5">
+                            <div class="lg:block hidden">
+                                <Link :href="route('Client.Home')">
+                                <img width="200" height="50" class="w-auto h-24" :src="layout.logo.logo_full" />
                                 </Link>
                             </div>
 
-                            <div class="">
-                                <Link href="/" class="hover:text-main-color">
-                                <div class="flex h-full items-center gap-2">
-                                    <icon :icon="['fas', 'cart-shopping']" class="text-3xl" />
-                                    <div class="text-xs ">
-                                        <h5>My Cart</h5>
-                                        <h5 class="font-normal">(0) products</h5>
-                                    </div>
-                                </div>
-                                </Link>
-                            </div>
+                        </div>
+                        <div class="lg:col-span-7 hidden lg:block font-bold">
+                            <ul class="lg:flex items-center justify-end gap-5 text-white ">
+                                <li class=" text-primary hover:text-subPrimary cursor-pointer"
+                                    :class="{ 'text-subPrimary': page.url === '/' }">
+                                    <Link class="text-lg" :href="route('Client.Home')">Home</Link>
+                                </li>
+                                <li class=" text-primary hover:text-subPrimary cursor-pointer"
+                                    :class="{ 'text-subPrimary': page.url === '/about-us' }">
+                                    <Link class="text-lg" :href="route('Client.About')">About Us</Link>
+                                </li>
+                                <li class="relative  text-primary hover:text-subPrimary cursor-pointer"
+                                    :class="{ 'text-subPrimary': page.url === '/products' }">
+                                    <Link class="text-lg block" :href="route('Client.Products')">Products</Link>
+                                    <ul class="menu-hover">
+                                        <li v-for="(item, index) in productCategories" :key="index"
+                                            class="border-t relative border-red-500 hover:bg-red-500 px-6 py-4">
+                                            <Link :href="route('Client.Products', item.id)"> {{ item.name }}</Link>
+                                            <ul class="submenu-hover" v-if="item.children.length > 0">
+                                                <li class="px-6 py-4 border-t border-red-500"
+                                                    v-for="(value, n) in item.children" :key="n">
+                                                    <Link :href="route('Client.Products', item.id)" class=" ">{{
+                                                        value.name }}
+                                                    </Link>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li class=" text-primary hover:text-subPrimary cursor-pointer"
+                                    :class="{ 'text-subPrimary': page.url === '/brands' }">
+                                    <Link class="text-lg" :href="route('Client.Brands')">Brands
+                                    </Link>
+                                </li>
+
+                                <li class=" text-primary hover:text-subPrimary cursor-pointer"
+                                    :class="{ 'text-subPrimary': page.url === '/blogs' }">
+                                    <Link class="text-lg" :href="route('Client.Blogs')">Blogs</Link>
+                                </li>
+                                <li class=" text-primary hover:text-subPrimary cursor-pointer"
+                                    :class="{ 'text-subPrimary': page.url === '/contact' }">
+                                    <Link class="text-lg" :href="route('Client.Contact')">Contact Us</Link>
+                                </li>
+
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
-        <div class=" fixed  w-full h-full top-[122px] z-50 bg-black/50" v-if="isShowMenu && isButtonShowMenu"
-            @click="isShowMenu = false">
-
-            <div class="w-full h-full ">
-                <div class="max-w-screen-lg mx-auto">
-                    <div class="grid grid-cols-12">
-                        <!-- Danh mục sản phẩm bên trái -->
-                        <div class="col-span-4">
-                            <div class="bg-white  rounded-b-md  py-2">
-                                <ul class="text-sm font-medium">
-                                    <li v-for="(item, index) in data.productCategories" :key="index"
-                                        @mouseenter="showContent(item.id)" @mouseleave="hideContentWithDelay"
-                                        class="px-5 py-2 mb-1 text-sm cursor-pointer"
-                                        :class="{ 'bg-gray-100': currentContent === item.id }">
-                                        <div class="flex items-center jusitfy-center gap-2">
-                                            <div v-if="item.icon && item.image === null">
-                                                <icon :icon="item.icon" class="text-gray-500 text-xl " />
-                                            </div>
-                                            <div v-if="item.image">
-                                                <img :src="item.image" width="25" height="25"
-                                                    alt="Product Category Image">
-                                            </div>
-                                            <h5>{{ item.name }}</h5>
-                                        </div>
-
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Nội dung sản phẩm bên phải -->
-                        <div class="col-span-8">
-                            <div v-for="(item, index) in data.productCategories" :key="index"
-                                @mouseenter="clearHideTimeout" @mouseleave="hideContentWithDelay"
-                                v-show="currentContent === item.id && item.children.length > 0">
-                                <div class="child bg-white min-h-full">
-                                    <ul>
-                                        <li v-for="(child, childIndex) in item.children" :key="childIndex">
-                                            {{ child.name }}
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <main class="">
+        <main :class="{ 'bg-white pb-5 pt-[100px] lg:pt-[150px]': !isHome }">
             <slot />
         </main>
-        <footer class="w-full">
+        <div class="mt-3" v-show="isSlideBrands">
+            <div class="max-w-screen-xl mx-auto py-3 px-3">
+
+                <swiper :slidesPerView="4" :breakpoints="{
+                    '640': {
+                        slidesPerView: 3,
+                        spaceBetween: 10,
+                    },
+                    '768': {
+                        slidesPerView: 4,
+                        spaceBetween: 10,
+                    },
+                    '1024': {
+                        slidesPerView: 10,
+                        spaceBetween: 10,
+                    },
+                }" :autoplay="{
+                    delay: 1000,
+                    disableOnInteraction: false,
+                }" :spaceBetween="30" :modules="swiperModule">
+                    <swiper-slide v-for="(item, index) in productBrands" :key="index">
+                        <div>
+                            <Link :href="route('Client.Brand.Products', item.slug)">
+                            <img width="100" height="100" class="w-full h-auto" :src="item.image" alt="Brand">
+                            </Link>
+                        </div>
+                    </swiper-slide>
+
+                </swiper>
+            </div>
+
+
+        </div>
+        <footer class="w-full ">
             <div class="bg-black/80">
-                <div class=" max-w-screen-lg mx-auto py-5">
+                <div class=" max-w-screen-xl mx-auto py-5 px-3">
                     <ul class=" flex items-start  justify-between flex-wrap gap-4 ">
-                        <li v-for="(item, index) in data.footer.footer_sidebar" :key="index">
+                        <li v-for="(item, index) in layout.footer.footer_sidebar" :key="index">
                             <div>
                                 <h3 class="font-bold text-base text-white mb-2 ">
                                     {{ item.name }}
                                 </h3>
-                                <ul class="w-full text-sm text-white/50">
+                                <ul class="w-full text-sm ">
 
                                     <li class="mb-2" v-for="(value, n) in item.value" :key="n">
-                                        <Link :href="value.link" class="text-wrap hover:text-white/90">
-                                        <h3> {{ value.name }} </h3>
+                                        <Link :href="value.link" class="text-wrap ">
+                                        <h3 class="text-white/50 hover:text-white/90"> {{ value.name }} </h3>
                                         </Link>
                                     </li>
 
@@ -197,161 +188,109 @@
                 </div>
             </div>
             <div class="bg-black/90 text-white/60">
-                <div class=" max-w-screen-lg mx-auto py-5">
+                <div class=" max-w-screen-xl mx-auto py-5 px-3">
                     <div class="grid grid-cols-12 gap-4 py-5">
-                        <div class="col-span-3">
+                        <div class="lg:col-span-3 col-span-12">
                             <div class="h-full w-full flex items-center justify-center">
                                 <div>
                                     <h3 class="text-xl mb-5">Connect with us
                                     </h3>
-                                    <ul class="flex items-center justify-start gap-2">
-                                        <li>
-                                            <Link href="/">
-                                            <div
-                                                class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
-                                                <icon :icon="['fab', 'fa-facebook']" class="text-md text-white" />
-                                            </div>
-                                            </Link>
+                                    <ul class="grid grid-cols-4 gap-1">
+                                        <li v-for="(item, index) in layout.profile.social" :key="index"
+                                            class="col-span-1">
+                                            <a target="_blank" :href="item.link">
+                                                <div
+                                                    class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
+                                                    <icon :icon="item.icon" v-if="item.icon.length > 0"
+                                                        class="text-md text-white" />
+                                                </div>
+                                            </a>
+
                                         </li>
-                                        <li>
-                                            <Link href="/">
-                                            <div
-                                                class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
-                                                <icon :icon="['fab', 'fa-facebook']" class="text-md text-white" />
-                                            </div>
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/">
-                                            <div
-                                                class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
-                                                <icon :icon="['fab', 'fa-facebook']" class="text-md text-white" />
-                                            </div>
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/">
-                                            <div
-                                                class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
-                                                <icon :icon="['fab', 'fa-facebook']" class="text-md text-white" />
-                                            </div>
-                                            </Link>
-                                        </li>
+
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-span-9">
-                            <div v-html="data.footer.footer_bottom" class="text-xs font-normal"></div>
+                        <div class="lg:col-span-9 col-span-12">
+                            <div v-html="layout.footer.footer_bottom" class="text-xs font-normal"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </footer>
     </div>
+
+    <ActionLoading v-if="isLoading" />
+
+
 </template>
 
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-const currentContent = ref(null);
-const hideTimeout = ref(null);
-const isButtonShowMenu = ref(false);
-const isShowMenu = ref(false);
-const showContent = (id) => {
-    clearTimeout(hideTimeout.value);
-    currentContent.value = id;
-};
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import '../../css/style.css';
+import { Autoplay } from 'swiper/modules';
+import ActionLoading from '@/Components/ActionLoading.vue';
 
-const hideContentWithDelay = () => {
-    hideTimeout.value = setTimeout(() => {
-        currentContent.value = null;
-    }, 50); // Độ trễ 200ms trước khi ẩn nội dung
-};
+const page = usePage();
+const layout = page.props.layout
+const productCategories = page.props.productCategories
+const productBrands = page.props.brands
+const swiperModule = [Autoplay];
 
-const clearHideTimeout = () => {
-    clearTimeout(hideTimeout.value);
-};
+defineProps({
+    isLoading: {
+        type: Boolean,
+        default: false
+    }, isHome: {
+        type: Boolean,
+        default: false
+    },
+    isSlideBrands: {
+        type: Boolean,
+        default: true
+    },
+    seo: {
+        type: Object,
+        default: () => ({
+            title: 'Global Procurement Logistics Solutions Co., LTD',
+            meta_title: 'Công ty TNHH Giải pháp Logistics Mua sắm Toàn cầu | Global Procurement Logistics Solutions Co., LTD',
+            meta_description: 'Chúng tôi cung cấp các giải pháp logistics và mua sắm toàn cầu chuyên nghiệp, đáng tin cậy và hiệu quả. Tối ưu hóa chuỗi cung ứng với Global Procurement Logistics Solutions Co., LTD.',
+            meta_keywords: 'Logistics, mua sắm toàn cầu, giải pháp logistics, Global Procurement Logistics, giải pháp chuỗi cung ứng',
+        }),
+    },
+});
+
+// Khai báo biến và kiểu dữ liệu
+const selectedMenu = ref(null)
+
+// Dữ liệu menu với kiểu MenuItem[]
+
+// Hàm toggleMenu để thay đổi selectedMenu
+const toggleMenu = (index) => {
+    selectedMenu.value = selectedMenu.value === index ? null : index
+}
+const isMenuOpen = ref(false)
+// -------------------------------------------------------------------
+const isScrolled = ref(false); // Khởi tạo biến để theo dõi trạng thái cuộn
+
+
+// Hàm để kiểm tra trạng thái cuộn
 const handleScroll = () => {
-    isButtonShowMenu.value = window.scrollY > 98;
+    isScrolled.value = window.scrollY > 135; // Cập nhật giá trị isScrolled dựa vào vị trí cuộn
 };
 
 onMounted(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll); // Thêm sự kiện cuộn khi component được gắn
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('scroll', handleScroll); // Xóa sự kiện cuộn khi component bị hủy
 });
-const data = ref({
-    top_nav: [],
-
-    logo: {
-        favicon: '',
-        logo_full: '',
-        logo_icon: ''
-    },
-    bot_search: [],
-    footer: {
-        footer_sidebar: [],
-        footer_bottom: '',
-
-    }
-});
-const loadDataLayout = () => {
-    axios.get('/api/load-data-layout')
-        .then(response => {
-            data.value = response.data
-
-        })
-        .catch(error => {
-            console.log(error);
-        });
-}
-
-loadDataLayout();
 </script>
 
-<style scoped>
-header {
-    height: 122px;
-}
-
-/*
-header #logo {
-    height: 35px;
-    width: 251px;
-} */
-
-header #logo .logo_icon {
-    display: none;
-}
-
-header #logo .logo_full {
-    display: block;
-}
-
-
-/* header #logo.showIcon {
-    height: 35px;
-    width: 35px;
-} */
-
-header #logo.showIcon .logo_icon {
-    display: block;
-}
-
-header #logo.showIcon .logo_full {
-    display: none;
-}
-
-header #logo .logo_full {
-    height: 35px;
-    width: 251px;
-}
-
-header #logo .logo_icon {
-    height: 35px;
-    width: 35px;
-}
-</style>
+<style></style>

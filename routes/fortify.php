@@ -26,9 +26,9 @@ Route::group(['prefix' => 'vnwa','middleware' => config('fortify.middleware', ['
 
     // Authentication...
     if ($enableViews) {
-        Route::get(RoutePath::for('login', '/login'), [AuthenticatedSessionController::class, 'create'])
+        Route::get(RoutePath::for('login1', '/login1'), [AuthenticatedSessionController::class, 'create'])
             ->middleware(['guest:'.config('fortify.guard')])
-            ->name('login');
+            ->name('login1');
     }
 
     $limiter = config('fortify.limiters.login');

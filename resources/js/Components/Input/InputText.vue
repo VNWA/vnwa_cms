@@ -31,12 +31,12 @@ defineExpose({ focus: () => input.value.focus() });
 
 <template>
     <div class="relative">
-        <div :class="{ 'text-red-500': modelValue.length >= props.maxLength }"
+        <div :class="{ 'text-red-500': modelValue && props.maxLength  && modelValue.length >= props.maxLength }"
             class="absolute right-0 -top-1 bg-white px-1 text-xs ">
             {{ modelValue.length }} / {{ props.maxLength }}
         </div>
         <input ref="input"
-            :class="props.class, { 'border-red-500 focus:ring-red-500': modelValue.length >= props.maxLength }"
+            :class="props.class, { 'border-red-500 focus:ring-red-500': modelValue && props.maxLength  &&  modelValue.length >= props.maxLength }"
             :id="props.id" :type="props.type"
             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm pe-10 "
             :value="modelValue"

@@ -1,5 +1,6 @@
 <template>
     <div class="card justify-center">
+
         <Tree
             v-model:selectionKeys="value"
             :value="transformedOptions"
@@ -42,15 +43,32 @@ watch(() => props.modelValue, (newValue) => {
 }, { immediate: true, deep: true });
 
 // Đồng bộ hóa giá trị value với modelValue
+// watch(value, (newValue) => {
+//     isUpdatingFromModelValue.value = true;
+//     const selectedKeys = Object.keys(newValue).filter(key => newValue[key].checked);
+//     emit('update:modelValue', selectedKeys);
+//     // Sử dụng nextTick để đảm bảo rằng việc cập nhật không gây ra vòng lặp vô hạn
+//     nextTick(() => {
+//         isUpdatingFromModelValue.value = false;
+//     });
+// }, { deep: true });
 watch(value, (newValue) => {
     isUpdatingFromModelValue.value = true;
-    const selectedKeys = Object.keys(newValue).filter(key => newValue[key].checked);
+
+    // Lấy cả những key có checked là true hoặc partialChecked là true
+    const selectedKeys = Object.keys(newValue).filter(key => {
+        return newValue[key].checked || newValue[key].partialChecked;
+    });
+
     emit('update:modelValue', selectedKeys);
+
     // Sử dụng nextTick để đảm bảo rằng việc cập nhật không gây ra vòng lặp vô hạn
     nextTick(() => {
         isUpdatingFromModelValue.value = false;
     });
 }, { deep: true });
+
+
 
 // Biến đổi dữ liệu thành cấu trúc cây
 const transformedOptions = computed(() => {

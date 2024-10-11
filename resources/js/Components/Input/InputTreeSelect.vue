@@ -1,6 +1,6 @@
 <template>
     <TreeSelect v-model="value" :options="transformedOptions" placeholder="Select Item"
-                class="md:w-80 w-full capitalize" />
+                class="md:w-80 w-full capitalize bg-white text-black" />
   </template>
 
   <script setup>

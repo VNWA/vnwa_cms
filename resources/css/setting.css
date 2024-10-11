@@ -110,9 +110,7 @@
 *{
     font-family: "Roboto", "Arial", "Open Sans", sans-serif;
 }
-:root {
-    --main-color: #1435c3;
-}
+
 
 #top-banner {
     width: 100%;
@@ -120,7 +118,7 @@
 }
 
 #top-nav {
-    background-color: var(--main-color);
+    background-color: var(--primary);
     height: 42px;
 }
 
