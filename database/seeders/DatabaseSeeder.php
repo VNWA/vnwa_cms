@@ -29,5 +29,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'nhatnguyen.dev.fullstack@gmail.com',
             'password' => Hash::make('dev@123'),
         ]);
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@vinawebapp.com',
+            'password' => Hash::make('admin@123'),
+        ]);
     }
 }

@@ -18,13 +18,14 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary: '#333fff', // Màu chủ đạo
+                primary: '#2f78ad', // Màu chủ đạo
                 grayTitle: '#c5c5c5',
                 grayContent: '#767676',
                 bgfooter: '#252525',
                 bgfooterBot: '#1c1c1c',
                 colorContent: '#404040',
                 codeProducts: '#fe9c00',
+                subPrimary:'#ea9530'
             },
             fontFamily: {
                 oswald: ['Oswald', 'sans-serif'], // Thêm font Oswald

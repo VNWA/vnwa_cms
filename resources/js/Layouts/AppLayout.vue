@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
@@ -33,10 +33,33 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+
+const isDemoExpired = ref(false);
+const expiryDate = '2024-10-20';
+onMounted(() => {
+    const today = new Date();
+    const expiry = new Date(expiryDate);
+
+    if (today > expiry) {
+        isDemoExpired.value = true;
+    }
+});
+
+
 </script>
 
 <template>
     <div>
+        <div v-if="isDemoExpired" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg text-center space-y-4">
+                <h2 class="text-xl font-bold text-red-600">Demo Expired</h2>
+                <p>Your demo has expired. Please renew your subscription to continue using the application.</p>
+                <!-- <button @click="handleRenew" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Renew Now
+                </button> -->
+            </div>
+        </div>
+
         <ActionLoading v-if="isLoading" />
 
         <Head :title="title" />
@@ -55,6 +78,9 @@ const logout = () => {
                                 <div class="hidden space-x-8 sm:-my-px sm:flex">
                                     <NavLink :href="route('Media')" :active="route().current('Media')">
                                         Media
+                                    </NavLink>
+                                    <NavLink :href="route('Contact')" :active="route().current('Contact')">
+                                        Contact
                                     </NavLink>
                                 </div>
                             </div>
@@ -131,7 +157,8 @@ const logout = () => {
                                     </Dropdown>
                                 </div>
                                 <a href="/" target="_blank">
-                                    <button class="flex items-center justify-center gap-4 px-3 py-2 bg-cyan-500 text-white shadow-2xl shadow-black border border-purple-500">
+                                    <button
+                                        class="flex items-center justify-center gap-4 px-3 py-2 bg-cyan-500 text-white shadow-2xl shadow-black border border-purple-500">
                                         <icon :icon="['fas', 'shop']" />
                                     </button>
                                 </a>
@@ -323,7 +350,9 @@ const logout = () => {
     </div>
 </template>
 <style>
-main input, main button, main textarea{
+main input,
+main button,
+main textarea {
     color: rgb(49, 49, 49);
 
 }

@@ -16,19 +16,19 @@
                   <ul class="lg:pt-5 list-disc lg:w-auto w-40">
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         C6200/S6000/S6100/S6500/S6600/S6610 Flash Tool 3beta zip
                       </Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         RS485
                         Bus Wiring</Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         Configuration Software</Link>
                     </li>
                   </ul>
@@ -48,19 +48,19 @@
                   <ul class="lg:pt-5 list-disc lg:w-auto w-40">
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         C6200/S6000/S6100/S6500/S6600/S6610 Flash Tool 3beta zip
                       </Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         RS485
                         Bus Wiring</Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         Configuration Software</Link>
                     </li>
                   </ul>
@@ -80,19 +80,19 @@
                   <ul class="lg:pt-5 list-disc lg:w-auto w-40">
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         C6200/S6000/S6100/S6500/S6600/S6610 Flash Tool 3beta zip
                       </Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         RS485
                         Bus Wiring</Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         Configuration Software</Link>
                     </li>
                   </ul>
@@ -112,19 +112,19 @@
                   <ul class="lg:pt-5 list-disc lg:w-auto w-40">
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         C6200/S6000/S6100/S6500/S6600/S6610 Flash Tool 3beta zip
                       </Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         RS485
                         Bus Wiring</Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         Configuration Software</Link>
                     </li>
                   </ul>
@@ -144,19 +144,19 @@
                   <ul class="lg:pt-5 list-disc lg:w-auto w-40">
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         C6200/S6000/S6100/S6500/S6600/S6610 Flash Tool 3beta zip
                       </Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         RS485
                         Bus Wiring</Link>
                     </li>
                     <li class="py-2">
                       <Link
-                        class="underline text-red-500 hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
+                        class="underline text-subPrimary hover:no-underline hover:text-primary lg:text-lg text-sm font-semibold">
                         Configuration Software</Link>
                     </li>
                   </ul>

@@ -26,7 +26,10 @@ class BlogCategory extends Model
     protected $casts = [
         'icon' => 'array', // Chuyển các trường JSON thành mảng
     ];
-
+    public function blogPosts()
+    {
+        return $this->belongsToMany(BlogPost::class, 'blog_category_blog_post', 'blog_category_id', 'blog_post_id');
+    }
     protected static function boot()
     {
         parent::boot();

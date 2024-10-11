@@ -1,103 +1,143 @@
 <template>
-    <div style="background-color: #f9f9f9;">
-      <div class="container px-4 lg:max-w-screen-xl mx-auto pt-[80px] lg:pt-[135px]" >
-        <div class="bg-white shadow lg:p-8 p-4 lg:mt-8 mb-10">
-          <div class="border-b">
-            <h1 class="text-4xl text-black font-bold pb-4 lg:py-6 ">Contact</h1>
-            <h1 class="text-4xl font-light">
-              SELCO USA, INC Contact information
-            </h1>
-            <h1 class="text-xl font-bold py-6">
-              Thank you for your interest. For questions or comments, please use the contact information below. We look
-              forward to hearing from you soon.
-            </h1>
-            <div class="py-4">
-              <div class="grid lg:grid-cols-2">
-                <div>
-                  <h6 class="text-2xl font-light py-4">Phone: <br>
-                    <Link class="underline text-red-500 hover:no-underline hover:text-primary text-xl" href="">
-                      +1-770-455-9110</Link>
-                  </h6>
-                  <h6 class="text-2xl font-light py-4">Address: <br>
-                    <Link class="underline text-red-500 hover:no-underline hover:text-primary text-xl" href="">
-                      4560 River Bottom Drive
-                      Norcross, GA 30092
-                      USA
-                    </Link>
-                  </h6>
-                  <h6 class="text-2xl font-light py-4">Email: <br>
-                    <Link class="underline text-red-500 hover:no-underline hover:text-primary text-xl" href="">
-                      info@selcousa.com</Link>
-                  </h6>
-                  <h6 class="text-2xl font-light py-4">Facebook: <br>
-                    <Link class="underline text-red-500 hover:no-underline hover:text-primary text-xl" href="">
-                      SELCO USA Facebook Page</Link>
-                  </h6>
-                  <h6 class="text-2xl font-light py-4">LinkedIn: <br>
-                    <Link class="underline text-red-500 hover:no-underline hover:text-primary text-xl" href="">
-                      SELCO USA LinkedIn Page</Link>
-                  </h6>
-                  <h6 class="text-2xl font-light py-4">
-                    Customer Contact Hours: <br>
-                    Available 24 Hours a Day, 7 Days a Week
-                  </h6>
-                  <h6 class="text-2xl font-light py-4">
-                    <b class="text-2xl font-bold py-4">Service Area:</b> <br>
-                    Serving the Global Market in more than 85 Nations.
-                  </h6>
-                </div>
-                <div>
-                  <form action="">
-                    <div class="mb-8 mt-4">
-                      <label class="font-bold" for="" style="color: #404040;">Your Name (required)
-                      </label> <br>
-                      <input type="text" placeholder="Enter your name..."
-                        class="border border-gray-300 py-3 pl-4 pr-36 bg-gray-50 mt-2 rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
-                    </div>
-                    <div class="my-8">
-                      <label class="font-bold" for="" style="color: #404040;">Your Email (required)
-                      </label> <br>
-                      <input type="email" placeholder="Enter your email..."
-                        class="border border-gray-300 py-3 pl-4 pr-36 bg-gray-50 mt-2 rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
-                    </div>
-                    <div class="my-8">
-                      <label class="font-bold" for="" style="color: #404040;">Subject
-                      </label> <br>
-                      <input type="text" placeholder="Enter subject..."
-                        class="border border-gray-300 py-3 pl-4 pr-36 bg-gray-50 mt-2 rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
-                    </div>
-                    <div class="mt-8">
-                      <label class="font-bold" for="" style="color: #404040;">Your Message (required)
-                      </label> <br>
-                      <textarea maxlength="2000" placeholder="Type your message here..."
-                        class="h-36 border border-gray-300 py-3 pl-4 pr-36 bg-gray-50 mt-2 rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"></textarea>
+    <DefaultLayout :seo="seo" :isLoading="isLoading">
+        <div style="background-color: #f9f9f9;">
+            <div class="container px-4 lg:max-w-screen-xl mx-auto ">
+                <div class="bg-white shadow lg:p-8 p-4 py-10  mb-10">
+                    <div>
+
+                        <Breadcrumb :breadcrumbs="breadcrumbs" />
                     </div>
                     <div>
-                      <input type="text" placeholder="Enter HPMY"
-                        class="border border-gray-300 py-3 pl-4 pr-36 bg-gray-50 mt-2 rounded focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                        <section class="bg-white dark:bg-gray-900">
+                            <div class="py-8 lg:py-16 px-4  mx-auto max-w-screen-md">
+                                <h2
+                                    class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
+                                    Contact Us</h2>
+                                <p
+                                    class="mb-8 lg:mb-16 font-light text-center text-gray-500 dark:text-gray-400 sm:text-xl">
+                                    Got a technical issue? Want to send feedback about a beta feature? Need details
+                                    about our Business plan? Let us know.</p>
+                                <form @submit.prevent="submitForm" class="space-y-8">
+                                    <div>
+                                        <label for="name"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            Họ Và Tên <span class="text-red-500">*</span> </label>
+                                        <input type="text" id="name" v-model="form.name"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+                                            required>
+                                        <InputError class="mt-2" :message="errors.name" />
+
+                                    </div>
+                                    <div>
+                                        <label for="phone"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Số
+                                            Điện Thoại<span class="text-red-500">*</span> </label>
+                                        <input type="text" id="phone" v-model="form.phone"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+                                            required>
+                                        <InputError class="mt-2" :message="errors.phone" />
+
+                                    </div>
+                                    <div>
+                                        <label for="email"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            Email <span class="text-red-500">*</span> </label>
+                                        <input type="email" id="email" v-model="form.email"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light"
+                                            required>
+                                        <InputError class="mt-2" :message="errors.email" />
+
+                                    </div>
+
+                                    <div class="sm:col-span-2">
+                                        <label for="message"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">
+                                            Tin Nhắn</label>
+                                        <textarea id="message" rows="6" v-model="form.message"
+                                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            placeholder="Leave a comment..."></textarea>
+                                    </div>
+                                    <button type="submit"
+                                        class="bg-primary py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Send
+                                        message</button>
+                                </form>
+                            </div>
+                        </section>
                     </div>
-                    <button
-                      class="bg-red-500 border border-red-500 py-3 px-8 rounded text-white mt-2 hover:bg-white hover:text-red-500 w-full lg:w-auto duration-300">SEND</button>
-                  </form>
+
+
+
                 </div>
-              </div>
+
             </div>
-          </div>
-          <div class="pb-10">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15338.43487931804!2d108.17844570000001!3d16.033871549999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1728243447637!5m2!1svi!2s"
-              class="w-full" width="360" height="350" style="border:0;" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-
         </div>
+    </DefaultLayout>
+</template>
 
-      </div>
-    </div>
-  </template>
+<script setup>
+import DefaultLayout from "@/Layouts/DefaultLayout.vue";
+import { Link, usePage, router } from '@inertiajs/vue3';
+import Breadcrumb from "@/Components/Client/Breadcrumb.vue";
+import EditorRenderHtml from "@/Components/Client/EditorRenderHtml.vue";
+import { ref } from "vue";
+import InputError from "@/Components/InputError.vue";
+defineProps({
+    seo: {
+        type: Object,
+        default: {},
+    },
+    breadcrumbs: {
+        type: Array,
+        default: [],
+    },
 
-  <script lang="ts" setup>
+});
+const form = ref({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+})
+const errors = ref({
+    name: '',
+    phone: '',
+    email: '',
+})
+const clearError = () => {
+    errors.value = {
+        name: '',
+        phone: '',
+        email: '',
+    }
+}
+const isLoading = ref(false);
+const submitForm = () => {
+    isLoading.value = true;
+    clearError()
+    axios.post('/contact', form.value).then(response => {
+        toast.success(response.data.message);
+        form.value = {
+            name: '',
+            phone: '',
+            email: '',
+            message: ''
+        }
+    }).catch(error => {
+        toast.error(error.message, {
+            autoClose: 1500,
+        });
+        if (error.response.data.errors) {
+            const errorKeys = Object.keys(error.response.data.errors);
+            errorKeys.forEach(key => {
+                if (key in errors.value) {
+                    errors.value[key] = error.response.data.errors[key][0]; // Lấy giá trị lỗi đầu tiên (nếu có)
+                }
+            });
+        }
+    })
+    isLoading.value = false;
 
-  </script>
+}
+</script>
 
-  <style></style>
+<style></style>

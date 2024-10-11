@@ -1,19 +1,17 @@
 <template>
     <div>
-        <DefaultLayout :seo="seo">
+        <DefaultLayout :seo="seo" :isSlideBrands="false">
 
             <div class="">
                 <div class="container px-4 lg: lg:max-w-screen-xl mx-auto">
                     <Breadcrumb :breadcrumbs="breadcrumbs" />
-                    <div class=" mt-5">
-                        <div >
-                            <div class="container   text-black/80">
-                                <div class="bg-white shadow p-8">
-                                    <EditorRenderHtml :content="about" />
-                                </div>
-
-                            </div>
+                    <div class="grid lg:grid-cols-12 gap-4 mt-5">
+                        <div class="col-span-3" v-for="(item, index) in brands" :key="index">
+                            <Link :href="route('Client.Brand.Products', item.slug)">
+                            <img :src="item.image" class="w-full h-auto" width="200" :alt="item.name">
+                            </Link>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -25,7 +23,6 @@
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import { Link, usePage, router } from '@inertiajs/vue3';
 import Breadcrumb from "@/Components/Client/Breadcrumb.vue";
-import EditorRenderHtml from "@/Components/Client/EditorRenderHtml.vue";
 defineProps({
     seo: {
         type: Object,
@@ -35,9 +32,9 @@ defineProps({
         type: Array,
         default: [],
     },
-    about: {
-        type: String,
-        default: '',
+    brands: {
+        type: Object,
+        default: {},
     },
 });
 

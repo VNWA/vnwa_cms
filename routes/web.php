@@ -7,11 +7,13 @@ use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\BlogTagController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Inertia\ApiTokenController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductExcelController;
 use App\Http\Controllers\ProductImportController;
+use App\Http\Controllers\ProductOrderController;
 use App\Http\Controllers\UrlController;
 use App\Http\Controllers\VinawebappController;
 use Illuminate\Foundation\Application;
@@ -49,6 +51,13 @@ Route::prefix('vnwa')
         Route::post('/change-highlight', [VinawebappController::class, 'changeHighlight']);
         Route::post('/change-ord', [VinawebappController::class, 'changeORD']);
 
+        Route::prefix('contacts')->group(function () {
+            Route::get('/load-data-table', [ContactController::class, 'loadDataTable']);
+            Route::get('/', function () {
+                return Inertia::render('Admin/Contact');
+            })->name('Contact');
+            Route::post('/delete', [ContactController::class, 'delete']);
+        });
 
         Route::get('/check-slug/{slug}/{model_type?}/{model_id?}', [UrlController::class, 'checkSlug']);
 
@@ -165,6 +174,14 @@ Route::prefix('vnwa')
                     Route::post('/update/{id}', [ProductController::class, 'update']);
                     Route::post('/delete', [ProductController::class, 'delete']);
                 });
+                Route::prefix('orders')->group(function () {
+                    Route::get('/load-data-table', [ProductOrderController::class, 'loadDataTable']);
+                    Route::get('/', function () {
+                        return Inertia::render('Admin/Ecommerce/ProductOrder');
+                    })->name('Ecommerce.ProductOrder');
+                    Route::post('/delete', [ProductOrderController::class, 'delete']);
+                });
+
 
             });
         Route::prefix('banners')->group(function () {
@@ -228,17 +245,35 @@ Route::prefix('vnwa')
                     Route::get('/load-json-data', [AppearanceController::class, 'loadJsonDataFooter']);
                     Route::post('/update', [AppearanceController::class, 'updateFooter']);
                 });
+                Route::prefix('about')->group(function () {
+                    Route::get('/', function () {
+                        return Inertia::render('Admin/Appearance/About');
+                    })->name('Appearance.About');
+
+                    Route::get('/load-json-data', [AppearanceController::class, 'loadJsonDataAbout']);
+                    Route::post('/update', [AppearanceController::class, 'updateAbout']);
+                });
             });
 
     });
 Route::middleware(['ClientLayout'])->group(function () {
+
+    Route::post('/quote-product', [ClientController::class, 'quoteProduct']);
+    Route::post('/contact', [ClientController::class, 'contact']);
+
+
     Route::get('/', [ClientController::class, 'viewHome'])->name('Client.Home');
     Route::get('/about-us', [ClientController::class, 'viewAbout'])->name('Client.About');
-    Route::get('/blogs', [ClientController::class, 'viewBlogs'])->name('Client.Blogs');
     Route::get('/contact', [ClientController::class, 'viewContact'])->name('Client.Contact');
-    Route::get('/documents', [ClientController::class, 'viewDocuments'])->name('Client.Documents');
+    Route::get('/brands', [ClientController::class, 'viewBrands'])->name('Client.Brands');
+    Route::get('/pb/{slug}', [ClientController::class, 'viewBrandProducts'])->name('Client.Brand.Products');
     Route::get('/products', [ClientController::class, 'viewProducts'])->name('Client.Products');
-    Route::get('/products/{slug}', [ClientController::class, 'viewProductCategory'])->name('Client.ProductCategory');
+    Route::get('/pc/{slug}', [ClientController::class, 'viewCategoryProducts'])->name('Client.ProductCategory.Products');
+    Route::get('/p/{slug}', [ClientController::class, 'ViewProductDetail'])->name('Client.Product.Detail');
+    Route::get('/blogs', [ClientController::class, 'viewBlogs'])->name('Client.Blogs');
+    Route::get('/blogs/{slug}', [ClientController::class, 'viewBlogCategories'])->name('Client.BlogCategory.Posts');
+    Route::get('/blog/{slug}', [ClientController::class, 'viewBlogPostDetail'])->name('Client.BlogPost.Detail');
+
 });
 
 

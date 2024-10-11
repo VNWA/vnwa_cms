@@ -82,6 +82,10 @@
                                         :active="check('/ecommerce/products')">
                                         Products
                                     </SideBarMenuItemLink>
+                                    <SideBarMenuItemLink :href="route('Ecommerce.ProductOrder')"
+                                        :active="check('/ecommerce/orders')">
+                                        Orders
+                                    </SideBarMenuItemLink>
                                 </li>
 
                             </ul>

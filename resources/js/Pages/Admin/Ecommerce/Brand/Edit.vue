@@ -24,10 +24,10 @@
                         </div>
 
                         <div class="mb-4">
-                            <InputLabel for="link">Link </InputLabel>
-                            <TextInput id="link" v-model="form.link" type="text"
+                            <InputLabel for="slug">Link </InputLabel>
+                            <TextInput id="slug" v-model="form.slug" type="text"
                                 class="mt-1 block w-full"  />
-                            <InputError class="mt-2" :message="errors.link" />
+                            <InputError class="mt-2" :message="errors.slug" />
                         </div>
 
                         <div class="mb-4">
@@ -95,6 +95,11 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import InputUrlImage from '@/Components/Input/InputUrlImage.vue';
+import InputText from '@/Components/Input/InputText.vue';
+import { convertToSlug } from '@/utils';
+
+const url_web = new URL(window.location.href)
+const isSlugLoading = ref(false);
 const props =defineProps({
     brand:Object
 })
@@ -105,14 +110,14 @@ const form = ref({
     image: props.brand.image,
     name: props.brand.name,
     desc: props.brand.desc,
-    link: props.brand.link,
+    slug: props.brand.slug,
 
 });
 const errors = ref({
     image: '',
     name: '',
     desc: '',
-    link: '',
+    slug: '',
 
 })
 
@@ -122,11 +127,48 @@ const clearError = () => {
         image: '',
         name: '',
         desc: '',
-        link: ''
+        slug: ''
     }
 }
 
+const checkSlug = (slug) => {
+    clearError();
+    if (slug) {
+        const model_type = 'App\Models\Brand';
+        isSlugLoading.value = true;
+        const url = ref('');
+        if (form.value.id) {
+            url.value = '/vnwa/check-slug/' + slug + '/' + model_type + '/' + form.value.id;
+        } else {
+            url.value = '/vnwa/check-slug/' + slug;
+        }
+        // Gửi request kiểm tra slug
+        axios.get(url.value)
+            .then(response => {
+                // Xử lý kết quả trả về từ server
+                if (response.data.type === 'error') {
+                    // Xử lý khi slug đã tồn tại
+                    errors.value.slug = response.data.message;
 
+                    // Hiển thị thông báo hoặc xử lý người dùng
+                } else {
+                    // Nếu slug hợp lệ, có thể thực hiện các bước tiếp theo
+                    // Ví dụ: cập nhật meta_title
+
+                }
+            })
+            .catch(error => {
+                errors.value.slug = error.response.data.message;
+            });
+        isSlugLoading.value = false;
+    }
+
+}
+
+const nameChange = (value) => {
+    form.value.slug = convertToSlug(value);
+    checkSlug(form.value.slug);
+}
 
 
 const submit = (isRollBack = true) => {

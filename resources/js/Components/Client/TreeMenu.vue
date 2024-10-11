@@ -1,11 +1,13 @@
 <template>
     <ul class="space-y-2 text-black/80">
-        <li v-for="(category, key) in propsCategories" :key="category.id" class="list-disc">
+        <li v-for="(category, key) in categories" :key="category.id" class="list-disc">
             <div class="flex items-center justify-between mt-1">
-                <Link :href="route('Client.ProductCategory', category.slug)">
-                    <h3 class="uppercase font-bold hover:text-red-500" :class="{'text-red-500': page.url == '/products/' + category.slug}"> {{ category.name }}</h3>
+                <Link :href="route(nameRoute, category.slug)">
+                <h3 class="uppercase font-bold hover:text-subPrimary"
+                    :class="{ 'text-subPrimary': page.url == '/pc/' + category.slug }"> {{ category.name }}</h3>
                 </Link>
-                <button v-if="category.children && Object.keys(category.children).length > 0" @click="toggle(category.id)">
+                <button v-if="category.children && Object.keys(category.children).length > 0"
+                    @click="toggle(category.id)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                         :class="{ 'rotate-90': isOpen(category.id) }" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -15,7 +17,7 @@
             </div>
             <!-- Hiển thị menu con nếu có -->
             <ul v-if="isOpen(category.id)" class="ml-4 space-y-1">
-                <TreeMenu :categories="category.children" />
+                <TreeMenu :categories="category.children" :path="path" :nameRoute="nameRoute" />
             </ul>
         </li>
     </ul>
@@ -29,7 +31,17 @@ import { Link, usePage } from '@inertiajs/vue3';
 const props = defineProps({
     categories: {
         type: Object,
-        required: true
+        default:  {}
+    },
+    nameRoute: {
+        type: String,
+        default:  ''
+
+    },
+    path: {
+        type: String,
+        default:  ''
+
     }
 })
 
@@ -58,7 +70,7 @@ const isOpen = (id) => {
 const checkAndOpenMenus = (categories) => {
     const findAndOpenCategory = (categories, parentCategories = []) => {
         Object.values(categories).forEach(category => {
-            const categoryUrl = '/products/' + category.slug;
+            const categoryUrl = props.path + category.slug;
 
             if (page.url === categoryUrl) {
 

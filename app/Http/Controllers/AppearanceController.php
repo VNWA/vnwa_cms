@@ -101,4 +101,25 @@ class AppearanceController extends Controller
 
         }
     }
+
+
+
+
+    public function loadJsonDataAbout()
+    {
+
+        $data = Appearance::where('type', 'about')->first();
+
+        return response()->json($data->value, 200);
+    }
+    function updateAbout(Request $request)
+    {
+        try {
+            Appearance::where('type', 'about')->update(['value' => $request->data]);
+            return response()->json(['message' => 'Update About Success'], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Update About Failing'], 500);
+
+        }
+    }
 }
