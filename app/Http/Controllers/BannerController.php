@@ -73,7 +73,7 @@ class BannerController extends Controller
     {
 
         try {
-            Banner::whereIn('id', $request->dataId)->delete();
+            Banner::whereIn('id', $request->ids)->delete();
             return response()->json(['message' => 'Xóa dữ liệu thành công'], 200);
         } catch (\Throwable $e) {
             return response()->json(['message' => $e->getMessage()], 500);

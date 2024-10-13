@@ -191,7 +191,7 @@ Route::prefix('vnwa')
                 return Inertia::render('Admin/Banner/Create');
             })->name('Banner.Create');
 
-            Route::post('/delete', [BannerController::class, 'delete']);
+            Route::post('/delete', [BannerController::class, 'delete'])->name('Banner.Delete');
             Route::post('/create', [BannerController::class, 'create']);
 
             Route::get('/edit/{id}', [BannerController::class, 'showEdit'])->name('Banner.Edit');

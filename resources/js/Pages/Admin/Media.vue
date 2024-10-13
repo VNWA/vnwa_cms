@@ -14,8 +14,7 @@
             <div class="py-2 relative">
                 <div class="absolute w-full h-full top-0 left-0 bg-white/50 z-50" v-if="isLoading">
                     <div role="status" class="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
-                        <svg aria-hidden="true"
-                            class="w-24 h-24 text-gray-200 animate-spin  fill-blue-600"
+                        <svg aria-hidden="true" class="w-24 h-24 text-gray-200 animate-spin  fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -270,7 +269,8 @@
                                         <img v-else-if="dataDetail.type === 'other'" src="/images/file.png"
                                             alt="Document Image" class="w-auto h-auto max-w-full" />
                                     </div>
-                                    <div class="text-sm max-w-full overflow-hidden border-t-2 pt-3 border-black/10 text-black/80">
+                                    <div
+                                        class="text-sm max-w-full overflow-hidden border-t-2 pt-3 border-black/10 text-black/80">
                                         <ul>
                                             <li class="mb-3 text-wrap max-w-full" v-if="dataDetail.name">
                                                 Name : <span class="font-bold"> {{ dataDetail.name }}</span>
@@ -279,7 +279,7 @@
                                                 Type : {{ dataDetail.type }}
                                             </li>
                                             <li class="mb-3 text-wrap max-w-full flex flex-wrap" v-if="dataDetail.path">
-                                                Path : {{ dataDetail.path }}
+                                                Path : <input type="text" :value="dataDetail.path">
                                             </li>
                                             <li class="mb-3 text-wrap max-w-full flex" v-if="dataDetail.created_at">
                                                 Uploaded at : {{ dataDetail.created_at }}
@@ -314,7 +314,7 @@ import { useAdminStore } from '@/store/admin';
 import { ref, watch, onMounted, onUnmounted } from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, usePage } from "@inertiajs/vue3";
-// import HeaderBreadcrumbs from "@/Components/HeaderBreadcrumbs.vue";
+import HeaderBreadcrumbs from "@/Components/HeaderBreadcrumbs.vue";
 import MediaItem from "@/Components/MediaItem.vue";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import ImageEditor from '@/Components/ImageEditor.vue'
