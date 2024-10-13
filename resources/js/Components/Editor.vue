@@ -26,7 +26,7 @@
 </template>
 <script setup>
 import { ref, watch, computed } from 'vue';
-import Editor from 'ckeditor5-custom-build';
+import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import MediaPopup from './MediaPopup.vue';
 
 const isModal = ref(false);

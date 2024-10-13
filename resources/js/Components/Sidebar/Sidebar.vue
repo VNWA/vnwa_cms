@@ -1,4 +1,3 @@
-<!-- resources/js/Components/Sidebar.vue -->
 <template>
     <aside id="sidebar" :class="{ 'active': adminStore.isSidebarShow || isMobile() }"
         class="w-full p-1 bg-gray-900 text-gray-100 min-h-screen h-auto sticky ease-in duration-300">

@@ -44,27 +44,27 @@
                         <ul class="divide-y mx-3 divide-gray-200">
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
                                 :class="{ 'text-subPrimary': page.url === '/' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Home')">Home</Link>
+                                <Link class="text-xl font-bold" :href="route('Client.Home')">Trang Chủ</Link>
                             </li>
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
                                 :class="{ 'text-subPrimary': page.url === '/about-us' }">
-                                <Link class="text-xl font-bold" :href="route('Client.About')">About</Link>
+                                <Link class="text-xl font-bold" :href="route('Client.About')">Về Chúng Tôi</Link>
                             </li>
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
                                 :class="{ 'text-subPrimary': page.url === '/products' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Products')">Products</Link>
+                                <Link class="text-xl font-bold" :href="route('Client.Products')">Sản Phẩm</Link>
                             </li>
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
                                 :class="{ 'text-subPrimary': page.url === '/brands' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Brands')">Brands</Link>
+                                <Link class="text-xl font-bold" :href="route('Client.Brands')">Thương Hiệu</Link>
                             </li>
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
                                 :class="{ 'text-subPrimary': page.url === '/blogs' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Blogs')">Blogs</Link>
+                                <Link class="text-xl font-bold" :href="route('Client.Blogs')">Bài Viết</Link>
                             </li>
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
                                 :class="{ 'text-subPrimary': page.url === '/contact' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Contact')">Contact Us</Link>
+                                <Link class="text-xl font-bold" :href="route('Client.Contact')">Liên Hệ</Link>
                             </li>
                         </ul>
                     </div>
@@ -81,15 +81,15 @@
                             <ul class="lg:flex items-center justify-end gap-5 text-white ">
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
                                     :class="{ 'text-subPrimary': page.url === '/' }">
-                                    <Link class="text-lg" :href="route('Client.Home')">Home</Link>
+                                    <Link class="text-lg" :href="route('Client.Home')">Trang Chủ</Link>
                                 </li>
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
                                     :class="{ 'text-subPrimary': page.url === '/about-us' }">
-                                    <Link class="text-lg" :href="route('Client.About')">About Us</Link>
+                                    <Link class="text-lg" :href="route('Client.About')">Về Chúng Tôi</Link>
                                 </li>
                                 <li class="relative  text-primary hover:text-subPrimary cursor-pointer"
                                     :class="{ 'text-subPrimary': page.url === '/products' }">
-                                    <Link class="text-lg block" :href="route('Client.Products')">Products</Link>
+                                    <Link class="text-lg block" :href="route('Client.Products')">Sản Phẩm   </Link>
                                     <ul class="menu-hover">
                                         <li v-for="(item, index) in productCategories" :key="index"
                                             class="border-t relative border-red-500 hover:bg-red-500 px-6 py-4">
@@ -108,17 +108,17 @@
                                 </li>
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
                                     :class="{ 'text-subPrimary': page.url === '/brands' }">
-                                    <Link class="text-lg" :href="route('Client.Brands')">Brands
+                                    <Link class="text-lg" :href="route('Client.Brands')">Thương Hiệu
                                     </Link>
                                 </li>
 
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
                                     :class="{ 'text-subPrimary': page.url === '/blogs' }">
-                                    <Link class="text-lg" :href="route('Client.Blogs')">Blogs</Link>
+                                    <Link class="text-lg" :href="route('Client.Blogs')">Bài Viết</Link>
                                 </li>
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
                                     :class="{ 'text-subPrimary': page.url === '/contact' }">
-                                    <Link class="text-lg" :href="route('Client.Contact')">Contact Us</Link>
+                                    <Link class="text-lg" :href="route('Client.Contact')">Liên Hệ</Link>
                                 </li>
 
                             </ul>

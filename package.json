@@ -4,8 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "watch": "vite build --watch",
-        "preinstall": "npm install ./ckeditor-vnwa"
+        "watch": "vite build --watch"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
@@ -31,7 +30,7 @@
         "@he-tree/vue": "^2.8.2",
         "@primevue/themes": "^4.0.0",
         "ckeditor5": "^42.0.1",
-        "ckeditor5-custom-build": "file:ckeditor-vnwa",
+        "ckeditor5-custom-build": "./ckeditor-vnwa",
         "compressorjs": "^1.2.1",
         "cropperjs": "^1.6.2",
         "pinia": "^2.1.7",

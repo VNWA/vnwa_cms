@@ -160,8 +160,7 @@
                                     <InputError class="mt-2" :message="errors.image" />
                                 </div>
                                 <div class="mb-4">
-                                    <div
-                                        class="flex items-center ps-4 border border-gray-200 rounded ">
+                                    <div class="flex items-center ps-4 border border-gray-200 rounded ">
                                         <Checkbox v-model:checked="form.is_show" id="bordered-checkbox-1"
                                             type="checkbox" name="bordered-checkbox"
                                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500   focus:ring-2  " />
@@ -175,8 +174,7 @@
 
                                         </label>
                                     </div>
-                                    <div
-                                        class="flex items-center ps-4 border border-gray-200 rounded ">
+                                    <div class="flex items-center ps-4 border border-gray-200 rounded ">
 
                                         <Checkbox v-model:checked="form.is_highlight" id="bordered-checkbox-1"
                                             type="checkbox" name="bordered-checkbox"
@@ -188,8 +186,7 @@
                                     </div>
 
                                 </div>
-                                <div
-                                    class="flex items-center px-4 border border-gray-200 rounded  mb-4">
+                                <div class="flex items-center px-4 border border-gray-200 rounded  mb-4">
                                     <SeoMetaForm v-model="form.seo_meta" />
 
                                 </div>
