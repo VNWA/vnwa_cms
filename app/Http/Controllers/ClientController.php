@@ -13,6 +13,7 @@ use App\Models\ProductCategory;
 use App\Models\ProductOrder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Str;
 
 class ClientController extends Controller
 {
@@ -247,20 +248,41 @@ class ClientController extends Controller
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
+
+
     public function viewProducts()
     {
-        $products = Product::orderByDesc('id')->get(['name', 'slug', 'images', 'sku']);
-        $this->seo['title'] = 'Sản phẩm';
-        $this->seo['meta_title'] = 'Sản phẩm';
+        // Khởi tạo query cơ bản cho sản phẩm
+        $query = Product::query();
+
+        // Kiểm tra nếu có tham số tìm kiếm (s) từ GET request
+        if (!empty($_GET['s'])) {
+            $search = $_GET['s'];
+
+            // Cập nhật thông tin SEO cho trang tìm kiếm
+            $this->seo['title'] = $search;
+            $this->seo['meta_title'] = "Tìm Kiếm Sản Phẩm: " . $search;
+
+            // Thêm điều kiện tìm kiếm vào query
+            $query->where('name', 'like', '%' . Str::slug($search, ' ') . '%');
+        }
+
+        // Lấy danh sách sản phẩm với sắp xếp theo id giảm dần
+        $products = $query->orderByDesc('id')->get(['name', 'slug', 'images', 'sku']);
+
+        // Tạo breadcrumbs
         $breadcrumbs = [
-            ['Sản Phẩm', route('Client.Products')]
+            ['Sản Phẩm', route('Client.Products')],
         ];
+
+        // Trả về giao diện với dữ liệu cần thiết
         return Inertia::render('Client/Products', [
             'seo' => $this->seo,
             'products' => $products,
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
+
     public function ViewProductDetail($slug)
     {
         $product = Product::where('slug', $slug)->first();
@@ -297,4 +319,5 @@ class ClientController extends Controller
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
+
 }

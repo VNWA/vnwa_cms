@@ -5,7 +5,7 @@ import '../css/setting.css';
 import { createApp, h, Transition, TransitionGroup } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy/src/js';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 window.toast = toast;
