@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AppLayout title=" Convert Editor" :isLoading="isPageLoading">
+        <AppLayout title=" Convert Editor">
             <template #header>
                 <div class="flex items-center justify-between">
                     <div>
@@ -82,6 +82,8 @@ import { onMounted, ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import Editor from '@/Components/Editor.vue'
 import CheckBoxTree from '@/Components/CheckBoxTree.vue';
+
+import InputLabel from '@/Components/InputLabel.vue';
 const categoryIds = ref();
 const brand_id = ref(null)
 const data = ref('');

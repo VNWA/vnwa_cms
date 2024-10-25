@@ -12,8 +12,11 @@
                                     Danh mục bài viết
                                 </div>
                                 <div class="pe-3 ps-8 py-3">
-                                    <TreeMenu :categories="blogCategories" path="/blogs/"
-                                        :nameRoute="'Client.BlogCategory.Posts'" />
+                                    <div class="tree_menu">
+                                        <TreeMenu :categories="blogCategories" path="/blogs/"
+                                            :nameRoute="'Client.BlogCategory.Posts'" />
+                                    </div>
+
                                 </div>
                             </div>
 

@@ -10,6 +10,7 @@ use App\Models\ProductCategoryAssignment;
 use DB;
 use Illuminate\Http\Request;
 use App\Exports\ProductExport;
+use Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
 use Str;
@@ -135,10 +136,16 @@ class ProductExcelController extends Controller
                 // Tạo slug và kiểm tra unique
                 $slugBase = Str::slug($value['name']);
                 $slug = $slugBase;
-                $slugCount = Product::where('slug', 'LIKE', "$slugBase%")->count();
 
+                // Kiểm tra slug trùng lặp trong bảng products
+                $slugCount = Product::where('slug', 'LIKE', "$slugBase%")->count();
                 if ($slugCount > 0) {
                     $slug = $slugBase . '-' . ($slugCount + 1); // Thêm hậu tố nếu slug trùng lặp
+                }
+
+                // Kiểm tra slug trùng lặp trong bảng urls
+                while (DB::table('urls')->where('slug', $slug)->exists()) {
+                    $slug = $slugBase . '-' . (++$slugCount); // Tăng hậu tố cho slug
                 }
 
                 // Chuẩn bị dữ liệu để lưu
@@ -177,14 +184,14 @@ class ProductExcelController extends Controller
                 DB::commit(); // Commit dữ liệu cho sản phẩm hiện tại
 
             } catch (\Throwable $th) {
-                DB::rollBack(); // Rollback nếu có lỗi trong quá trình xử lý từng dòng
-                // Log lỗi để kiểm tra sau
-                Log::error('Error importing product at row ' . ($key + 1) . ': ' . $th->getMessage());
-                // Tiếp tục với dòng tiếp theo mà không return hay dừng lại
+                DB::rollBack(); // Rollback transaction nếu có lỗi
+                // return response()->json(['message' => $th->getMessage()], 500);
             }
         }
 
         return response()->json(['message' => 'Import process completed. Check logs for any errors.'], 200);
     }
+
+
 
 }

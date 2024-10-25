@@ -28,13 +28,13 @@
                     <div class="lg:hidden flex items-center justify-between px-3 h-full">
                         <div class="">
                             <Link :href="route('Client.Home')">
-                            <img width="360" height="37" class="max-w-52 w-auto h-auto"
-                                :src="layout.logo.logo_full" />
+                            <img width="360" height="37" class="max-w-52 w-auto h-auto" :src="layout.logo.logo_full" />
                             </Link>
 
                         </div>
-                        <button  @click="  isMenuOpen = !isMenuOpen">
-                            <icon class="text-3xl  " :class="{ 'text-white': isScrolled, 'text-black': !isScrolled }" :icon="['fas', 'bars']" />
+                        <button @click="  isMenuOpen = !isMenuOpen">
+                            <icon class="text-3xl  " :class="{ 'text-white': isScrolled, 'text-black': !isScrolled }"
+                                :icon="['fas', 'bars']" />
                         </button>
                     </div>
                     <div :class="{ 'nav-menu': true, 'active': isMenuOpen }">
@@ -92,10 +92,10 @@
                                     <Link class="text-lg block" :href="route('Client.Products')">Products</Link>
                                     <ul class="menu-hover">
                                         <li v-for="(item, index) in productCategories" :key="index"
-                                            class="border-t relative border-red-500 hover:bg-red-500 px-6 py-4">
+                                            class="border-t relative border-red-500 hover:bg-red-500 px-4 py-3">
                                             <Link :href="route('Client.Products', item.id)"> {{ item.name }}</Link>
                                             <ul class="submenu-hover" v-if="item.children.length > 0">
-                                                <li class="px-6 py-4 border-t border-red-500"
+                                                <li class="px-4 py-3 border-t border-red-500"
                                                     v-for="(value, n) in item.children" :key="n">
                                                     <Link :href="route('Client.Products', item.id)" class=" ">{{
                                                         value.name }}
@@ -130,6 +130,22 @@
         <main :class="{ 'bg-white pb-5 pt-[100px] lg:pt-[150px]': !isHome }">
             <slot />
         </main>
+
+        <div class="fixed lg:bottom-16 bottom-5 lg:right-10 right-1  z-40">
+            <div v-for="(item, index) in layout.profile.social" :key="index">
+                <div v-if="item.isContactWidget === 1">
+                    <a target="_blank" :href="item.link">
+                        <div
+                            class="rounded-full flex items-center justify-center overflow-hidden lg:w-16 lg:h-16 w-10 h-10 lg:mb-5 mb-2">
+                            <img width="50" height="50" class="w-full h-full" :src="item.image"
+                                alt="Vinawebapp.com Contact Widget">
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
         <div class="mt-3" v-show="isSlideBrands">
             <div class="max-w-screen-xl mx-auto py-3 px-3">
 
@@ -143,7 +159,7 @@
                         spaceBetween: 10,
                     },
                     '1024': {
-                        slidesPerView: 10,
+                        slidesPerView: 6,
                         spaceBetween: 10,
                     },
                 }" :autoplay="{
@@ -153,7 +169,7 @@
                     <swiper-slide v-for="(item, index) in productBrands" :key="index">
                         <div>
                             <Link :href="route('Client.Brand.Products', item.slug)">
-                            <img width="100" height="100" class="w-full h-auto" :src="item.image" alt="Brand">
+                            <img width="200" class="max-w-full h-auto" :src="item.image" alt="Brand">
                             </Link>
                         </div>
                     </swiper-slide>
@@ -164,20 +180,23 @@
 
         </div>
         <footer class="w-full ">
-            <div class="bg-black/80">
+            <div id="footerSidebar" :style="{
+                '--footer_sidebar_bg': hexToRgb(layout.footer.footer_sidebar_bg),
+                '--footer_sidebar_color': hexToRgb(layout.footer.footer_sidebar_color)
+            }">
                 <div class=" max-w-screen-xl mx-auto py-5 px-3">
                     <ul class=" flex items-start  justify-between flex-wrap gap-4 ">
                         <li v-for="(item, index) in layout.footer.footer_sidebar" :key="index">
                             <div>
-                                <h3 class="font-bold text-base text-white mb-2 ">
+                                <h3 class="font-bold text-base mb-2 ">
                                     {{ item.name }}
                                 </h3>
                                 <ul class="w-full text-sm ">
 
                                     <li class="mb-2" v-for="(value, n) in item.value" :key="n">
-                                        <Link :href="value.link" class="text-wrap ">
-                                        <h3 class="text-white/50 hover:text-white/90"> {{ value.name }} </h3>
-                                        </Link>
+                                        <a target="_blank" :href="value.link" class="text-wrap ">
+                                            <h4 class=" "> {{ value.name }} </h4>
+                                        </a>
                                     </li>
 
                                 </ul>
@@ -187,7 +206,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="bg-black/90 text-white/60">
+            <div id="footerBottom" :style="{
+                '--footer_bottom_bg': hexToRgb(layout.footer.footer_bottom_bg),
+                '--footer_bottom_color': hexToRgb(layout.footer.footer_bottom_color)
+            }">
                 <div class=" max-w-screen-xl mx-auto py-5 px-3">
                     <div class="grid grid-cols-12 gap-4 py-5">
                         <div class="lg:col-span-3 col-span-12">
@@ -203,6 +225,8 @@
                                                     class="w-8 h-8 border border-white/50 flex items-center justify-center bg-black">
                                                     <icon :icon="item.icon" v-if="item.icon.length > 0"
                                                         class="text-md text-white" />
+                                                    <img :src="item.icon_image" v-else width="20" height="20"
+                                                        alt="vinawebapp.com">
                                                 </div>
                                             </a>
 
@@ -211,9 +235,19 @@
                                     </ul>
                                 </div>
                             </div>
+
                         </div>
-                        <div class="lg:col-span-9 col-span-12">
-                            <div v-html="layout.footer.footer_bottom" class="text-xs font-normal"></div>
+                        <div class="lg:col-span-6 col-span-12">
+                            <div>
+                                <div v-html="layout.footer.footer_bottom" class="text-xs font-normal"></div>
+                            </div>
+
+                        </div>
+                        <div class="lg:col-span-3 col-span-12">
+                            <div id="google_map" class="relative" v-if="layout.footer.footer_map">
+                                <div v-html="layout.footer.footer_map">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -233,8 +267,11 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import '../../css/style.css';
+import '../../css/client.css';
 import { Autoplay } from 'swiper/modules';
 import ActionLoading from '@/Components/ActionLoading.vue';
+import { computed } from 'vue';
+
 
 const page = usePage();
 const layout = page.props.layout
@@ -257,14 +294,20 @@ defineProps({
     seo: {
         type: Object,
         default: () => ({
-            title: 'Global Procurement Logistics Solutions Co., LTD',
-            meta_title: 'Công ty TNHH Giải pháp Logistics Mua sắm Toàn cầu | Global Procurement Logistics Solutions Co., LTD',
-            meta_description: 'Chúng tôi cung cấp các giải pháp logistics và mua sắm toàn cầu chuyên nghiệp, đáng tin cậy và hiệu quả. Tối ưu hóa chuỗi cung ứng với Global Procurement Logistics Solutions Co., LTD.',
+            title: 'THG Vina',
+            meta_title: 'Công ty TNHH Giải pháp Logistics Mua sắm Toàn cầu | THG Vina',
+            meta_description: 'Chúng tôi cung cấp các giải pháp logistics và mua sắm toàn cầu chuyên nghiệp, đáng tin cậy và hiệu quả. Tối ưu hóa chuỗi cung ứng với THG Vina.',
             meta_keywords: 'Logistics, mua sắm toàn cầu, giải pháp logistics, Global Procurement Logistics, giải pháp chuỗi cung ứng',
         }),
     },
 });
-
+const hexToRgb = (hex) => {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `${r}, ${g}, ${b}`; // Trả về "r, g, b"
+};
 // Khai báo biến và kiểu dữ liệu
 const selectedMenu = ref(null)
 
@@ -293,4 +336,9 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style></style>
+<style>
+#google_map iframe {
+    width: 100%;
+    max-height: 200px
+}
+</style>

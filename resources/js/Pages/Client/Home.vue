@@ -6,11 +6,11 @@
         </div>
         <div class="bg-red-600">
             <div class="py-7">
-                <form class=" flex justify-center items-center" action="">
-                    <input
-                        class="py-3 px-6 focus:border-primary rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary mr-1"
+                <form class=" flex justify-center items-center" :action="route('Client.Products')">
+                    <input name="s"
+                        class="py-3 px-6 focus:border-primary rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary mr-1 bg-white text-black"
                         type="text" placeholder="Search Products...">
-                    <button class="py-3 px-6 bg-red-500 rounded text-white">
+                    <button class="py-3 px-6 bg-red-500 rounded text-white" type="submit">
                         SEARCH
                     </button>
                 </form>

@@ -31,6 +31,7 @@ use App\Http\Controllers\MediaController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/sitemap.xml', [VinawebappController::class, 'viewSiteMap'])->name('sitemap.index');
 
 
 Route::get('vnwa/', function () {

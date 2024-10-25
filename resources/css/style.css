@@ -33,9 +33,12 @@ h6 a {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    width: 200px;
+    width: 330px;
+    font-size: 18px;
 }
-
+.menu-hover a{
+    font-size: 14px;
+}
 li:hover .menu-hover {
     top: 120%; /* Trượt xuống dưới */
     opacity: 1; /* Hiển thị */
@@ -44,26 +47,22 @@ li:hover .menu-hover {
 
 /* Thay đổi này để submenu hiển thị khi hover vào li */
 .menu-hover li:hover .submenu-hover {
-    left: -150px; /* Hiển thị submenu ở bên trái */
     opacity: 1;
     visibility: visible;
+
 }
 
 .submenu-hover {
     position: absolute;
     top: 0;
-    left: -150px; /* Bên trái */
+    left: -331px; /* Bên trái */
     background-color: #000;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    width: 150px;
+    width: 330px;
 }
 
-.menu-hover li:hover .submenu-hover {
-    opacity: 1;
-    visibility: visible;
-}
 
 .submenu-hover li:hover {
     background-color: #EF4444;
@@ -89,3 +88,26 @@ li:hover .menu-hover {
     transform: translateX(0);
     /* Đẩy menu vào màn hình */
   }
+.tree_menu li{
+    list-style: disc;
+    color: #2f78ad;
+}
+.tree_menu li h3{
+    color: #2f78ad;
+}
+.tree_menu li li{
+    list-style: circle;
+    color: #ea9530;
+
+}
+.tree_menu li li h3{
+    color: #ea9530;
+}
+.tree_menu li li li{
+    list-style: square;
+    color: rgb(195, 113, 233);
+
+}
+.tree_menu li li li h3{
+    color: rgb(195, 113, 233);
+}

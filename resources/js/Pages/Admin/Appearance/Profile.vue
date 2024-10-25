@@ -62,14 +62,30 @@
                             required />
                     </div>
                     <div class="mb-4">
-                        <InputLabel for="InputSelectedIcon">Icon <span class="text-red-500">*</span></InputLabel>
+                        <InputLabel for="InputSelectedIcon">Icon </InputLabel>
                         <InputSelectedIcon id="InputSelectedIcon"
                             class="mt-1 block w-full border border-solid border-black h-10" v-model="form.icon" />
+                    </div>
+                    <div class="mb-4">
+                        <InputLabel for="icon_image">Icon Image </InputLabel>
+                        <InputUrlImage id="icon_image" v-model="form.icon_image" class="mt-1 block w-full" />
                     </div>
                     <div class="mb-4">
                         <InputLabel for="link">Link <span class="text-red-500">*</span></InputLabel>
                         <InputDesc id="link" v-model="form.link" class="mt-1 block w-full" />
                     </div>
+                    <div class="mb-4 flex gap-4 items-center">
+                        <InputLabel for="isContactWidget">
+                            Is Contact Widget<span class="text-red-500">*</span>
+                        </InputLabel>
+                        <input type="checkbox" id="isContactWidget" v-model="form.isContactWidget" :true-value="1"
+                            :false-value="0" />
+                    </div>
+                    <div class="mb-4" v-show="form.isContactWidget === 1">
+                        <InputLabel for="image">Image <span class="text-red-500">*</span></InputLabel>
+                        <InputUrlImage id="image" v-model="form.image" class="mt-1 block w-full" />
+                    </div>
+
                     <div class="mt-6 w-full text-center">
                         <button @click="submit"
                             class="bg-purple-500 hover:bg-purple-900 hover:text-white py-2 px-5 rounded-sm text-white text-nowrap ms-3">
@@ -106,6 +122,7 @@ import InputError from '@/Components/InputError.vue';
 import InputText from '@/Components/Input/InputText.vue';
 import InputDesc from '@/Components/Input/InputDesc.vue';
 import Editor from '@/Components/Editor.vue';
+import InputUrlImage from '@/Components/Input/InputUrlImage.vue';
 
 const isPageLoading = ref(false);
 const form = ref({
@@ -113,7 +130,10 @@ const form = ref({
     index: null,
     name: '',
     icon: [],
+    icon_image: '',
     link: '',
+    isContactWidget: 0,
+    image: '',
 });
 const shortAbout = ref('');
 const data = ref([]);
@@ -150,6 +170,9 @@ const showCreate = () => {
         name: '',
         icon: [],
         link: '',
+        isContactWidget: 0,
+    icon_image: '',
+    image: '',
     };
 };
 
@@ -158,19 +181,31 @@ const showEdit = (index) => {
     form.value.index = index;
     form.value.name = data.value.social[index]?.name;
     form.value.icon = data.value.social[index]?.icon;
+    form.value.icon_image = data.value.social[index]?.icon_image;
     form.value.link = data.value.social[index]?.link;
+    form.value.isContactWidget = data.value.social[index]?.isContactWidget;
+    form.value.image = data.value.social[index]?.image;
 };
 
 const submit = () => {
-    if (!form.value.name.trim() || form.value.icon.length !== 2 || !form.value.link.trim()) {
+    if (!form.value.name.trim() || !form.value.link.trim()) {
+
+        toast.error('Please enter complete data', { autoClose: 1500 });
+        return false;
+    }
+    if (form.value.isContactWidget == 1 && !form.value.name.trim()) {
+
         toast.error('Please enter complete data', { autoClose: 1500 });
         return false;
     }
 
     const newData = {
         name: form.value.name,
+        icon_image: form.value.icon_image,
         icon: form.value.icon,
         link: form.value.link,
+        isContactWidget: form.value.isContactWidget,
+        image: form.value.image,
     };
 
     if (form.value.index == null) {
@@ -179,8 +214,8 @@ const submit = () => {
         data.value.social[form.value.index] = newData;
     }
 
-    showCreate();
     updateData();
+    showCreate();
 };
 
 const moveItem = (index, direction) => {

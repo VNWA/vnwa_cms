@@ -21,9 +21,35 @@
 
                         <div class="mb-4">
                             <div class="bg-white shadow-black border p-3">
-
+                                <div class="mb-10">
+                                    <div class="flex items-center justify-start gap-4 mb-3">
+                                        <InputLabel for="footer_sidebar_bg">Footer SideBar Background <span
+                                                class="text-red-500">*</span>
+                                        </InputLabel>
+                                        <input id="footer_sidebar_bg" v-model="data.footer_sidebar_bg" type="color">
+                                    </div>
+                                    <div class="flex items-center justify-start gap-4 mb-3">
+                                        <InputLabel for="footer_sidebar_color">Footer SideBar Color <span
+                                                class="text-red-500">*</span>
+                                        </InputLabel>
+                                        <input id="footer_sidebar_color" v-model="data.footer_sidebar_color" type="color">
+                                    </div>
+                                    <div class="flex items-center justify-start gap-4 mb-3">
+                                        <InputLabel for="footer_bottom_bg">Footer Bottom Background <span
+                                                class="text-red-500">*</span>
+                                        </InputLabel>
+                                        <input id="footer_bottom_bg" v-model="data.footer_bottom_bg" type="color">
+                                    </div>
+                                    <div class="flex items-center justify-start gap-4 mb-3">
+                                        <InputLabel for="footer_bottom_color">Footer Bottom Color <span
+                                                class="text-red-500">*</span>
+                                        </InputLabel>
+                                        <input id="footer_bottom_color" v-model="data.footer_bottom_color" type="color">
+                                    </div>
+                                </div>
                                 <InputLabel for="name">Footer SideBar <span class="text-red-500">*</span></InputLabel>
                                 <div>
+
                                     <div class="flex items-center justify-end">
                                         <button v-if="!isFormAddColumn" @click="isFormAddColumn = !isFormAddColumn"
                                             class="mb-3 bg-white border border-purple-500 hover:text-white hover:bg-purple-500 px-5 py-2 text-md">
@@ -62,7 +88,7 @@
                                                 </div>
                                                 <ul class="w-full text-sm text-black/80">
 
-                                                    <li class="mb-2 ps-3" v-for="(value, n) in item.value" :key="n" >
+                                                    <li class="mb-2 ps-3" v-for="(value, n) in item.value" :key="n">
                                                         <div class="flex items-center justify-between gap-5 ">
                                                             <h3> {{ value.name }} </h3>
                                                             <div>
@@ -148,6 +174,15 @@
 
                                 <InputLabel for="name">Footer Bottom <span class="text-red-500">*</span></InputLabel>
                                 <Editor v-model="data.footer_bottom" />
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="bg-white shadow-black border p-3 w-full max-w-full">
+                                <InputLabel for="footer_map">Footer Goole Map <span class="text-red-500">*</span>
+                                </InputLabel>
+                                <textarea
+                                    class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                    v-model="data.footer_map" id="footer_map" rows="10"></textarea>
                             </div>
                         </div>
                     </div>
@@ -238,7 +273,11 @@ const isShowFormEdit = ref(null)
 const data = ref({
     footer_sidebar: [],
     footer_bottom: '',
-
+    footer_map: '',
+    footer_sidebar_bg: '',
+    footer_sidebar_color: '',
+    footer_bottom_bg: '',
+    footer_bottom_color: '',
 });
 const loadData = () => {
     isPageLoading.value = true;

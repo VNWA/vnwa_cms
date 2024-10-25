@@ -1,7 +1,10 @@
 <template>
     <swiper :pagination="{
         clickable: true,
-    }" :modules="modules" class="mySwiper">
+    }" :modules="modules" class="mySwiper" :autoplay="{
+                    delay: 5000,
+                    disableOnInteraction: false,
+                }" >
         <swiper-slide v-for="(image, index) in images" :key="index">
             <img :src="image" alt="Slide image"  width="1920" height="1132"/>
         </swiper-slide>
@@ -12,7 +15,7 @@
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
+import { Pagination ,Autoplay} from 'swiper/modules';
 
 export default {
     components: {
@@ -27,7 +30,7 @@ export default {
     },
     setup() {
         return {
-            modules: [Pagination],
+            modules: [Pagination,Autoplay],
         };
     },
 };

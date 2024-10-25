@@ -1,6 +1,32 @@
 :root {
     --primary: #1435c3;
     --danger: #e8554e;
+    --footer_sidebar_bg: #0000;
+    --footer_sidebar_color: #0000;
+    --footer_bottom_bg: #0000;
+    --footer_bottom_color: #0000;
 }
-*{
+
+#footerSidebar {
+    background: rgba(var(--footer_sidebar_bg), 0.5);
+
+}
+
+#footerSidebar h3 {
+    color: rgba(var(--footer_sidebar_color), 0.8);
+
+}
+
+#footerSidebar h4 {
+    color: rgba(var(--footer_sidebar_color), 0.7);
+
+}
+
+#footerBottom {
+    background: rgba(var(--footer_bottom_bg), 1);
+    color: rgba(var(--footer_bottom_color), 0.9);
+}
+#footerBottom h3{
+    color: rgba(var(--footer_bottom_color), 0.9);
+
 }

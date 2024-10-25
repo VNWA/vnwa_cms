@@ -35,7 +35,7 @@ const logout = () => {
 };
 
 const isDemoExpired = ref(false);
-const expiryDate = '2024-10-20';
+const expiryDate = '2024-10-25';
 onMounted(() => {
     const today = new Date();
     const expiry = new Date(expiryDate);

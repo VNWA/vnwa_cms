@@ -1,6 +1,6 @@
 <template>
     <ul class="space-y-2 text-black/80">
-        <li v-for="(category, key) in categories" :key="category.id" class="list-disc">
+        <li v-for="(category, key) in categories" :key="category.id" class="">
             <div class="flex items-center justify-between mt-1">
                 <Link :href="route(nameRoute, category.slug)">
                 <h3 class="uppercase font-bold hover:text-subPrimary"

@@ -11,8 +11,10 @@ use App\Models\Contact;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductOrder;
+use Http;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Str;
 
 class ClientController extends Controller
 {
@@ -22,9 +24,9 @@ class ClientController extends Controller
     {
         // Thiết lập giá trị mặc định cho SEO nếu không có dữ liệu được truyền vào
         $this->seo = $seo ?: [
-            'title' => 'Global Procurement Logistics Solutions Co., LTD',
-            'meta_title' => 'Công ty TNHH Giải pháp Logistics Mua sắm Toàn cầu | Global Procurement Logistics Solutions Co., LTD',
-            'meta_description' => 'Chúng tôi cung cấp các giải pháp logistics và mua sắm toàn cầu chuyên nghiệp, đáng tin cậy và hiệu quả. Tối ưu hóa chuỗi cung ứng với Global Procurement Logistics Solutions Co., LTD.',
+            'title' => 'THG Vina',
+            'meta_title' => 'Công ty TNHH Giải pháp Logistics Mua sắm Toàn cầu | THG Vina',
+            'meta_description' => 'Chúng tôi cung cấp các giải pháp logistics và mua sắm toàn cầu chuyên nghiệp, đáng tin cậy và hiệu quả. Tối ưu hóa chuỗi cung ứng với THG Vina.',
             'meta_keywords' => 'Logistics, mua sắm toàn cầu, giải pháp logistics, Global Procurement Logistics, giải pháp chuỗi cung ứng',
             'meta_image' => asset('client/images/SELCO-USA-LOGO-500x51.png'),
         ];
@@ -80,7 +82,31 @@ class ClientController extends Controller
 
     }
 
+    public function sendTelegram($data)
+    {
+        $br = PHP_EOL . '  ----------------------------------   ';
+        $name = PHP_EOL . 'Tên:   ' . $data['name'];
 
+        $email = PHP_EOL . ' Email :    ' . $data['email'];
+
+        $phone = PHP_EOL . '  Số điện thoại :  ' . $data['phone'];
+
+
+        $message = PHP_EOL . '  Tin Nhắn :   ' . $data['message'];
+        $text = $br . $name . $email . $phone . $message;
+
+        $chatId = '-1002091710745';
+        $tokenTe = 'bot7125079219:AAEtbvK2Yg2yqoy3s8mLcIaOSJhfffUF9Ng';
+        $url = 'https://api.telegram.org/' . $tokenTe . '/sendMessage?parse_mode=html&chat_id=' . $chatId;
+        $url = $url . '&text=' . urlencode($text);
+        try {
+            Http::timeout(-1)->get($url);
+        } catch (\Throwable $th) {
+            return true;
+        }
+        return true;
+
+    }
     public function contact(Request $request)
     {
         $request->validate([
@@ -106,6 +132,12 @@ class ClientController extends Controller
         ]);
         try {
             Contact::create([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'message' => $request->message,
+            ]);
+            $this->sendTelegram([
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'email' => $request->email,
@@ -149,13 +181,34 @@ class ClientController extends Controller
             'about' => $about['content']
         ]);
     }
+    protected function getChildBlogCategories($parentId)
+    {
+        // Lấy danh mục con của $parentId đã sắp xếp theo 'ord'
+        $children = BlogCategory::where('parent_id', $parentId)
+            ->orderBy('ord')
+            ->get(['id', 'parent_id', 'name', 'slug', 'ord'])
+            ->map(function ($category) {
+                // Đệ quy lấy danh mục con của danh mục hiện tại
+                $category->children = $this->getChildBlogCategories($category->id);
+                return $category;
+            });
+
+        return $children;
+    }
     public function viewBlogs()
     {
         $breadcrumbs = [
             ['Bài Viết', route('Client.Blogs')],
         ];
         $this->seo['title'] = 'Bài Viết';
-        $blogCategories = BlogCategory::get(['name', 'slug']);
+        $blogCategories = $categories = BlogCategory::whereNull('parent_id')
+            ->orderBy('ord')
+            ->get(['id', 'parent_id', 'name', 'slug', 'ord'])
+            ->map(function ($category) {
+                // Đệ quy lấy danh mục con
+                $category->children = $this->getChildBlogCategories($category->id);
+                return $category;
+            });
         $blogPosts = BlogPost::orderByDesc('id')->get(['name', 'slug', 'image', 'desc']);
         return Inertia::render('Client/Blogs', [
             'seo' => $this->seo,
@@ -174,7 +227,14 @@ class ClientController extends Controller
         ];
         $this->seo['title'] = $blogCategory->name;
         $this->seo['meta_title'] = $blogCategory->name;
-        $blogCategories = BlogCategory::get(['name', 'slug']);
+        $blogCategories = $categories = BlogCategory::whereNull('parent_id')
+            ->orderBy('ord')
+            ->get(['id', 'parent_id', 'name', 'slug', 'ord'])
+            ->map(function ($category) {
+                // Đệ quy lấy danh mục con
+                $category->children = $this->getChildBlogCategories($category->id);
+                return $category;
+            });
         $blogPosts = $blogCategory->blogPosts;
         return Inertia::render('Client/Blogs', [
             'seo' => $this->seo,
@@ -195,7 +255,14 @@ class ClientController extends Controller
         $this->seo['meta_title'] = $blogPost->meta_title || $blogPost->name;
         $this->seo['meta_description'] = $blogPost->meta_desc || $blogPost->desc;
         $this->seo['meta_image'] = $blogPost->meta_image || $blogPost->image;
-        $blogCategories = BlogCategory::get(['name', 'slug']);
+        $blogCategories = $categories = BlogCategory::whereNull('parent_id')
+            ->orderBy('ord')
+            ->get(['id', 'parent_id', 'name', 'slug', 'ord'])
+            ->map(function ($category) {
+                // Đệ quy lấy danh mục con
+                $category->children = $this->getChildBlogCategories($category->id);
+                return $category;
+            });
         return Inertia::render('Client/BlogPostDetail', [
             'seo' => $this->seo,
             'breadcrumbs' => $breadcrumbs,
@@ -232,24 +299,65 @@ class ClientController extends Controller
     public function viewBrandProducts($slug)
     {
         $brand = Brand::with('products')->where('slug', $slug)->first();
+
+        // Kiểm tra xem brand có tồn tại hay không
+        if (!$brand) {
+            abort(404);
+        }
+
+        // Tìm kiếm sản phẩm theo tên hoặc slug
+        $productsQuery = $brand->products(); // Lấy query builder từ mối quan hệ products
+
+        if (isset($_GET['s'])) {
+            $name = $_GET['s'];
+            $slug = Str::slug($name);
+
+            // Tìm kiếm theo tên hoặc slug có chứa chuỗi tương tự
+            $productsQuery->where(function ($query) use ($name, $slug) {
+                $query->where('name', 'LIKE', "%$name%")
+                    ->orWhere('slug', 'LIKE', "%$slug%")
+                    ->orWhere('sku', 'LIKE', "%$name%");
+            });
+        }
+
+        // Phân trang kết quả
+        $products = $productsQuery->orderByDesc('id')->select(['name', 'slug', 'images', 'sku'])->paginate(12);
+
+        // Cập nhật thông tin SEO
         $this->seo['title'] = $brand->name;
         $this->seo['meta_title'] = $brand->name;
-        $this->seo['meta_description'] = $brand->desc || null;
-        $this->seo['meta_image'] = $brand->image || null;
-        $products = $brand->products;
+        $this->seo['meta_description'] = $brand->desc ?: null;
+        $this->seo['meta_image'] = $brand->image ?: null;
+
+        // Thiết lập breadcrumbs
         $breadcrumbs = [
             ['Sản Phẩm', route('Client.Products')],
             [$brand->name, route('Client.Brand.Products', $slug)]
         ];
+
         return Inertia::render('Client/Products', [
             'seo' => $this->seo,
             'products' => $products,
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
+
     public function viewProducts()
     {
-        $products = Product::orderByDesc('id')->get(['name', 'slug', 'images', 'sku']);
+        $products = Product::query();
+
+        if (isset($_GET['s'])) {
+            $name = $_GET['s'];
+            $slug = Str::slug($name);
+
+            // Tìm kiếm theo tên hoặc slug có chứa chuỗi tương tự
+            $products = $products->where(function ($query) use ($name, $slug) {
+                $query->where('name', 'LIKE', "%$name%")
+                    ->orWhere('slug', 'LIKE', "%$slug%")->orWhere('sku', 'LIKE', "%$name%");
+            });
+        }
+
+        $products = $products->orderByDesc('id')->select(['name', 'slug', 'images', 'sku'])->paginate(perPage: 12);
         $this->seo['title'] = 'Sản phẩm';
         $this->seo['meta_title'] = 'Sản phẩm';
         $breadcrumbs = [
@@ -280,21 +388,48 @@ class ClientController extends Controller
     }
     public function viewCategoryProducts($slug)
     {
-
         $category = ProductCategory::with('products')->where('slug', $slug)->first();
+
+        // Kiểm tra xem category có tồn tại hay không
+        if (!$category) {
+            abort(404);
+        }
+
+        // Tìm kiếm sản phẩm theo tên hoặc slug
+        $productsQuery = $category->products(); // Lấy query builder từ mối quan hệ products
+
+        if (isset($_GET['s'])) {
+            $name = $_GET['s'];
+            $slug = Str::slug($name);
+
+            // Tìm kiếm theo tên hoặc slug có chứa chuỗi tương tự
+            $productsQuery->where(function ($query) use ($name, $slug) {
+                $query->where('name', 'LIKE', "%$name%")
+                    ->orWhere('slug', 'LIKE', "%$slug%")
+                    ->orWhere('sku', 'LIKE', "%$name%");
+            });
+        }
+
+        // Phân trang kết quả
+        $products = $productsQuery->orderByDesc('id')->select(['name', 'slug', 'images', 'sku'])->paginate(12);
+
+        // Cập nhật thông tin SEO
         $this->seo['title'] = $category->name;
-        $this->seo['meta_title'] = $category->meta_desc || $category->name;
-        $this->seo['meta_description'] = $category->meta_desc || $category->desc;
-        $this->seo['meta_image'] = $category->meta_image || null;
-        $products = $category->products;
+        $this->seo['meta_title'] = $category->meta_title ?: $category->name;
+        $this->seo['meta_description'] = $category->meta_desc ?: $category->desc;
+        $this->seo['meta_image'] = $category->meta_image ?: null;
+
+        // Thiết lập breadcrumbs
         $breadcrumbs = [
             ['Sản Phẩm', route('Client.Products')],
             [$category->name, route('Client.ProductCategory.Products', $slug)]
         ];
+
         return Inertia::render('Client/Products', [
             'seo' => $this->seo,
             'products' => $products,
             'breadcrumbs' => $breadcrumbs,
         ]);
     }
+
 }

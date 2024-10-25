@@ -1,12 +1,22 @@
 <template>
     <div>
         <DefaultLayout :seo="seo" :isLoading="isLoading">
-            <div class="container px-4 lg:max-w-screen-xl mx-auto my-4">
+            <div class="container px-4 lg:max-w-screen-xl mx-auto my-4 text-black/80">
                 <div class="mb-3">
                     <Breadcrumb :breadcrumbs="breadcrumbs" />
                 </div>
                 <div class="grid lg:grid-cols-12">
                     <div class="lg:col-span-3 hidden lg:block">
+                        <div class="mb-5">
+                            <form class=" flex justify-end gap-1 items-center" :action="route('Client.Products')">
+                                <input name="s"
+                                    class="py-2 px-6 focus:border-primary  placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary  bg-white text-black w-full lg:w-full"
+                                    type="text" placeholder="Tìm kiếm tên hoặc mã sản phẩm">
+                                <button class="py-2 px-6 bg-red-500  text-white" type="submit">
+                                    SEARCH
+                                </button>
+                            </form>
+                        </div>
                         <div class="shadow shadow-black/50 mb-5">
                             <div class="bg-primary p-2 text-xl text-white  font-bold">
                                 Danh mục sản phẩm
