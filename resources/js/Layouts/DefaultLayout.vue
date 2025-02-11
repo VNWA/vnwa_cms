@@ -20,7 +20,8 @@
                         <a v-for="item in layout.topNav" :key="item"
                             :class="{ 'text-white': isScrolled, 'text-black': !isScrolled }" :href="item.link">
                             <button class="flex items-center justity-center gap-1">
-                                <icon :icon="item.icon" v-if="item.icon.length > 0" /> <span> {{ item.name }}</span>
+                                <icon v-if="item.icon && item.icon.length > 0" :icon="item.icon" /> <span> {{ item.name
+                                    }}</span>
                             </button>
                         </a>
 
@@ -44,27 +45,24 @@
                         <ul class="divide-y mx-3 divide-gray-200">
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
                                 :class="{ 'text-subPrimary': page.url === '/' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Home')">Home</Link>
+                                <Link class="text-xl font-bold" :href="route('Client.Home')">Trang Chủ</Link>
                             </li>
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
-                                :class="{ 'text-subPrimary': page.url === '/about-us' }">
-                                <Link class="text-xl font-bold" :href="route('Client.About')">About</Link>
+                                :class="{ 'text-subPrimary': page.url === '/ve-chung-toi' }">
+                                <Link class="text-xl font-bold" :href="route('Client.About')">Về chúng tôi</Link>
                             </li>
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
-                                :class="{ 'text-subPrimary': page.url === '/products' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Products')">Products</Link>
+                                :class="{ 'text-subPrimary': page.url === '/dich-vu' }">
+                                <Link class="text-xl font-bold" :href="route('Client.About')">Dịch vụ</Link>
+                            </li>
+
+                            <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
+                                :class="{ 'text-subPrimary': page.url === '/bai-viet' }">
+                                <Link class="text-xl font-bold" :href="route('Client.Blogs')">Bài Viết</Link>
                             </li>
                             <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
-                                :class="{ 'text-subPrimary': page.url === '/brands' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Brands')">Brands</Link>
-                            </li>
-                            <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
-                                :class="{ 'text-subPrimary': page.url === '/blogs' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Blogs')">Blogs</Link>
-                            </li>
-                            <li class=" text-primary  cursor-pointer block py-2 transition duration-300 ease-in-out mb-3"
-                                :class="{ 'text-subPrimary': page.url === '/contact' }">
-                                <Link class="text-xl font-bold" :href="route('Client.Contact')">Contact Us</Link>
+                                :class="{ 'text-subPrimary': page.url === '/lien-he' }">
+                                <Link class="text-xl font-bold" :href="route('Client.Contact')">Liên Hệ</Link>
                             </li>
                         </ul>
                     </div>
@@ -81,44 +79,26 @@
                             <ul class="lg:flex items-center justify-end gap-5 text-white ">
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
                                     :class="{ 'text-subPrimary': page.url === '/' }">
-                                    <Link class="text-lg" :href="route('Client.Home')">Home</Link>
+                                    <Link class="text-lg" :href="route('Client.Home')">Trang chủ</Link>
                                 </li>
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
-                                    :class="{ 'text-subPrimary': page.url === '/about-us' }">
-                                    <Link class="text-lg" :href="route('Client.About')">About Us</Link>
-                                </li>
-                                <li class="relative  text-primary hover:text-subPrimary cursor-pointer"
-                                    :class="{ 'text-subPrimary': page.url === '/products' }">
-                                    <Link class="text-lg block" :href="route('Client.Products')">Products</Link>
-                                    <ul class="menu-hover">
-                                        <li v-for="(item, index) in productCategories" :key="index"
-                                            class="border-t relative border-red-500 hover:bg-red-500 px-4 py-3">
-                                            <Link :href="route('Client.Products', item.id)"> {{ item.name }}</Link>
-                                            <ul class="submenu-hover" v-if="item.children.length > 0">
-                                                <li class="px-4 py-3 border-t border-red-500"
-                                                    v-for="(value, n) in item.children" :key="n">
-                                                    <Link :href="route('Client.Products', item.id)" class=" ">{{
-                                                        value.name }}
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        </li>
-
-                                    </ul>
+                                    :class="{ 'text-subPrimary': page.url === '/ve-chung-toi' }">
+                                    <Link class="text-lg" :href="route('Client.About')">Về Chúng Tôi</Link>
                                 </li>
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
-                                    :class="{ 'text-subPrimary': page.url === '/brands' }">
-                                    <Link class="text-lg" :href="route('Client.Brands')">Brands
-                                    </Link>
+                                    :class="{ 'text-subPrimary': page.url === '/dich-vu' }">
+                                    <Link class="text-lg" :href="route('Client.Service')">Dịch Vụ</Link>
                                 </li>
 
+
+
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
-                                    :class="{ 'text-subPrimary': page.url === '/blogs' }">
-                                    <Link class="text-lg" :href="route('Client.Blogs')">Blogs</Link>
+                                    :class="{ 'text-subPrimary': page.url === '/bai-viet' }">
+                                    <Link class="text-lg" :href="route('Client.Blogs')">Bài Viết</Link>
                                 </li>
                                 <li class=" text-primary hover:text-subPrimary cursor-pointer"
-                                    :class="{ 'text-subPrimary': page.url === '/contact' }">
-                                    <Link class="text-lg" :href="route('Client.Contact')">Contact Us</Link>
+                                    :class="{ 'text-subPrimary': page.url === '/lien-he' }">
+                                    <Link class="text-lg" :href="route('Client.Contact')">Liên Hệ</Link>
                                 </li>
 
                             </ul>
@@ -130,82 +110,72 @@
         <main :class="{ 'bg-white pb-5 pt-[100px] lg:pt-[150px]': !isHome }">
             <slot />
         </main>
+        <div class="bg-white  " v-show="isSlideBrands">
+            <div class="bg-teal-100/50 py-10">
+                <div class="max-w-screen-xl mx-auto py-3 px-3">
 
-        <div class="fixed lg:bottom-16 bottom-5 lg:right-10 right-1  z-40">
-            <div v-for="(item, index) in layout.profile.social" :key="index">
-                <div v-if="item.isContactWidget === 1">
-                    <a target="_blank" :href="item.link">
-                        <div
-                            class="rounded-full flex items-center justify-center overflow-hidden lg:w-16 lg:h-16 w-10 h-10 lg:mb-5 mb-2">
-                            <img width="50" height="50" class="w-full h-full" :src="item.image"
-                                alt="Vinawebapp.com Contact Widget">
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="mt-3" v-show="isSlideBrands">
-            <div class="max-w-screen-xl mx-auto py-3 px-3">
-
-                <swiper :slidesPerView="4" :breakpoints="{
-                    '640': {
-                        slidesPerView: 3,
-                        spaceBetween: 10,
-                    },
-                    '768': {
-                        slidesPerView: 4,
-                        spaceBetween: 10,
-                    },
-                    '1024': {
-                        slidesPerView: 6,
-                        spaceBetween: 10,
-                    },
-                }" :autoplay="{
-                    delay: 1000,
-                    disableOnInteraction: false,
-                }" :spaceBetween="30" :modules="swiperModule">
-                    <swiper-slide v-for="(item, index) in productBrands" :key="index">
-                        <div>
-                            <Link :href="route('Client.Brand.Products', item.slug)">
-                            <img width="200" class="max-w-full h-auto" :src="item.image" alt="Brand">
-                            </Link>
-                        </div>
-                    </swiper-slide>
-
-                </swiper>
-            </div>
-
-
-        </div>
-        <footer class="w-full ">
-            <div id="footerSidebar" :style="{
-                '--footer_sidebar_bg': hexToRgb(layout.footer.footer_sidebar_bg),
-                '--footer_sidebar_color': hexToRgb(layout.footer.footer_sidebar_color)
-            }">
-                <div class=" max-w-screen-xl mx-auto py-5 px-3">
-                    <ul class=" flex items-start  justify-between flex-wrap gap-4 ">
-                        <li v-for="(item, index) in layout.footer.footer_sidebar" :key="index">
+                    <swiper :slidesPerView="1" :breakpoints="{
+                        '640': {
+                            slidesPerView: 2,
+                            spaceBetween: 30,
+                        },
+                        '768': {
+                            slidesPerView: 2,
+                            spaceBetween: 30,
+                        },
+                        '1024': {
+                            slidesPerView: 3,
+                            spaceBetween: 30,
+                        },
+                    }" :autoplay="{
+                        delay: 1000,
+                        disableOnInteraction: false,
+                    }"
+                   :loop="true"
+                    :spaceBetween="30" :modules="swiperModule">
+                        <swiper-slide v-for="(item, index) in productBrands" :key="index">
                             <div>
-                                <h3 class="font-bold text-base mb-2 ">
-                                    {{ item.name }}
-                                </h3>
-                                <ul class="w-full text-sm ">
 
-                                    <li class="mb-2" v-for="(value, n) in item.value" :key="n">
-                                        <a target="_blank" :href="value.link" class="text-wrap ">
-                                            <h4 class=" "> {{ value.name }} </h4>
-                                        </a>
-                                    </li>
 
-                                </ul>
+                                <div
+                                    class="w-full rounded-lg shadow bg-gray-800 dark:border-gray-700 py-5 min-h-[300px]">
+                                    <div class="flex items-center justify-center">
+                                        <div class="w-20 h-20 rounded-full overflow-hidden">
+                                            <img class="rounded-t-lg" :src="item.image" alt="Chuyên Gia Hướng Nghiệp" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="p-5">
+                                        <div>
+                                            <h5
+                                                class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+                                                {{ item.name }}</h5>
+                                        </div>
+                                        <div class="mb-3 font-normaltext-gray-400">
+                                            <div v-html="item.desc"></div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
                             </div>
+                        </swiper-slide>
 
-                        </li>
-                    </ul>
+                    </swiper>
                 </div>
             </div>
+
+
+
+        </div>
+
+
+
+        <footer class="w-full ">
+
             <div id="footerBottom" :style="{
                 '--footer_bottom_bg': hexToRgb(layout.footer.footer_bottom_bg),
                 '--footer_bottom_color': hexToRgb(layout.footer.footer_bottom_color)
@@ -237,13 +207,13 @@
                             </div>
 
                         </div>
-                        <div class="lg:col-span-6 col-span-12">
-                            <div>
-                                <div v-html="layout.footer.footer_bottom" class="text-xs font-normal"></div>
+                        <div class="lg:col-span-5 col-span-12">
+                            <div class="">
+                                <div v-html="layout.footer.footer_bottom" class="space-y-2"></div>
                             </div>
 
                         </div>
-                        <div class="lg:col-span-3 col-span-12">
+                        <div class="lg:col-span-4 col-span-12">
                             <div id="google_map" class="relative" v-if="layout.footer.footer_map">
                                 <div v-html="layout.footer.footer_map">
                                 </div>
@@ -270,12 +240,10 @@ import '../../css/style.css';
 import '../../css/client.css';
 import { Autoplay } from 'swiper/modules';
 import ActionLoading from '@/Components/ActionLoading.vue';
-import { computed } from 'vue';
 
 
 const page = usePage();
 const layout = page.props.layout
-const productCategories = page.props.productCategories
 const productBrands = page.props.brands
 const swiperModule = [Autoplay];
 
@@ -294,19 +262,22 @@ defineProps({
     seo: {
         type: Object,
         default: () => ({
-            title: 'THG Vina',
-            meta_title: 'Công ty TNHH Giải pháp Logistics Mua sắm Toàn cầu | THG Vina',
-            meta_description: 'Chúng tôi cung cấp các giải pháp logistics và mua sắm toàn cầu chuyên nghiệp, đáng tin cậy và hiệu quả. Tối ưu hóa chuỗi cung ứng với THG Vina.',
-            meta_keywords: 'Logistics, mua sắm toàn cầu, giải pháp logistics, Global Procurement Logistics, giải pháp chuỗi cung ứng',
+            title: 'Chinh Phục tương lai thành công',
+            meta_title: 'Chinh Phục tương lai thành công | Chuyên Gia Hướng Nghiệp',
+            meta_description: 'Tại đây, chúng tôi cam kết đồng hành cùng bạn trong hành trình chinh phục ước mơ, giúp bạn khám phá bản thân, đưa ra những lựa chọn đúng đắn và chuẩn bị sẵn sàng để bước vào một tương lai thành công! Nếu bạn cần tư vấn, đừng ngần ngại liên hệ. Hãy để chúng tôi giúp bạn “khơi dậy tiềm năng – định hướng tương lai',
+            meta_keywords: 'Hướng nghiệp, xuất khẩu lao đông',
         }),
     },
 });
 const hexToRgb = (hex) => {
-    const bigint = parseInt(hex.slice(1), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return `${r}, ${g}, ${b}`; // Trả về "r, g, b"
+    if (hex) {
+
+        const bigint = parseInt(hex.slice(1), 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return `${r}, ${g}, ${b}`; // Trả về "r, g, b"
+    } else return `none`
 };
 // Khai báo biến và kiểu dữ liệu
 const selectedMenu = ref(null)
@@ -342,3 +313,4 @@ onBeforeUnmount(() => {
     max-height: 200px
 }
 </style>
+<style src="@/../css/editor.css"></style>

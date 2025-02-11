@@ -55,48 +55,82 @@
     --ck-todo-list-checkmark-size: 16px;
 }
 
-.ck-content h1 {
+.ck-content h1,
+.ck-content h1 p,
+.ck-content h1 strong,
+.ck-content h1 span {
     font-size: 5rem !important;
 }
 
-.ck-content h2 {
+
+.ck-content h2,
+.ck-content h2 p,
+.ck-content h2 strong,
+.ck-content h2 span {
     font-size: 2.5rem !important;
 }
 
-.ck-content h3 {
+
+.ck-content h3,
+.ck-content h3 p,
+.ck-content h3 strong,
+.ck-content h3 span {
     font-size: 2rem !important;
 }
 
-.ck-content h4 {
+
+.ck-content h4,
+.ck-content h4 p,
+.ck-content h4 strong,
+.ck-content h4 span {
     font-size: 1.5rem !important;
 }
 
+
 .ck-content h5,
-.ck-content p {
+.ck-content h5 p,
+.ck-content h5 strong,
+.ck-content h5 span {
     font-size: 1rem !important;
 }
 
 @media (max-width: 640px) {
-    .ck-content h1 {
+
+    .ck-content h1,
+    .ck-content h1 p,
+    .ck-content h1 strong,
+    .ck-content h1 span {
         font-size: 18px !important;
     }
 
-    .ck-content h2 {
+    .ck-content h2,
+    .ck-content h2 p,
+    .ck-content h2 strong,
+    .ck-content h2 span {
         font-size: 17px !important;
     }
 
-    .ck-content h3 {
+    .ck-content h3,
+    .ck-content h3 p,
+    .ck-content h3 strong,
+    .ck-content h3 span {
         font-size: 16px !important;
     }
 
-    .ck-content h4 {
-        font-size: 15px !important;
+
+    .ck-content h4,
+    .ck-content h4 p,
+    .ck-content h4 strong,
+    .ck-content h4 span {
+        font-size: 14px !important;
     }
 
+
     .ck-content h5,
-    .ck-content p,
-    .ck-content span {
-        font-size: 14px !important;
+    .ck-content h5 p,
+    .ck-content h5 strong,
+    .ck-content h5 span {
+        font-size: 12px !important;
         max-width: 100%;
         overflow: scroll;
     }
@@ -741,4 +775,14 @@
     background-color: #8217a5 !important;
     color: white;
     font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+    .ck-content .image-style-side {
+        float: none;
+        margin-left: var(--ck-image-style-spacing);
+        max-width: 100%;
+        text-align: center;
+    }
+
 }

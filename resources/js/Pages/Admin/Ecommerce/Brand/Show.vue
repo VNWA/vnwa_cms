@@ -1,8 +1,8 @@
 <template>
-    <AppLayout title="Brans">
+    <AppLayout title="Đánh Giá ">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Brans
+                Đánh Giá
             </h2>
         </template>
 

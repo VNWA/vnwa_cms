@@ -24,7 +24,7 @@
                 <li class="mb-3 ">
                     <SideBarLink :href="route('dashboard')" :active="check('/dashboard')">
                         <icon icon="fa-home" class="mr-2" />
-                        <span class="show font-semibold  text-slate-200">Dashboard</span>
+                        <span class="show font-semibold  text-slate-200">Trang chủ</span>
                     </SideBarLink>
 
                 </li>
@@ -34,7 +34,7 @@
                         <div class="flex items-center justify-start sidebar-item-list-title"
                             @click=" isBlogsActive = !isBlogsActive;">
                             <icon :icon="['fas', 'blog']" class="mr-2" />
-                            <span class="show  font-semibold  text-slate-200">Blog</span>
+                            <span class="show  font-semibold  text-slate-200">Bài Viết</span>
                             <icon :icon="['fas', 'chevron-down']" class="ml-2 show" />
                         </div>
 
@@ -43,48 +43,13 @@
                                 <li class="mb-1">
                                     <SideBarMenuItemLink :href="route('Blog.Categories')"
                                         :active="check('/blog/categories')">
-                                        Categories
+                                        Danh mục
                                     </SideBarMenuItemLink>
                                     <SideBarMenuItemLink :href="route('Blog.Tags')" :active="check('/blog/tags')">
                                         Tags
                                     </SideBarMenuItemLink>
                                     <SideBarMenuItemLink :href="route('Blog.Posts')" :active="check('/blog/posts')">
-                                        Post
-                                    </SideBarMenuItemLink>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-                <li class="mb-3">
-                    <div class=" cursor-pointer relative w-100 py-2 px-4 rounded sidebar-item-list "
-                        :class="{ 'active': isEcommerceActive || check('/ecommerce') }">
-                        <div class="flex items-center justify-start sidebar-item-list-title"
-                            @click=" isEcommerceActive = !isEcommerceActive;">
-                            <icon :icon="['fas', 'bag-shopping']" class="mr-2" />
-                            <span class="show  font-semibold  text-slate-200">Ecommerce</span>
-                            <icon :icon="['fas', 'chevron-down']" class="ml-2 show" />
-                        </div>
-
-                        <div class="sidebar-item-list-content  mt-3">
-                            <ul class=" border-l border-purple-100">
-                                <li class="mb-1">
-                                    <SideBarMenuItemLink :href="route('Ecommerce.ProductCategories')"
-                                        :active="check('/ecommerce/product-categories')">
-                                        Categories
-                                    </SideBarMenuItemLink>
-                                    <SideBarMenuItemLink :href="route('Ecommerce.Brand')"
-                                        :active="check('/ecommerce/brands')">
-                                        Brands
-                                    </SideBarMenuItemLink>
-                                    <SideBarMenuItemLink :href="route('Ecommerce.Product')"
-                                        :active="check('/ecommerce/products')">
-                                        Products
-                                    </SideBarMenuItemLink>
-                                    <SideBarMenuItemLink :href="route('Ecommerce.ProductOrder')"
-                                        :active="check('/ecommerce/orders')">
-                                        Orders
+                                        Bài Viết
                                     </SideBarMenuItemLink>
                                 </li>
 
@@ -99,6 +64,28 @@
                     </SideBarLink>
 
                 </li>
+
+                <li class="mb-3 ">
+                    <SideBarLink :href="route('Appearance.About')" :active="check('vnwa/about')">
+                        <icon icon="fa-home" class="mr-2" />
+                        <span class="show font-semibold  text-slate-200">Về Chúng tôi</span>
+                    </SideBarLink>
+                </li>
+                <li class="mb-3 ">
+                    <SideBarLink :href="route('Appearance.Service')" :active="check('vnwa/service')">
+                        <icon icon="fa-home" class="mr-2" />
+                        <span class="show font-semibold  text-slate-200">Dịch Vụ</span>
+                    </SideBarLink>
+                </li>
+                <li class="mb-3 ">
+                    <SideBarLink :href="route('Ecommerce.Brand')" :active="check('/ecommerce/brands')">
+                        <icon icon="fa-home" class="mr-2" />
+                        <span class="show font-semibold  text-slate-200">Đánh giá</span>
+                    </SideBarLink>
+                </li>
+
+
+
                 <li class="mb-3 ">
                     <SideBarLink :href="route('Appearance')" :active="check('/appearance')">
                         <icon icon="fa-paintbrush" class="mr-2" />

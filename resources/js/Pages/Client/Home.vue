@@ -1,21 +1,10 @@
 <template>
     <DefaultLayout :isHome="true">
 
-        <div>
+        <div class="shadow-xl shadow-black">
             <SliderBanner :images="banners_image" /> <!-- Sửa lại tên prop từ src thành images -->
         </div>
-        <div class="bg-red-600">
-            <div class="py-7">
-                <form class=" flex justify-center items-center" :action="route('Client.Products')">
-                    <input name="s"
-                        class="py-3 px-6 focus:border-primary rounded placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary mr-1 bg-white text-black"
-                        type="text" placeholder="Search Products...">
-                    <button class="py-3 px-6 bg-red-500 rounded text-white" type="submit">
-                        SEARCH
-                    </button>
-                </form>
-            </div>
-        </div>
+
         <div style="background-color: #f9f9f9;">
             <div class="container px-4 lg: lg:max-w-screen-xl mx-auto pt-20 text-black/80">
                 <div class="bg-white shadow p-8">

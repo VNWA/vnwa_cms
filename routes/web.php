@@ -198,6 +198,22 @@ Route::prefix('vnwa')
             Route::get('/edit/{id}', [BannerController::class, 'showEdit'])->name('Banner.Edit');
             Route::post('/update/{id}', [BannerController::class, 'update']);
         });
+        Route::prefix('about')->group(function () {
+            Route::get('/', function () {
+                return Inertia::render('Admin/Appearance/About');
+            })->name('Appearance.About');
+
+            Route::get('/load-json-data', [AppearanceController::class, 'loadJsonDataAbout'])->name('Appearance.About.LoadData');
+            Route::post('/update', [AppearanceController::class, 'updateAbout'])->name('Appearance.About.Update');
+        });
+        Route::prefix('service')->group(function () {
+            Route::get('/', function () {
+                return Inertia::render('Admin/Appearance/Service');
+            })->name('Appearance.Service');
+
+            Route::get('/load-json-data', [AppearanceController::class, 'loadJsonDataService'])->name('Appearance.Service.LoadData');
+            Route::post('/update', [AppearanceController::class, 'updateService'])->name('Appearance.Service.Update');
+        });
         Route::prefix('appearance')
             ->group(function () {
                 Route::get('/', function () {
@@ -246,14 +262,7 @@ Route::prefix('vnwa')
                     Route::get('/load-json-data', [AppearanceController::class, 'loadJsonDataFooter']);
                     Route::post('/update', [AppearanceController::class, 'updateFooter']);
                 });
-                Route::prefix('about')->group(function () {
-                    Route::get('/', function () {
-                        return Inertia::render('Admin/Appearance/About');
-                    })->name('Appearance.About');
 
-                    Route::get('/load-json-data', [AppearanceController::class, 'loadJsonDataAbout']);
-                    Route::post('/update', [AppearanceController::class, 'updateAbout']);
-                });
             });
 
     });
@@ -264,16 +273,17 @@ Route::middleware(['ClientLayout'])->group(function () {
 
 
     Route::get('/', [ClientController::class, 'viewHome'])->name('Client.Home');
-    Route::get('/about-us', [ClientController::class, 'viewAbout'])->name('Client.About');
-    Route::get('/contact', [ClientController::class, 'viewContact'])->name('Client.Contact');
-    Route::get('/brands', [ClientController::class, 'viewBrands'])->name('Client.Brands');
+    Route::get('/ve-chung-toi', [ClientController::class, 'viewAbout'])->name('Client.About');
+    Route::get('/dich-vu', [ClientController::class, 'viewService'])->name('Client.Service');
+    Route::get('/lien-he', [ClientController::class, 'viewContact'])->name('Client.Contact');
+    Route::get('/thuong-hieu', [ClientController::class, 'viewBrands'])->name('Client.Brands');
     Route::get('/pb/{slug}', [ClientController::class, 'viewBrandProducts'])->name('Client.Brand.Products');
     Route::get('/products', [ClientController::class, 'viewProducts'])->name('Client.Products');
     Route::get('/pc/{slug}', [ClientController::class, 'viewCategoryProducts'])->name('Client.ProductCategory.Products');
     Route::get('/p/{slug}', [ClientController::class, 'ViewProductDetail'])->name('Client.Product.Detail');
-    Route::get('/blogs', [ClientController::class, 'viewBlogs'])->name('Client.Blogs');
-    Route::get('/blogs/{slug}', [ClientController::class, 'viewBlogCategories'])->name('Client.BlogCategory.Posts');
-    Route::get('/blog/{slug}', [ClientController::class, 'viewBlogPostDetail'])->name('Client.BlogPost.Detail');
+    Route::get('/bai-viet', [ClientController::class, 'viewBlogs'])->name('Client.Blogs');
+    Route::get('/danh-muc-bai-viet/{slug}', [ClientController::class, 'viewBlogCategories'])->name('Client.BlogCategory.Posts');
+    Route::get('/bai-viet/{slug}', [ClientController::class, 'viewBlogPostDetail'])->name('Client.BlogPost.Detail');
 
 });
 

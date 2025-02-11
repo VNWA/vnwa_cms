@@ -23,7 +23,7 @@ const props = defineProps({
                     </Link>
                 </li>
                 <li v-for="(item, index) in breadcrumbs" :key="index" class="flex items-center">
-                    <icon :icon="['fas', 'chevron-right']" class="me-2" />
+                    <icon :icon="['fas', 'chevron-right']" class="me-2 text-black" />
                     <template v-if="index === breadcrumbs.length - 1">
                         <span class="text-subPrimary capitalize font-semibold">{{ item[0] }}</span>
                     </template>

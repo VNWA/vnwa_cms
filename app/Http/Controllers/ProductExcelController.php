@@ -167,8 +167,8 @@ class ProductExcelController extends Controller
                 $product = Product::create($data);
 
                 // Liên kết product với các danh mục (nếu có)
-                if (!empty($value['categories_id'])) {
-                    $categoryIds = preg_split('/\s+/', trim($value['categories_id']));
+                if (!empty($value['categoriesid'])) {
+                    $categoryIds = preg_split('/\s+/', trim($value['categoriesid']));
                     $validCategories = ProductCategory::whereIn('id', $categoryIds)->get(['id']);
 
                     // Lấy các Category ID hợp lệ và tạo liên kết

@@ -1,15 +1,15 @@
 <template>
     <div>
-        <AppLayout title="Edit About" :isLoading="isPageLoading">
+        <AppLayout title="Edit Service" :isLoading="isPageLoading">
 
             <template #header>
                 <div class="flex items-center justify-between">
                     <div>
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit About</h2>
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Service</h2>
                     </div>
                     <div>
                         <HeaderBreadcrumbs
-                            :breadcrumbs="[['Appearance', route('Appearance')], [' Edit About', route('Appearance.About')]]" />
+                            :breadcrumbs="[['Appearance', route('Appearance')], [' Edit Service', route('Appearance.Service')]]" />
                     </div>
                 </div>
             </template>
@@ -17,7 +17,7 @@
             <div class="p-5">
                 <div class="mb-4">
                     <div class="bg-white shadow-black shadow border p-3 w-full max-w-full">
-                        <InputLabel for="name"> About <span class="text-red-500">*</span></InputLabel>
+                        <InputLabel for="name"> Service <span class="text-red-500">*</span></InputLabel>
                         <Editor v-model="data.content" />
                         <button @click="updateData"
                             class="bg-purple-500 hover:bg-purple-900 hover:text-white py-2 px-5 rounded-sm text-white text-nowrap ms-3">
@@ -47,12 +47,12 @@ const form = ref({
     icon: [],
     link: '',
 });
-const shortAbout = ref('');
+const shortService = ref('');
 const data = ref([]);
 
 const loadData = () => {
     isPageLoading.value = true;
-    axios.get(route('Appearance.About.LoadData'))
+    axios.get(route('Appearance.Service.LoadData'))
         .then(response => {
             data.value = response.data;
             isPageLoading.value = false;
@@ -66,7 +66,7 @@ const loadData = () => {
 loadData();
 
 const updateData = () => {
-    axios.post(route('Appearance.About.Update'), { data: data.value })
+    axios.post(route('Appearance.Service.Update'), { data: data.value })
         .then(response => {
             toast.success(response.data.message, { autoClose: 1500 });
         })

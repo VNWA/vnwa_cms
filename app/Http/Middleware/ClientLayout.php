@@ -41,7 +41,7 @@ class ClientLayout
             return $category;
         });
 
-        $brands = Brand::orderByDesc('id')->get(['name', 'slug', 'image']);
+        $brands = Brand::orderByDesc('id')->get(['name', 'slug', 'image', 'desc']);
 
         Inertia::share([
             'layout' => [

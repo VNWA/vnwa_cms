@@ -24,10 +24,10 @@ class ClientController extends Controller
     {
         // Thiết lập giá trị mặc định cho SEO nếu không có dữ liệu được truyền vào
         $this->seo = $seo ?: [
-            'title' => 'THG Vina',
-            'meta_title' => 'Công ty TNHH Giải pháp Logistics Mua sắm Toàn cầu | THG Vina',
-            'meta_description' => 'Chúng tôi cung cấp các giải pháp logistics và mua sắm toàn cầu chuyên nghiệp, đáng tin cậy và hiệu quả. Tối ưu hóa chuỗi cung ứng với THG Vina.',
-            'meta_keywords' => 'Logistics, mua sắm toàn cầu, giải pháp logistics, Global Procurement Logistics, giải pháp chuỗi cung ứng',
+            'title' => 'Chinh Phục tương lai thành công ',
+            'meta_title' => 'Chinh Phục tương lai thành công | Chuyên Gia Hướng Nghiệp',
+            'meta_description' => 'Tại đây, chúng tôi cam kết đồng hành cùng bạn trong hành trình chinh phục ước mơ, giúp bạn khám phá bản thân, đưa ra những lựa chọn đúng đắn và chuẩn bị sẵn sàng để bước vào một tương lai thành công! Nếu bạn cần tư vấn, đừng ngần ngại liên hệ. Hãy để chúng tôi giúp bạn “khơi dậy tiềm năng – định hướng tương lai”!',
+            'meta_keywords' => 'Hướng nghiệp, xuất khẩu lao đông',
             'meta_image' => asset('client/images/SELCO-USA-LOGO-500x51.png'),
         ];
     }
@@ -181,6 +181,23 @@ class ClientController extends Controller
             'about' => $about['content']
         ]);
     }
+    public function viewService()
+    {
+        $breadcrumbs = [
+            ['Dịch vụ', route('Client.Service')],
+        ];
+        $this->seo['title'] = 'Dịch vụ';
+        $appearance = Appearance::where('type', 'service')->first();
+        $about = $appearance->value;
+        return Inertia::render('Client/Service', [
+            'seo' => $this->seo,
+            'breadcrumbs' => $breadcrumbs,
+            'about' => $about['content']
+        ]);
+    }
+
+
+
     protected function getChildBlogCategories($parentId)
     {
         // Lấy danh mục con của $parentId đã sắp xếp theo 'ord'

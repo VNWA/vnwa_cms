@@ -35,8 +35,7 @@ class BrandController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'required|string',
-            'desc' => 'nullable|string',
-            'slug' => 'nullable|string',
+            'desc' => 'required|string',
         ]);
 
         try {
