@@ -22,7 +22,7 @@
 <script setup>
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import { Link, usePage, router } from '@inertiajs/vue3';
-import Breadcrumb from "@/Components/Client/Breadcrumb.vue";
+import Breadcrumb from "@/Components/Client/BreadCrumb.vue";
 defineProps({
     seo: {
         type: Object,

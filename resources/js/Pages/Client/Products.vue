@@ -131,7 +131,7 @@
 <script setup>
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import { Link, usePage } from '@inertiajs/vue3';
-import Breadcrumb from "@/Components/Client/Breadcrumb.vue";
+import Breadcrumb from "@/Components/Client/BreadCrumb.vue";
 import ProductItem from "@/Components/Client/ProductItem.vue";
 import TreeMenu from "@/Components/Client/TreeMenu.vue";
 import Pagination from "@/Components/Client/Pagination.vue"; // Import component Pagination

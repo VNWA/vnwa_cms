@@ -42,7 +42,7 @@ import 'swiper/css/thumbs';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import TreeMenu from '@/Components/Client/TreeMenu.vue';
-import Breadcrumb from '@/Components/Client/Breadcrumb.vue';
+import Breadcrumb from '@/Components/Client/BreadCrumb.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import EditorRenderHtml from '@/Components/Client/EditorRenderHtml.vue';
 const page = usePage();
